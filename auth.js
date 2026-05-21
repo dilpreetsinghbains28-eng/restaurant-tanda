@@ -142,7 +142,18 @@ function checkUserStatus() {
 
     // Skip API calls on static hosting (GitHub Pages)
     const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-    if (isStatic) return;
+    if (isStatic) {
+        // Decode user from localStorage token
+        try {
+            const userData = JSON.parse(atob(token));
+            if (userData && userData.name) {
+                currentUser = { name: userData.name, phone: userData.phone || '' };
+                window.currentUser = currentUser;
+                updateAuthUI();
+            }
+        } catch(e) { /* Invalid token, ignore */ }
+        return;
+    }
 
     fetch('/api/user/me', {
         headers: { 'Authorization': token }

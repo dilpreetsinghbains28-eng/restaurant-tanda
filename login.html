@@ -63,6 +63,7 @@
                     </div>
                     
                     <p id="authError" class="text-red-500 text-sm hidden text-center bg-red-50 p-2 rounded-lg border border-red-100"></p>
+                    <p id="authSuccess" class="text-green-600 text-sm hidden text-center bg-green-50 p-2 rounded-lg border border-green-100"></p>
                     
                     <button id="submitBtn" type="submit" class="w-full bg-brand text-white py-3 mt-4 rounded-xl font-bold shadow-md hover:bg-[#7a3003] transition-all active:scale-[0.98]">
                         Login Securely
@@ -78,6 +79,7 @@
 
     <script>
         let isRegisterMode = false;
+        const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
         
         // Check if user is already logged in
         if (localStorage.getItem('galaxy_token')) {
@@ -112,57 +114,120 @@
                 title.textContent = "Welcome Back!";
             }
             document.getElementById('authError').classList.add('hidden');
+            document.getElementById('authSuccess').classList.add('hidden');
         }
 
         function handleAuth(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const errorEl = document.getElementById('authError');
+            const successEl = document.getElementById('authSuccess');
             
             const phone = document.getElementById('authPhone').value;
             const password = document.getElementById('authPassword').value;
             const name = document.getElementById('authName').value;
-            
-            const endpoint = isRegisterMode ? '/api/auth/register' : '/api/auth/login';
-            const body = isRegisterMode ? { name, phone, password } : { phone, password };
 
             btn.disabled = true;
             btn.textContent = "Please wait...";
             errorEl.classList.add('hidden');
+            successEl.classList.add('hidden');
 
-            fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.success) {
-                    localStorage.setItem('galaxy_token', data.token);
-                    
-                    // Redirect back to where they came from
-                    if (redirectAction === 'cart') {
-                        window.location.href = 'menu.html#cart'; // or wherever cart opens
-                    } else if (redirectAction === 'booking') {
-                        window.location.href = 'index.html#book';
-                    } else if (redirectAction === 'contact') {
-                        window.location.href = 'contact.html';
+            if (isStatic) {
+                // Static hosting (GitHub Pages) — localStorage-based auth
+                setTimeout(() => {
+                    if (isRegisterMode) {
+                        // Save user to localStorage
+                        const users = JSON.parse(localStorage.getItem('galaxy_users') || '[]');
+                        if (users.find(u => u.phone === phone)) {
+                            errorEl.textContent = 'This phone number is already registered. Please login.';
+                            errorEl.classList.remove('hidden');
+                            btn.disabled = false;
+                            btn.textContent = "Create Account";
+                            return;
+                        }
+                        users.push({ name, phone, password });
+                        localStorage.setItem('galaxy_users', JSON.stringify(users));
+                        
+                        // Create token
+                        const token = btoa(JSON.stringify({ name, phone, id: 'user_' + Date.now() }));
+                        localStorage.setItem('galaxy_token', token);
+                        
+                        successEl.textContent = '✅ Account created! Redirecting...';
+                        successEl.classList.remove('hidden');
                     } else {
-                        window.location.href = 'index.html';
+                        // Login — check localStorage
+                        const users = JSON.parse(localStorage.getItem('galaxy_users') || '[]');
+                        const user = users.find(u => u.phone === phone && u.password === password);
+                        
+                        if (user) {
+                            const token = btoa(JSON.stringify({ name: user.name, phone: user.phone, id: 'user_' + Date.now() }));
+                            localStorage.setItem('galaxy_token', token);
+                            successEl.textContent = '✅ Login successful! Redirecting...';
+                            successEl.classList.remove('hidden');
+                        } else {
+                            errorEl.textContent = 'Invalid phone number or password. Register first if you are new.';
+                            errorEl.classList.remove('hidden');
+                            btn.disabled = false;
+                            btn.textContent = "Login Securely";
+                            return;
+                        }
                     }
-                } else {
-                    errorEl.textContent = data.message || "Authentication failed.";
+
+                    // Redirect after success
+                    setTimeout(() => {
+                        if (redirectAction === 'cart') {
+                            window.location.href = 'menu.html';
+                        } else if (redirectAction === 'booking') {
+                            window.location.href = 'index.html';
+                        } else if (redirectAction === 'contact') {
+                            window.location.href = 'contact.html';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    }, 1000);
+                }, 500);
+            } else {
+                // Backend available — use API
+                const endpoint = isRegisterMode ? '/api/auth/register' : '/api/auth/login';
+                const body = isRegisterMode ? { name, phone, password } : { phone, password };
+
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        localStorage.setItem('galaxy_token', data.token);
+                        successEl.textContent = '✅ ' + (isRegisterMode ? 'Account created!' : 'Login successful!') + ' Redirecting...';
+                        successEl.classList.remove('hidden');
+                        
+                        setTimeout(() => {
+                            if (redirectAction === 'cart') {
+                                window.location.href = 'menu.html';
+                            } else if (redirectAction === 'booking') {
+                                window.location.href = 'index.html';
+                            } else if (redirectAction === 'contact') {
+                                window.location.href = 'contact.html';
+                            } else {
+                                window.location.href = 'index.html';
+                            }
+                        }, 1000);
+                    } else {
+                        errorEl.textContent = data.message || "Authentication failed.";
+                        errorEl.classList.remove('hidden');
+                        btn.disabled = false;
+                        btn.textContent = isRegisterMode ? "Create Account" : "Login Securely";
+                    }
+                })
+                .catch(() => {
+                    errorEl.textContent = "Connection error. Please try again.";
                     errorEl.classList.remove('hidden');
                     btn.disabled = false;
                     btn.textContent = isRegisterMode ? "Create Account" : "Login Securely";
-                }
-            })
-            .catch(() => {
-                errorEl.textContent = "Connection error. Please try again.";
-                errorEl.classList.remove('hidden');
-                btn.disabled = false;
-                btn.textContent = isRegisterMode ? "Create Account" : "Login Securely";
-            });
+                });
+            }
         }
     </script>
 </body>
