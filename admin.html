@@ -103,7 +103,7 @@
                             <span class="material-symbols-outlined text-green-600">payments</span>
                         </div>
                     </div>
-                    <p class="text-xs text-green-600 mt-2">Total earned</p>
+                    <p class="text-xs text-green-600 mt-2">From confirmed & completed</p>
                 </div>
                 <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in" style="animation-delay:0.1s">
                     <div class="flex items-center justify-between">
@@ -233,7 +233,7 @@
                 const orders = lsGet('galaxy_orders');
                 const reservations = lsGet('galaxy_reservations');
                 const messages = lsGet('galaxy_messages');
-                const totalRevenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+                const totalRevenue = orders.filter(o => ['Confirmed', 'Completed'].includes(o.status)).reduce((s, o) => s + (o.total || 0), 0);
                 document.getElementById('statOrders').textContent = orders.length;
                 document.getElementById('statNewOrders').textContent = orders.filter(o => o.status === 'New').length;
                 document.getElementById('statRevenue').textContent = '₹' + totalRevenue.toLocaleString('en-IN');
