@@ -50,11 +50,98 @@ function toggleNotifModal() {
 }
 
 function markAllNotificationsRead() {
+    const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    if (isStatic) {
+        const notifs = JSON.parse(localStorage.getItem('galaxy_notifications') || '[]');
+        notifs.forEach(n => n.isRead = true);
+        localStorage.setItem('galaxy_notifications', JSON.stringify(notifs));
+        loadLocalNotifications();
+        return;
+    }
     if (!currentUser) return;
     fetch('/api/notifications/mark-read', {
         method: 'POST',
         headers: { 'Authorization': localStorage.getItem('galaxy_token') }
     }).then(() => checkUserStatus());
+}
+
+// Load notifications from localStorage (for static hosting)
+function loadLocalNotifications() {
+    const notifications = JSON.parse(localStorage.getItem('galaxy_notifications') || '[]');
+    const unreadCount = notifications.filter(n => !n.isRead).length;
+
+    // Update badge
+    const badge = document.getElementById('notifBadge');
+    if (badge) {
+        if (unreadCount > 0) {
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+
+    // Update mark-all-read button
+    const markAllBtn = document.getElementById('markAllReadBtn');
+    if (markAllBtn) {
+        if (unreadCount > 0) markAllBtn.classList.remove('hidden');
+        else markAllBtn.classList.add('hidden');
+    }
+
+    // Render notifications list
+    const list = document.getElementById('notifList');
+    if (!list) return;
+
+    if (notifications.length === 0) {
+        list.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-center text-gray-400 mt-10">
+            <span class="material-symbols-outlined text-6xl mb-4 opacity-50">notifications_off</span>
+            <p>No notifications yet</p>
+            <p class="text-xs mt-2 text-gray-300">Order updates and admin messages will appear here</p>
+        </div>`;
+    } else {
+        list.innerHTML = notifications.map(n => {
+            const iconMap = {
+                'reply': 'chat_bubble',
+                'status_update': 'update',
+                'order_confirmed': 'check_circle',
+                'order_completed': 'task_alt',
+                'order_cancelled': 'cancel',
+                'reservation_confirmed': 'event_available',
+                'reservation_completed': 'event_available'
+            };
+            const icon = iconMap[n.notifType] || 'notifications';
+            const colorMap = {
+                'reply': 'text-blue-600 bg-blue-50',
+                'order_confirmed': 'text-green-600 bg-green-50',
+                'order_completed': 'text-emerald-600 bg-emerald-50',
+                'order_cancelled': 'text-red-600 bg-red-50',
+                'reservation_confirmed': 'text-green-600 bg-green-50',
+                'reservation_completed': 'text-emerald-600 bg-emerald-50',
+                'status_update': 'text-orange-600 bg-orange-50'
+            };
+            const colorClass = colorMap[n.notifType] || 'text-orange-600 bg-orange-50';
+
+            return `
+            <div class="bg-surface p-4 rounded-xl border ${n.isRead ? 'border-outline-variant/30 opacity-60' : 'border-primary/30 shadow-md'} relative overflow-hidden transition-all">
+                ${!n.isRead ? '<div class="absolute top-0 left-0 w-1.5 h-full bg-primary"></div>' : ''}
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full ${colorClass} flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span class="material-symbols-outlined text-lg">${icon}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between mb-1">
+                            <p class="text-sm font-bold text-on-surface">${n.title || 'Notification'}</p>
+                            ${!n.isRead ? '<span class="w-2.5 h-2.5 bg-primary rounded-full flex-shrink-0"></span>' : ''}
+                        </div>
+                        <p class="text-sm text-on-surface-variant leading-relaxed">${n.text}</p>
+                        ${n.orderId ? `<span class="inline-block text-[10px] font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-500 mt-2">${n.orderId}</span>` : ''}
+                        <p class="text-[10px] text-on-surface-variant/50 mt-2 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[12px]">schedule</span> ${new Date(n.date).toLocaleString('en-IN')}
+                        </p>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
 }
 
 // Added global function to toggle profile dropdown
@@ -150,6 +237,7 @@ function checkUserStatus() {
                 currentUser = { name: userData.name, phone: userData.phone || '' };
                 window.currentUser = currentUser;
                 updateAuthUI();
+                loadLocalNotifications();
             }
         } catch(e) { /* Invalid token, ignore */ }
         return;
