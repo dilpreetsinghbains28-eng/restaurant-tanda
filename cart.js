@@ -151,6 +151,24 @@ function renderCartModal() {
 
 let checkoutStep = 0; // 0 = show form, 1 = submit
 
+// Helper to get logged-in user data from token or window.currentUser
+function getLoggedInUser() {
+    // First check if auth.js has already set it
+    if (window.currentUser && window.currentUser.name) {
+        return window.currentUser;
+    }
+    // Fallback: decode from localStorage token (static hosting)
+    const token = localStorage.getItem('galaxy_token');
+    if (!token) return null;
+    try {
+        const userData = JSON.parse(atob(token));
+        if (userData && userData.name) {
+            return { name: userData.name, phone: userData.phone || '' };
+        }
+    } catch(e) { /* Invalid token */ }
+    return null;
+}
+
 function handleCheckout() {
     if (cart.length === 0) return;
 
@@ -162,31 +180,33 @@ function handleCheckout() {
     errorEl.classList.add('hidden');
     successEl.classList.add('hidden');
 
-    // Require login to checkout
+    // Always require login to checkout
     if (!localStorage.getItem('galaxy_token')) {
-        // On static hosting (GitHub Pages), skip login requirement
-        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-            // Allow checkout without login on static sites
-        } else {
-            if (confirm('You need to login to place an order.\n\nClick OK to go to the Login page.')) {
-                window.location.href = 'login.html';
-            }
-            return;
+        if (confirm('You need to login to place an order.\n\nClick OK to go to the Login page.')) {
+            window.location.href = 'login.html?redirect=cart';
         }
+        return;
     }
 
     if (checkoutForm.classList.contains('hidden')) {
-        // Step 1: Show the form
+        // Step 1: Show the form with auto-filled data from login
         checkoutForm.classList.remove('hidden');
         checkoutBtn.textContent = 'Place Order & Chat on WhatsApp';
         
         // Auto-fill from login details
-        if (window.currentUser) {
-            document.getElementById('checkoutName').value = window.currentUser.name;
-            document.getElementById('checkoutPhone').value = window.currentUser.phone;
+        const user = getLoggedInUser();
+        if (user) {
+            document.getElementById('checkoutName').value = user.name;
+            document.getElementById('checkoutPhone').value = user.phone || '';
         }
         
-        document.getElementById('checkoutName').focus();
+        // Focus on phone if name is filled, otherwise name
+        if (user && user.name) {
+            const phoneInput = document.getElementById('checkoutPhone');
+            if (!phoneInput.value) phoneInput.focus();
+        } else {
+            document.getElementById('checkoutName').focus();
+        }
         return;
     }
 
