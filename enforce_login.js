@@ -1,0 +1,2 @@
+"const fs = require('fs');\n\nconst htmlFiles = ['index.html', 'menu.html', 'about.html', 'contact.html'];\nconst basePath = \"c:/Users/Asus/Documents/Web Development/ok km/\";\n\n// 1. Enforce Login on Handle Booking\nfor (const file of htmlFiles) {\n    
+<truncated 2062 bytes>

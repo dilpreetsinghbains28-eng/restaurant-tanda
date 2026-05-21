@@ -1,0 +1,2 @@
+"const fs = require('fs');\n\nconst htmlFiles = ['index.html', 'menu.html', 'about.html', 'contact.html'];\nconst basePath = \"c:/Users/Asus/Documents/Web Development/ok km/\";\n\nconst redirectScript = `\n    <!-- Global Auth Check -->\n    <script>\n    
+<truncated 682 bytes>

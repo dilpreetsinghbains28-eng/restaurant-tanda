@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Admin Dashboard | Galaxy Restaurant</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand': '#944217',
+                        'brand-light': '#ffdbcc',
+                        'brand-dark': '#561f00',
+                        'surface': '#fff8f6',
+                        'surface-dim': '#f5ebe8',
+                        'card': '#ffffff',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fef7f4; }
+        .tab-active { background: #944217; color: white; }
+        .tab-inactive { background: #fff; color: #944217; border: 1px solid #e8d5ce; }
+        .status-new { background: #fff3cd; color: #856404; }
+        .status-confirmed, .status-read { background: #d4edda; color: #155724; }
+        .status-completed { background: #cce5ff; color: #004085; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-unread { background: #f8d7da; color: #721c24; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div id="authScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#944217] to-[#561f00]">
+        <div class="bg-white p-10 rounded-2xl shadow-2xl max-w-md w-full mx-4 text-center">
+            <span class="material-symbols-outlined text-[#944217] text-6xl mb-4">admin_panel_settings</span>
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">Admin Access</h1>
+            <p class="text-gray-500 mb-6">Enter the admin password to continue</p>
+            <input id="adminPassword" type="password" placeholder="Enter password"
+                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-[#944217] focus:ring-2 focus:ring-[#944217]/20 outline-none mb-4 text-center text-lg tracking-widest" 
+                onkeydown="if(event.key==='Enter')authenticate()"/>
+            <button onclick="authenticate()" class="w-full bg-[#944217] text-white py-3 rounded-xl font-bold text-lg hover:bg-[#7a3003] transition-colors">
+                Unlock Dashboard
+            </button>
+            <p id="authError" class="text-red-500 mt-3 hidden text-sm">Incorrect password. Try again.</p>
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+        <!-- Header -->
+        <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-orange-100 sticky top-0 z-40 transition-colors duration-300">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-[#944217] text-3xl">restaurant</span>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">Galaxy Restaurant</h1>
+                        <p class="text-xs text-gray-400">Admin Dashboard</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="refreshAll()" class="flex items-center gap-1 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition text-sm font-medium">
+                        <span class="material-symbols-outlined text-sm">refresh</span> Refresh
+                    </button>
+                    <button onclick="logout()" class="flex items-center gap-1 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition text-sm font-medium">
+                        <span class="material-symbols-outlined text-sm">logout</span> Logout
+                    </button>
+                    <a href="index.html" class="flex items-center gap-1 px-4 py-2 bg-[#944217] text-white rounded-lg hover:bg-[#7a3003] transition text-sm font-medium">
+                        <span class="material-symbols-outlined text-sm">home</span> Website
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Total Orders</p>
+                            <p id="statOrders" class="text-3xl font-bold text-gray-800 mt-1">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[#944217]">shopping_bag</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-orange-600 mt-2"><span id="statNewOrders">0</span> new orders</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in" style="animation-delay:0.05s">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Revenue</p>
+                            <p id="statRevenue" class="text-3xl font-bold text-gray-800 mt-1">₹0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-green-600">payments</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-green-600 mt-2">Total earned</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in" style="animation-delay:0.1s">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Reservations</p>
+                            <p id="statReservations" class="text-3xl font-bold text-gray-800 mt-1">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-blue-600">event_seat</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-blue-600 mt-2"><span id="statPending">0</span> pending</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in" style="animation-delay:0.15s">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold">Messages</p>
+                            <p id="statMessages" class="text-3xl font-bold text-gray-800 mt-1">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+                            <span class="material-symbols-outlined text-purple-600">mail</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-purple-600 mt-2"><span id="statUnread">0</span> unread</p>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-6">
+                <button onclick="switchTab('orders')" id="tabOrders" class="tab-active px-5 py-2.5 rounded-lg font-semibold text-sm transition-all">
+                    <span class="material-symbols-outlined text-sm align-middle mr-1">shopping_bag</span>Orders
+                </button>
+                <button onclick="switchTab('reservations')" id="tabReservations" class="tab-inactive px-5 py-2.5 rounded-lg font-semibold text-sm transition-all">
+                    <span class="material-symbols-outlined text-sm align-middle mr-1">event_seat</span>Reservations
+                </button>
+                <button onclick="switchTab('messages')" id="tabMessages" class="tab-inactive px-5 py-2.5 rounded-lg font-semibold text-sm transition-all">
+                    <span class="material-symbols-outlined text-sm align-middle mr-1">mail</span>Messages
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="ordersPanel" class="space-y-3">
+                <div id="ordersEmpty" class="text-center py-16 text-gray-400 hidden">
+                    <span class="material-symbols-outlined text-6xl mb-3">inbox</span>
+                    <p>No orders yet</p>
+                </div>
+                <div id="ordersList"></div>
+            </div>
+            <div id="reservationsPanel" class="space-y-3 hidden">
+                <div id="reservationsEmpty" class="text-center py-16 text-gray-400 hidden">
+                    <span class="material-symbols-outlined text-6xl mb-3">event_busy</span>
+                    <p>No reservations yet</p>
+                </div>
+                <div id="reservationsList"></div>
+            </div>
+            <div id="messagesPanel" class="space-y-3 hidden">
+                <div id="messagesEmpty" class="text-center py-16 text-gray-400 hidden">
+                    <span class="material-symbols-outlined text-6xl mb-3">drafts</span>
+                    <p>No messages yet</p>
+                </div>
+                <div id="messagesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = 'galaxy2024';
+
+        // Check persistent login on load
+        window.onload = () => {
+            if (localStorage.getItem('adminAuth') === 'true') {
+                document.getElementById('authScreen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                refreshAll();
+            }
+        };
+
+        function authenticate() {
+            const input = document.getElementById('adminPassword').value;
+            if (input === ADMIN_PASSWORD) {
+                localStorage.setItem('adminAuth', 'true');
+                document.getElementById('authScreen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                refreshAll();
+            } else {
+                document.getElementById('authError').classList.remove('hidden');
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('adminAuth');
+            location.reload();
+        }
+
+        function switchTab(tab) {
+            ['orders', 'reservations', 'messages'].forEach(t => {
+                document.getElementById(t + 'Panel').classList.toggle('hidden', t !== tab);
+                document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1)).className =
+                    t === tab ? 'tab-active px-5 py-2.5 rounded-lg font-semibold text-sm transition-all' :
+                    'tab-inactive px-5 py-2.5 rounded-lg font-semibold text-sm transition-all';
+            });
+        }
+
+        async function refreshAll() {
+            await Promise.all([loadStats(), loadOrders(), loadReservations(), loadMessages()]);
+        }
+
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/stats');
+                const data = await res.json();
+                document.getElementById('statOrders').textContent = data.totalOrders;
+                document.getElementById('statNewOrders').textContent = data.newOrders;
+                document.getElementById('statRevenue').textContent = '₹' + data.totalRevenue.toLocaleString('en-IN');
+                document.getElementById('statReservations').textContent = data.totalReservations;
+                document.getElementById('statPending').textContent = data.pendingReservations;
+                document.getElementById('statMessages').textContent = data.totalMessages;
+                document.getElementById('statUnread').textContent = data.unreadMessages;
+            } catch (e) { console.error('Stats error:', e); }
+        }
+
+        function renderReplySection(type, item) {
+            if (!item.userId) {
+                return `
+                    <div class="mt-4 flex items-center gap-2 text-gray-400 bg-gray-50 p-2 rounded-lg border border-dashed border-gray-200">
+                        <span class="material-symbols-outlined text-sm">person_off</span>
+                        <p class="text-[11px] italic text-gray-500">Guest user: Direct replies via dashboard are only available for registered accounts.</p>
+                    </div>
+                `;
+            }
+            
+            if (item.adminReply) {
+                return `
+                    <div class="mt-4 bg-orange-50/50 border border-orange-100 p-4 rounded-xl relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-[#944217] opacity-50"></div>
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-[10px] font-bold text-[#944217] uppercase tracking-wider flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[12px]">reply</span> Your Official Reply
+                            </p>
+                            <span class="text-[9px] px-1.5 py-0.5 rounded-full ${item.replyRead ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'} font-bold uppercase">
+                                ${item.replyRead ? 'Read' : 'Delivered'}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-700 leading-relaxed font-medium">${item.adminReply}</p>
+                        <p class="text-[10px] text-gray-400 mt-2 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[12px]">schedule</span> Sent on ${new Date(item.replyDate).toLocaleString('en-IN')}
+                        </p>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="mt-4 space-y-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="material-symbols-outlined text-[#944217] text-sm">chat_bubble</span>
+                            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Quick Reply</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="relative flex-1">
+                                <input id="reply-${item.id}" type="text" placeholder="Send a message to the customer's bell icon..." 
+                                    class="w-full text-sm border-2 border-gray-100 rounded-xl px-4 py-2 focus:border-[#944217] focus:ring-4 focus:ring-orange-50 outline-none transition-all pr-10">
+                                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 text-sm">edit</span>
+                            </div>
+                            <button onclick="sendReply('${type}', '${item.id}')" 
+                                class="bg-[#944217] text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-[#7a3003] active:scale-95 transition-all shadow-md shadow-orange-900/20 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">send</span> Send
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        async function sendReply(type, id) {
+            const input = document.getElementById(`reply-${id}`);
+            if (!input || !input.value.trim()) return;
+            
+            await fetch(`/api/${type}/${id}/reply`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reply: input.value.trim() })
+            });
+            refreshAll();
+        }
+
+        async function loadOrders() {
+            try {
+                const res = await fetch('/api/orders');
+                const orders = await res.json();
+                const list = document.getElementById('ordersList');
+                const empty = document.getElementById('ordersEmpty');
+
+                if (orders.length === 0) {
+                    empty.classList.remove('hidden');
+                    list.innerHTML = '';
+                    return;
+                }
+                empty.classList.add('hidden');
+
+                list.innerHTML = orders.map(order => `
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
+                        <div class="flex flex-col sm:flex-row justify-between gap-3">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded">${order.id}</span>
+                                    <span class="status-${order.status.toLowerCase()} text-xs px-2 py-0.5 rounded-full font-semibold">${order.status}</span>
+                                    ${order.userId ? '<span class="material-symbols-outlined text-green-500 text-sm" title="Registered User">verified_user</span>' : ''}
+                                </div>
+                                <h3 class="font-bold text-gray-800">${order.customerName}</h3>
+                                <p class="text-sm text-gray-500">${order.customerPhone}</p>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    ${order.items.map(i => `<span class="inline-block bg-orange-50 text-[#944217] px-2 py-0.5 rounded mr-1 mb-1 text-xs">${i.quantity}× ${i.name}</span>`).join('')}
+                                </div>
+                                ${renderReplySection('orders', order)}
+                            </div>
+                            <div class="text-right flex flex-col justify-between">
+                                <p class="text-2xl font-bold text-[#944217]">₹${order.total}</p>
+                                <p class="text-xs text-gray-400 mt-1">${new Date(order.createdAt).toLocaleString('en-IN')}</p>
+                                <select onchange="updateOrderStatus('${order.id}', this.value)" class="mt-2 text-xs border rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#944217]">
+                                    <option value="New" ${order.status === 'New' ? 'selected' : ''}>New</option>
+                                    <option value="Confirmed" ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                    <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                    <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                </select>
+                                <button onclick="deleteItem('orders', '${order.id}')" class="mt-2 text-red-400 hover:text-red-600 transition-colors p-1 flex items-center justify-end" title="Delete Order">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) { console.error('Orders error:', e); }
+        }
+
+        async function loadReservations() {
+            try {
+                const res = await fetch('/api/reservations');
+                const reservations = await res.json();
+                const list = document.getElementById('reservationsList');
+                const empty = document.getElementById('reservationsEmpty');
+
+                if (reservations.length === 0) {
+                    empty.classList.remove('hidden');
+                    list.innerHTML = '';
+                    return;
+                }
+                empty.classList.add('hidden');
+
+                list.innerHTML = reservations.map(r => `
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
+                        <div class="flex flex-col sm:flex-row justify-between gap-3">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded">${r.id}</span>
+                                    <span class="status-${r.status.toLowerCase()} text-xs px-2 py-0.5 rounded-full font-semibold">${r.status}</span>
+                                    ${r.userId ? '<span class="material-symbols-outlined text-green-500 text-sm" title="Registered User">verified_user</span>' : ''}
+                                </div>
+                                <h3 class="font-bold text-gray-800">${r.name}</h3>
+                                ${r.phone ? `<p class="text-sm text-gray-500">${r.phone}</p>` : ''}
+                                ${renderReplySection('reservations', r)}
+                            </div>
+                            <div class="flex items-center gap-4 text-sm text-gray-600">
+                                <div class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[#944217] text-lg">calendar_today</span>
+                                    ${new Date(r.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[#944217] text-lg">schedule</span>
+                                    ${r.time}
+                                </div>
+                                <select onchange="updateReservationStatus('${r.id}', this.value)" class="text-xs border rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#944217]">
+                                    <option value="Pending" ${r.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="Confirmed" ${r.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                    <option value="Completed" ${r.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                    <option value="Cancelled" ${r.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                </select>
+                                <button onclick="deleteItem('reservations', '${r.id}')" class="text-red-400 hover:text-red-600 transition-colors p-1" title="Delete Reservation">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2">Submitted: ${new Date(r.createdAt).toLocaleString('en-IN')}</p>
+                    </div>
+                `).join('');
+            } catch (e) { console.error('Reservations error:', e); }
+        }
+
+        async function loadMessages() {
+            try {
+                const res = await fetch('/api/contact');
+                const messages = await res.json();
+                const list = document.getElementById('messagesList');
+                const empty = document.getElementById('messagesEmpty');
+
+                if (messages.length === 0) {
+                    empty.classList.remove('hidden');
+                    list.innerHTML = '';
+                    return;
+                }
+                empty.classList.add('hidden');
+
+                list.innerHTML = messages.map(m => `
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
+                        <div class="flex flex-col sm:flex-row justify-between gap-3">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="status-${m.status.toLowerCase()} text-xs px-2 py-0.5 rounded-full font-semibold">${m.status}</span>
+                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">${m.subject}</span>
+                                    ${m.userId ? '<span class="material-symbols-outlined text-green-500 text-sm" title="Registered User">verified_user</span>' : ''}
+                                </div>
+                                <h3 class="font-bold text-gray-800">${m.name}</h3>
+                                <p class="text-sm text-gray-500">${m.email}</p>
+                                <p class="mt-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-lg">${m.message}</p>
+                                ${renderReplySection('contact', m)}
+                            </div>
+                            <div class="text-right flex flex-col justify-between min-w-[140px]">
+                                <p class="text-xs text-gray-400">${new Date(m.createdAt).toLocaleString('en-IN')}</p>
+                                <button onclick="deleteItem('contact', '${m.id}')" class="mt-2 text-red-400 hover:text-red-600 transition-colors p-1 flex items-center justify-end" title="Delete Message">
+                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) { console.error('Messages error:', e); }
+        }
+
+        async function updateOrderStatus(id, status) {
+            await fetch(`/api/orders/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+            refreshAll();
+        }
+
+        async function updateReservationStatus(id, status) {
+            await fetch(`/api/reservations/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+            refreshAll();
+        }
+
+        async function deleteItem(type, id) {
+            if (!confirm('Are you sure you want to delete this item? This cannot be undone.')) return;
+            const res = await fetch(`/api/${type}/${id}`, { method: 'DELETE' });
+            if (res.ok) refreshAll();
+        }
+    </script>
+</body>
+</html>

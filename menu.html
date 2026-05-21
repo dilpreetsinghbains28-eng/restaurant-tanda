@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+<meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Menu | Galaxy Restaurant</title>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                localStorage.setItem('theme', 'light');
+                document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'dark_mode');
+            } else {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
+                document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+            } else {
+                document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'dark_mode');
+            }
+        });
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                    "surface-dim": "var(--color-surface-dim)",
+                    "secondary-fixed-dim": "var(--color-secondary-fixed-dim)",
+                    "surface-tint": "var(--color-surface-tint)",
+                    "on-surface-variant": "var(--color-on-surface-variant)",
+                    "on-tertiary-fixed-variant": "var(--color-on-tertiary-fixed-variant)",
+                    "primary": "var(--color-primary)",
+                    "tertiary-fixed": "var(--color-tertiary-fixed)",
+                    "inverse-on-surface": "var(--color-inverse-on-surface)",
+                    "primary-fixed": "var(--color-primary-fixed)",
+                    "inverse-primary": "var(--color-inverse-primary)",
+                    "surface-container-highest": "var(--color-surface-container-highest)",
+                    "surface-variant": "var(--color-surface-variant)",
+                    "on-tertiary-container": "var(--color-on-tertiary-container)",
+                    "on-secondary": "var(--color-on-secondary)",
+                    "primary-container": "var(--color-primary-container)",
+                    "on-error": "var(--color-on-error)",
+                    "tertiary-container": "var(--color-tertiary-container)",
+                    "outline-variant": "var(--color-outline-variant)",
+                    "outline": "var(--color-outline)",
+                    "primary-fixed-dim": "var(--color-primary-fixed-dim)",
+                    "tertiary": "var(--color-tertiary)",
+                    "secondary": "var(--color-secondary)",
+                    "error": "var(--color-error)",
+                    "surface-container": "var(--color-surface-container)",
+                    "surface-bright": "var(--color-surface-bright)",
+                    "secondary-fixed": "var(--color-secondary-fixed)",
+                    "on-secondary-fixed": "var(--color-on-secondary-fixed)",
+                    "tertiary-fixed-dim": "var(--color-tertiary-fixed-dim)",
+                    "on-primary-fixed-variant": "var(--color-on-primary-fixed-variant)",
+                    "on-background": "var(--color-on-background)",
+                    "error-container": "var(--color-error-container)",
+                    "on-tertiary-fixed": "var(--color-on-tertiary-fixed)",
+                    "surface": "var(--color-surface)",
+                    "background": "var(--color-background)",
+                    "surface-container-high": "var(--color-surface-container-high)",
+                    "on-primary-fixed": "var(--color-on-primary-fixed)",
+                    "inverse-surface": "var(--color-inverse-surface)",
+                    "on-primary-container": "var(--color-on-primary-container)",
+                    "on-tertiary": "var(--color-on-tertiary)",
+                    "on-error-container": "var(--color-on-error-container)",
+                    "on-surface": "var(--color-on-surface)",
+                    "surface-container-low": "var(--color-surface-container-low)",
+                    "surface-container-lowest": "var(--color-surface-container-lowest)",
+                    "on-secondary-fixed-variant": "var(--color-on-secondary-fixed-variant)",
+                    "on-secondary-container": "var(--color-on-secondary-container)",
+                    "on-primary": "var(--color-on-primary)",
+                    "secondary-container": "var(--color-secondary-container)"
+          },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "lg": "48px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "base": "8px",
+                        "xl": "80px",
+                        "margin": "32px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Be Vietnam Pro"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "body-lg": ["Be Vietnam Pro"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.1", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes floatAnimation {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .reveal { opacity: 0; transform: translateY(30px) scale(0.95); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+        .reveal-delay-100 { transition-delay: 100ms; }
+        .reveal-delay-200 { transition-delay: 200ms; }
+        .reveal-delay-300 { transition-delay: 300ms; }
+        .animate-float { animation: floatAnimation 4s ease-in-out infinite; }
+    </style>
+
+<style id="theme-vars">
+  :root {
+    --color-surface-dim: #ffcfc3;
+    --color-secondary-fixed-dim: #ffb691;
+    --color-surface-tint: #944217;
+    --color-on-surface-variant: #55433b;
+    --color-on-tertiary-fixed-variant: #663c2a;
+    --color-primary: #944217;
+    --color-tertiary-fixed: #ffdbcd;
+    --color-inverse-on-surface: #ffede8;
+    --color-primary-fixed: #ffdbcc;
+    --color-inverse-primary: #ffb695;
+    --color-surface-container-highest: #ffdbd1;
+    --color-surface-variant: #ffdbd1;
+    --color-on-tertiary-container: #fff8f7;
+    --color-on-secondary: #ffffff;
+    --color-primary-container: #b35a2d;
+    --color-on-error: #ffffff;
+    --color-tertiary-container: #996752;
+    --color-outline-variant: #dbc1b7;
+    --color-outline: #887269;
+    --color-primary-fixed-dim: #ffb695;
+    --color-tertiary: #7d4f3b;
+    --color-secondary: #944a20;
+    --color-error: #ba1a1a;
+    --color-surface-container: #ffe9e4;
+    --color-surface-bright: #fff8f6;
+    --color-secondary-fixed: #ffdbcb;
+    --color-on-secondary-fixed: #341100;
+    --color-tertiary-fixed-dim: #f6b9a0;
+    --color-on-primary-fixed-variant: #7a3003;
+    --color-on-background: #2e140d;
+    --color-error-container: #ffdad6;
+    --color-on-tertiary-fixed: #321204;
+    --color-surface: #fff8f6;
+    --color-background: #fff8f6;
+    --color-surface-container-high: #ffe2da;
+    --color-on-primary-fixed: #351000;
+    --color-inverse-surface: #472820;
+    --color-on-primary-container: #fff8f7;
+    --color-on-tertiary: #ffffff;
+    --color-on-error-container: #93000a;
+    --color-on-surface: #2e140d;
+    --color-surface-container-low: #fff1ed;
+    --color-surface-container-lowest: #ffffff;
+    --color-on-secondary-fixed-variant: #763309;
+    --color-on-secondary-container: #76340a;
+    --color-on-primary: #ffffff;
+    --color-secondary-container: #fd9f6d;
+  }
+  .dark {
+    --color-surface-dim: #0F0F13;
+    --color-secondary-fixed-dim: #ffb691;
+    --color-surface-tint: #ffb695;
+    --color-on-surface-variant: #A1A1AA;
+    --color-on-tertiary-fixed-variant: #663c2a;
+    --color-primary: #ffb695;
+    --color-tertiary-fixed: #ffdbcd;
+    --color-inverse-on-surface: #18181E;
+    --color-primary-fixed: #ffdbcc;
+    --color-inverse-primary: #944217;
+    --color-surface-container-highest: #27272A;
+    --color-surface-variant: #27272A;
+    --color-on-tertiary-container: #ffdbcd;
+    --color-on-secondary: #552000;
+    --color-primary-container: #763309;
+    --color-on-error: #690005;
+    --color-tertiary-container: #663c2a;
+    --color-outline-variant: #3F3F46;
+    --color-outline: #52525B;
+    --color-primary-fixed-dim: #ffb695;
+    --color-tertiary: #f6b9a0;
+    --color-secondary: #ffb691;
+    --color-error: #ffb4ab;
+    --color-surface-container: #18181E;
+    --color-surface-bright: #27272A;
+    --color-secondary-fixed: #ffdbcb;
+    --color-on-secondary-fixed: #341100;
+    --color-tertiary-fixed-dim: #f6b9a0;
+    --color-on-primary-fixed-variant: #7a3003;
+    --color-on-background: #F4F4F5;
+    --color-error-container: #93000a;
+    --color-on-tertiary-fixed: #321204;
+    --color-surface: #0F0F13;
+    --color-background: #0F0F13;
+    --color-surface-container-high: #27272A;
+    --color-on-primary-fixed: #351000;
+    --color-inverse-surface: #F4F4F5;
+    --color-on-primary-container: #ffdbcc;
+    --color-on-tertiary: #4a2312;
+    --color-on-error-container: #ffdad6;
+    --color-on-surface: #F4F4F5;
+    --color-surface-container-low: #18181E;
+    --color-surface-container-lowest: #09090B;
+    --color-on-secondary-fixed-variant: #763309;
+    --color-on-secondary-container: #ffdbcb;
+    --color-on-primary: #561f00;
+    --color-secondary-container: #76340a;
+  }
+</style>
+
+</head>
+
+<body class="bg-surface text-on-surface">
+    <!-- TopNavBar -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-surface shadow-sm h-20 px-gutter flex items-center justify-center">
+        <div class="w-full max-w-7xl flex justify-between items-center h-full">
+            <a href="index.html" class="flex items-center gap-base">
+                <span class="text-headline-md font-headline-md font-bold text-primary">Galaxy Restaurant</span>
+            </a>
+            <nav class="hidden md:flex items-center gap-lg">
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+                    href="index.html">Home</a>
+                <a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1"
+                    href="menu.html">Menu</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+                    href="about.html">About Us</a>
+                <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+                    href="contact.html">Contact</a>
+            </nav>
+            <div class="flex items-center gap-sm">
+                <button onclick="toggleDarkMode()" class="p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
+                    <span class="material-symbols-outlined dark-icon">dark_mode</span>
+                </button>
+                <button onclick="toggleCartModal()" class="relative p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="cart-count absolute -top-1 -right-1 bg-primary text-on-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+                <div class="relative hidden sm:block">
+                    <input id="menuSearch" oninput="filterMenuBySearch()"
+                        class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full text-body-md focus:ring-2 focus:ring-primary w-48 lg:w-64"
+                        placeholder="Search menu..." type="text" />
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                </div>
+                <button onclick="openBookingModal()"
+                    class="hidden lg:block bg-surface-container-low text-primary border-2 border-primary px-6 py-2 rounded-full font-label-md hover:bg-primary hover:text-on-primary transition-all">Book
+                    Table</button>
+                <button onclick="toggleMobileMenu()" class="md:hidden flex items-center p-sm">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu"
+        class="fixed inset-0 z-[60] bg-surface translate-x-full transition-transform duration-300 md:hidden">
+        <div class="flex flex-col h-full">
+            <div class="flex justify-between items-center h-20 px-gutter border-b border-outline-variant">
+                <span class="text-headline-md font-bold text-primary">Galaxy Restaurant</span>
+                <button onclick="toggleMobileMenu()" class="p-sm">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="flex flex-col p-gutter gap-lg mt-lg">
+                <a href="index.html" class="text-headline-md text-on-surface-variant">Home</a>
+                <a href="menu.html" class="text-headline-md text-primary font-bold">Menu</a>
+                <a href="about.html" class="text-headline-md text-on-surface-variant">About Us</a>
+                <a href="contact.html" class="text-headline-md text-on-surface-variant">Contact</a>
+                <button onclick="openBookingModal(); toggleMobileMenu();"
+                    class="mt-xl px-md py-md rounded-lg bg-primary text-on-primary font-label-md shadow-soft">Book
+                    Table</button>
+            </div>
+        </div>
+    </div>
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section class="relative h-[300px] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 bg-black/40 z-10"></div>
+            <img class="absolute inset-0 w-full h-full object-cover"
+                data-alt="A cinematic, high-angle shot of a beautifully arranged gourmet dining table in a high-end restaurant. Warm golden sunlight streams through a nearby window, illuminating a variety of vibrant, appetizing North Indian and Chinese dishes in elegant ceramic bowls. The atmosphere is sophisticated and inviting, with a focus on fresh ingredients and professional culinary presentation. The color palette features rich browns, deep oranges, and vibrant greens against a clean, modern tabletop."
+                src="images/menu_hero.jpg" alt="Galaxy Restaurant Menu Hero" />
+            <div class="relative z-20 text-center px-gutter">
+                <h1 class="text-headline-xl font-headline-xl text-white mb-base">Our Culinary Galaxy</h1>
+                <p class="text-body-lg font-body-lg text-white/90 max-w-2xl mx-auto">From traditional Tandoori
+                    specialties to modern Chinese delights, explore the flavors of Urmar Tanda.</p>
+            </div>
+        </section>
+        <!-- Category Quick Filter -->
+        <div class="sticky top-20 z-40 bg-surface/95 backdrop-blur-md border-b border-outline-variant">
+            <div class="max-w-7xl mx-auto px-gutter py-4">
+                <div class="flex items-center gap-sm overflow-x-auto hide-scrollbar pb-1">
+                    <button onclick="filterMenu('all')"
+                        class="category-btn flex-shrink-0 px-6 py-2 rounded-full bg-primary text-on-primary font-label-md transition-all">All
+                        Items</button>
+                    <button onclick="filterMenu('starters')"
+                        class="category-btn flex-shrink-0 px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md hover:bg-surface-variant transition-all">Starters</button>
+                    <button onclick="filterMenu('main-course')"
+                        class="category-btn flex-shrink-0 px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md hover:bg-surface-variant transition-all">Main
+                        Course</button>
+                    <button onclick="filterMenu('chinese')"
+                        class="category-btn flex-shrink-0 px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md hover:bg-surface-variant transition-all">Chinese</button>
+                    <button onclick="filterMenu('tandoor')"
+                        class="category-btn flex-shrink-0 px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md hover:bg-surface-variant transition-all">Tandoor</button>
+                    <button onclick="filterMenu('fast-food')"
+                        class="category-btn flex-shrink-0 px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md hover:bg-surface-variant transition-all">Fast
+                        Food</button>
+                    <button onclick="filterMenu('beverages')"
+                        class="category-btn flex-shrink-0 px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md hover:bg-surface-variant transition-all">Beverages</button>
+                    <button onclick="filterMenu('desserts')"
+                        class="category-btn flex-shrink-0 px-6 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md hover:bg-surface-variant transition-all">Desserts</button>
+                </div>
+            </div>
+        </div>
+        <!-- Menu Grid -->
+        <div class="max-w-7xl mx-auto px-gutter py-xl">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+                <!-- Sidebar / Featured Categories -->
+                <aside class="lg:col-span-3 hidden lg:block space-y-lg">
+                    <div class="bg-surface-container-low p-md rounded-xl border border-outline-variant/30">
+                        <h3 class="text-headline-md font-headline-md mb-md">Specialties</h3>
+                        <div class="space-y-base">
+                            <div class="group cursor-pointer">
+                                <div class="w-full h-32 rounded-lg overflow-hidden mb-xs relative">
+                                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        data-alt="A close-up, appetizing photo of Paneer Tikka, featuring perfectly charred cubes of marinated cottage cheese skewered with vibrant bell peppers and onions. The lighting is warm and directional, emphasizing the rich textures and spices. The scene is styled for a modern corporate menu with clean lines and a soft, shallow depth of field, conveying a sense of premium quality and freshness."
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD71KNlBXhmsP0Q9NtwEzpxFI67LY_Tk-jvwz40PaXUOZ5keP1BTcmLtDwAk6QovLsQY70MdLMLbZWl0cv-Vi-0T2oEKD1oXvIDwZ1ITsvNmRsa9XZA0b52SmiqmbC7Ht27welfaGCwHl2OWqDS8fgHLLAq5YdE3Mq3zL-MK1RBKBq9RVul9XkI-KqF5QR-rj5XLxE2DWZngid0N9jctv_A-MvtiFHh7-i92xA-UOmXy3YCulm8ObWo62VvETbnP5orbdMjfGM0wuu5" />
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
+                                        <span class="text-white font-label-md">Signature Starters</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="group cursor-pointer">
+                                <div class="w-full h-32 rounded-lg overflow-hidden mb-xs relative">
+                                    <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        data-alt="A professional food photography shot of a rich, creamy Butter Chicken dish served in a traditional copper handi. The sauce is a deep, vibrant orange, garnished with a swirl of fresh cream and chopped cilantro. The background is a clean, minimal kitchen setting with warm lighting that makes the dish look incredibly inviting and high-quality. The overall mood is luxurious and appetizing."
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLO2Y59gXpEKWBvijAH_XTw-mgVVu2cJ1p_KGKa7bZMo2WhYX3Eb5OnMkJwypHu4p531SOX832JTMITFTy4LXb97WrQqk6dy0HkVdhNyblT9d-z1f1OMiBOZnd2c5RcA_ueTi9DlIu12gnWiwT1CvDYU8Fb-nRWQm3Yx4va2WmGXeCLFq5DX_PxLYEgf9Awesk3YfVOLnXknMssIPt4ESfZK42Sao8SEQvnh4MRKtES0DB8O_8l2dz6CmCQWgDga1vhfsDDXgU5lFa" />
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2">
+                                        <span class="text-white font-label-md">Best of Tandoor</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-primary-container/10 p-md rounded-xl">
+                        <h4 class="text-label-md font-label-md text-primary mb-xs">HOURS</h4>
+                        <p class="text-body-md font-body-md text-on-surface">Open Daily: 9:00 AM – 10:00 PM</p>
+                    </div>
+                </aside>
+                <!-- Menu Content -->
+                <div class="lg:col-span-9 space-y-xl">
+                    <!-- Section: Starters -->
+                    <section id="starters" class="menu-section">
+                        <div class="flex items-center gap-sm mb-lg border-l-4 border-primary pl-4">
+                            <span class="material-symbols-outlined text-primary text-3xl">restaurant</span>
+                            <h2 class="text-headline-lg font-headline-lg">Signature Starters</h2>
+                        </div>
+                        <div class="menu-category" data-category="starters">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                                <!-- Menu Item -->
+                                <div
+                                    class="flex gap-md bg-white dark:bg-surface-container-low p-sm rounded-2xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-outline-variant/20">
+                                    <div
+                                        class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+                                        <img class="w-full h-full object-cover" data-alt="Veg Spring Roll"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqq7-GMeocA7n9bdEo8zt2JToPtOZHR59n7G8WANaeuQs6lu43PgKxqUg9SW7bZwgucc29mE3K_kom21rH4GjBbL0PHBEfm81Vzq9vDMYLZC18rO2Ui7YE8IZb8xlo3hO6IE7PLjlx1RLj_7JfnlqSBr_rQksGpSx17021KHoPGS0acgMmt4dRKtM2skYIZ8vOb6JVjkU0tzSVoSArc8H6lTMD632BjfCzyGrB0Ist8nI5KoLcHfB_Y77rCf9E9UpX9r1orvtptVhv" />
+                                    </div>
+                                    <div class="flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex justify-between items-start">
+                                                <h3
+                                                    class="text-headline-md font-headline-md text-on-surface leading-tight">
+                                                    Veg Spring Roll</h3>
+                                                <span class="text-primary font-bold">₹140–180</span>
+                                            </div>
+                                            <p
+                                                class="text-body-md font-body-md text-on-surface-variant mt-1 line-clamp-1">
+                                                Crispy vegetables wrapped in thin pastry sheets.</p>
+                                        </div>
+                                        <div class="flex gap-xs">
+                                            <span
+                                                class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-label-sm">Veg</span>
+                                            <button onclick="addToCart('Veg Spring Roll', 140)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors ml-auto"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex gap-md bg-white dark:bg-surface-container-low p-sm rounded-2xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-outline-variant/20">
+                                    <div
+                                        class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+                                        <img class="w-full h-full object-cover" data-alt="Paneer Tikka"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCpieBLhNUYQ3x2JQsOKaVqirnYHy1lYlSeQ3H7yQ-u8dteTEOIi_uzdBXfMbwoX3I8DV_r0NNSw77i0buQkcm1x5JPn54JssGTfadVdVibXuWBWmplKW3nWsDC0cKkOcigyVPR5COgw5z1aqniEdKsH6vvkMFUwqsqp5yyj83MCXbn43d2HCW4eNE8fmPY0FoNuIktL7XcwUJGcj3zPFaXPtNdH42jkYZWt1J3c0555C99TrvvA1nXLNCPDSBMa7CrmY5VTCgL68-" />
+                                    </div>
+                                    <div class="flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex justify-between items-start">
+                                                <h3
+                                                    class="text-headline-md font-headline-md text-on-surface leading-tight">
+                                                    Paneer Tikka</h3>
+                                                <span class="text-primary font-bold">₹260–340</span>
+                                            </div>
+                                            <p
+                                                class="text-body-md font-body-md text-on-surface-variant mt-1 line-clamp-1">
+                                                Marinated cottage cheese cubes grilled to perfection.</p>
+                                        </div>
+                                        <div class="flex gap-xs">
+                                            <span
+                                                class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary text-label-sm">Veg</span>
+                                            <button onclick="addToCart('Paneer Tikka', 260)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors ml-auto"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex gap-md bg-white dark:bg-surface-container-low p-sm rounded-2xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-outline-variant/20">
+                                    <div
+                                        class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+                                        <img class="w-full h-full object-cover" data-alt="Chicken Tikka"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuALabSqvHeiVXev-93MERTHXS56wc-MntLIb1boU6MrZQOcfqDE6cYuzBDHXY9OUXYLa5a0H6w1RX7mlYJ2Zv9oIpNVj0JkJyBVjf-mHmEID5PS_rqVaDho4hbxucEsymojTpbUUsXX1xj38QgYz0B9FK_IXg3FIFDt4uAMGEpsilToiNZe59JkkEd_dXiyr_qpTz54hyIQGJHJntxpBlUkRDSiaBDePKxAYdudwouLqoTBrVetbKppH7QLw6Y1AXJnv2QnB4k8eArx" />
+                                    </div>
+                                    <div class="flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex justify-between items-start">
+                                                <h3
+                                                    class="text-headline-md font-headline-md text-on-surface leading-tight">
+                                                    Chicken Tikka</h3>
+                                                <span class="text-primary font-bold">₹320–420</span>
+                                            </div>
+                                            <p
+                                                class="text-body-md font-body-md text-on-surface-variant mt-1 line-clamp-1">
+                                                Classic spiced chicken chunks from our clay oven.</p>
+                                        </div>
+                                        <div class="flex gap-xs">
+                                            <span
+                                                class="px-2 py-0.5 rounded-full bg-error/10 text-error text-label-sm">Non-Veg</span>
+                                            <button onclick="addToCart('Chicken Tikka', 320)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors ml-auto"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex gap-md bg-white dark:bg-surface-container-low p-sm rounded-2xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-outline-variant/20">
+                                    <div
+                                        class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
+                                        <img class="w-full h-full object-cover" data-alt="Fish Tikka"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3KN3Gl6i_6qfetN33mTY4oX_iPi5LVhpiOtCHwX3QG4U3omNOKlIyZngA6dqDA9uN8q-TxwzVP_Xz0mLpWw0zBeY9khU47_x6cRIq9Bln6Vlwi9abPmLHBUUDctTH_h2FeI7wdW1l76nbQ6gBd8LPnM98ozTT5eJugJZ6SBsZ5jyED6XeMURF2Sz3WvMdShUW8Ium2a7eTTH9g4xpPaJ1XC-c5AufCVK-cu4fptDITe_PZL3Qo6HTpJtF6XOi6dNRoEYwO2GTEE4z" />
+                                    </div>
+                                    <div class="flex-grow flex flex-col justify-between">
+                                        <div>
+                                            <div class="flex justify-between items-start">
+                                                <h3
+                                                    class="text-headline-md font-headline-md text-on-surface leading-tight">
+                                                    Fish Tikka</h3>
+                                                <span class="text-primary font-bold">₹420–620</span>
+                                            </div>
+                                            <p
+                                                class="text-body-md font-body-md text-on-surface-variant mt-1 line-clamp-1">
+                                                Tender fish chunks in a spicy mustard marinade.</p>
+                                        </div>
+                                        <div class="flex gap-xs">
+                                            <span
+                                                class="px-2 py-0.5 rounded-full bg-error/10 text-error text-label-sm">Non-Veg</span>
+                                            <button onclick="addToCart('Fish Tikka', 420)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors ml-auto"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Section: Main Course -->
+                    <section id="main-course" class="menu-section">
+                        <div class="flex items-center gap-sm mb-lg border-l-4 border-primary pl-4">
+                            <span class="material-symbols-outlined text-primary text-3xl">soup_kitchen</span>
+                            <h2 class="text-headline-lg font-headline-lg">Main Course Delights</h2>
+                        </div>
+                        <div class="menu-category" data-category="main-course">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                                <div class="col-span-full">
+    <h3 class="text-headline-md font-headline-md text-primary mb-md">Vegetarian Selection</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex items-center gap-4 bg-white dark:bg-[#230f0a] p-3 rounded-xl border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow">
+            <img src="images/shahi_paneer.png" class="w-20 h-20 rounded-lg object-cover" alt="Shahi Paneer">
+            <div class="flex-1">
+                <h4 class="font-headline-md text-body-lg">Shahi Paneer</h4>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="font-bold text-primary">₹240–320</span>
+                    <button onclick="addToCart('Shahi Paneer', 240)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 bg-white dark:bg-[#230f0a] p-3 rounded-xl border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow">
+            <img src="images/kadai_paneer.png" class="w-20 h-20 rounded-lg object-cover" alt="Kadai Paneer">
+            <div class="flex-1">
+                <h4 class="font-headline-md text-body-lg">Kadai Paneer</h4>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="font-bold text-primary">₹260–340</span>
+                    <button onclick="addToCart('Kadai Paneer', 260)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 bg-white dark:bg-[#230f0a] p-3 rounded-xl border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow">
+            <img src="images/paneer_butter_masala.png" class="w-20 h-20 rounded-lg object-cover" alt="Paneer Butter Masala">
+            <div class="flex-1">
+                <h4 class="font-headline-md text-body-lg">Paneer Butter Masala</h4>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="font-bold text-primary">₹260–360</span>
+                    <button onclick="addToCart('Paneer Butter Masala', 260)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 bg-white dark:bg-[#230f0a] p-3 rounded-xl border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow">
+            <img src="images/dal_makhani.png" class="w-20 h-20 rounded-lg object-cover" alt="Dal Makhani">
+            <div class="flex-1">
+                <h4 class="font-headline-md text-body-lg">Dal Makhani</h4>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="font-bold text-primary">₹200–280</span>
+                    <button onclick="addToCart('Dal Makhani', 200)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                                <div class="col-span-full mt-lg">
+    <h3 class="text-headline-md font-headline-md text-error mb-md">Non-Veg Classics</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="flex items-center gap-4 bg-white dark:bg-[#230f0a] p-3 rounded-xl border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow">
+            <img src="images/butter_chicken.png" class="w-20 h-20 rounded-lg object-cover" alt="Butter Chicken">
+            <div class="flex-1">
+                <h4 class="font-headline-md text-body-lg">Butter Chicken</h4>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="font-bold text-primary">₹420–1,050</span>
+                    <button onclick="addToCart('Butter Chicken', 420)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 bg-white dark:bg-[#230f0a] p-3 rounded-xl border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow">
+            <img src="images/chicken_curry.png" class="w-20 h-20 rounded-lg object-cover" alt="Chicken Curry">
+            <div class="flex-1">
+                <h4 class="font-headline-md text-body-lg">Chicken Curry</h4>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="font-bold text-primary">₹380–560</span>
+                    <button onclick="addToCart('Chicken Curry', 380)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 bg-white dark:bg-[#230f0a] p-3 rounded-xl border border-outline-variant/20 shadow-sm hover:shadow-md transition-shadow">
+            <img src="images/mutton_curry.png" class="w-20 h-20 rounded-lg object-cover" alt="Mutton Curry">
+            <div class="flex-1">
+                <h4 class="font-headline-md text-body-lg">Mutton Curry</h4>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="font-bold text-primary">₹620–920</span>
+                    <button onclick="addToCart('Mutton Curry', 620)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Section: Tandoor Specials -->
+                    <section id="tandoor" class="menu-section">
+                        <div class="flex items-center gap-sm mb-lg border-l-4 border-primary pl-4">
+                            <span class="material-symbols-outlined text-primary text-3xl">local_fire_department</span>
+                            <h2 class="text-headline-lg font-headline-lg">Tandoor Specials</h2>
+                        </div>
+                        <div class="menu-category" data-category="tandoor">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+    <div class="h-40 overflow-hidden">
+        <img src="images/tandoori_roti.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Tandoori Roti">
+    </div>
+    <div class="p-md flex-1 flex flex-col">
+        <h4 class="font-headline-md text-body-lg mb-1">Tandoori Roti</h4>
+        <p class="text-body-md text-on-surface-variant text-sm mb-2 flex-1">Whole wheat bread baked in clay oven.</p>
+        <div class="flex items-center justify-between">
+            <span class="font-bold text-primary">₹15</span>
+            <button onclick="addToCart('Tandoori Roti', 15)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button>
+        </div>
+    </div>
+</div>
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+    <div class="h-40 overflow-hidden">
+        <img src="images/butter_naan.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Butter Naan">
+    </div>
+    <div class="p-md flex-1 flex flex-col">
+        <h4 class="font-headline-md text-body-lg mb-1">Butter Naan</h4>
+        <p class="text-body-md text-on-surface-variant text-sm mb-2 flex-1">Refined flour bread with butter.</p>
+        <div class="flex items-center justify-between">
+            <span class="font-bold text-primary">₹40</span>
+            <button onclick="addToCart('Butter Naan', 40)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button>
+        </div>
+    </div>
+</div>
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+    <div class="h-40 overflow-hidden">
+        <img src="images/garlic_naan.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Garlic Naan">
+    </div>
+    <div class="p-md flex-1 flex flex-col">
+        <h4 class="font-headline-md text-body-lg mb-1">Garlic Naan</h4>
+        <p class="text-body-md text-on-surface-variant text-sm mb-2 flex-1">Infused with fresh garlic and coriander.</p>
+        <div class="flex items-center justify-between">
+            <span class="font-bold text-primary">₹60</span>
+            <button onclick="addToCart('Garlic Naan', 60)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button>
+        </div>
+    </div>
+</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Section: Chinese & Rice -->
+                    <section id="chinese" class="menu-section">
+                        <div class="flex items-center gap-sm mb-lg border-l-4 border-primary pl-4">
+                            <span class="material-symbols-outlined text-primary text-3xl">skillet</span>
+                            <h2 class="text-headline-lg font-headline-lg">Oriental &amp; Rice</h2>
+                        </div>
+                        <div class="menu-category" data-category="chinese">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="images/schezwan_noodles.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Schezwan Noodles">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col">
+                                        <h4 class="font-headline-md text-body-lg mb-1">Schezwan Noodles</h4>
+        <p class="text-body-md text-on-surface-variant text-sm mb-2 flex-1">Spicy stir-fried noodles with exotic veggies.</p>
+        <div class="flex items-center justify-between">
+            <span class="font-bold text-primary">₹180–260</span>
+            <button onclick="addToCart('Schezwan Noodles', 180)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button>
+        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="images/fried_rice.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Fried Rice">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col">
+                                        <h4 class="font-headline-md text-body-lg mb-1">Fried Rice</h4>
+        <p class="text-body-md text-on-surface-variant text-sm mb-2 flex-1">Classic aromatic long-grain rice with vegetables.</p>
+        <div class="flex items-center justify-between">
+            <span class="font-bold text-primary">₹160–240</span>
+            <button onclick="addToCart('Fried Rice', 160)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button>
+        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="images/chicken_biryani.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Chicken Biryani">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col">
+                                        <h4 class="font-headline-md text-body-lg mb-1">Chicken Biryani</h4>
+        <p class="text-body-md text-on-surface-variant text-sm mb-2 flex-1">Authentic slow-cooked layered basmati rice.</p>
+        <div class="flex items-center justify-between">
+            <span class="font-bold text-primary">₹320–480</span>
+            <button onclick="addToCart('Chicken Biryani', 320)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button>
+        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Section: Fast Food -->
+                    <section id="fast-food" class="menu-section">
+                        <div class="flex items-center gap-sm mb-lg border-l-4 border-primary pl-4">
+                            <span class="material-symbols-outlined text-primary text-3xl">lunch_dining</span>
+                            <h2 class="text-headline-lg font-headline-lg">Fast Food</h2>
+                        </div>
+                        <div class="menu-category" data-category="fast-food">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="images/veg_cheese_burger.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Veg/Cheese Burger">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col">
+                                        <h4 class="font-headline-md text-body-lg mb-1">Veg/Cheese Burger</h4>
+        <p class="text-body-md text-on-surface-variant text-sm mb-2 flex-1">Juicy patty with fresh lettuce.</p>
+        <div class="flex items-center justify-between">
+            <span class="font-bold text-primary">₹90–180</span>
+            <button onclick="addToCart('Veg/Cheese Burger', 90)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button>
+        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="images/pizza.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Pizza">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col">
+                                        <h4 class="font-headline-md text-body-lg mb-1">Pizza (S/M)</h4>
+        <p class="text-body-md text-on-surface-variant text-sm mb-2 flex-1">Loaded with mozzarella and toppings.</p>
+        <div class="flex items-center justify-between">
+            <span class="font-bold text-primary">₹180–520</span>
+            <button onclick="addToCart('Pizza (S/M)', 180)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button>
+        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Section: Desserts -->
+                    <section id="desserts" class="menu-section">
+                        <div class="flex items-center gap-sm mb-lg border-l-4 border-primary pl-4">
+                            <span class="material-symbols-outlined text-primary text-3xl">icecream</span>
+                            <h2 class="text-headline-lg font-headline-lg">Sweet Treats</h2>
+                        </div>
+                        <div class="menu-category" data-category="desserts">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="images/gulab_jamun.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Gulab Jamun">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col">
+                                        <h4 class="font-headline-md text-body-lg mb-2 flex-1">Gulab Jamun</h4>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary">₹40–80</span>
+                                            <button onclick="addToCart('Gulab Jamun', 40)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1624353365286-3f8d62daad51?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Chocolate Brownie">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col">
+                                        <h4 class="font-headline-md text-body-lg mb-2 flex-1">Chocolate Brownie</h4>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary">₹120–220</span>
+                                            <button onclick="addToCart('Chocolate Brownie', 120)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Section: Beverages -->
+                    <section id="beverages" class="menu-section">
+                        <div class="flex items-center gap-sm mb-lg border-l-4 border-primary pl-4">
+                            <span class="material-symbols-outlined text-primary text-3xl">local_bar</span>
+                            <h2 class="text-headline-lg font-headline-lg">Beverages</h2>
+                        </div>
+                        <div class="menu-category" data-category="beverages">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="images/fresh_lime_soda.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Fresh Lime Soda">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col text-center">
+                                        <h4 class="font-headline-md text-body-lg mb-2 flex-1">Fresh Lime Soda</h4>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary">₹60</span>
+                                            <button onclick="addToCart('Fresh Lime Soda', 60)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="images/lassi.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Sweet/Salted Lassi">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col text-center">
+                                        <h4 class="font-headline-md text-body-lg mb-2 flex-1">Sweet/Salted Lassi</h4>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary">₹80</span>
+                                            <button onclick="addToCart('Sweet/Salted Lassi', 80)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="images/cold_coffee.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Cold Coffee">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col text-center">
+                                        <h4 class="font-headline-md text-body-lg mb-2 flex-1">Cold Coffee</h4>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary">₹120</span>
+                                            <button onclick="addToCart('Cold Coffee', 120)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white dark:bg-[#230f0a] rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col hover:shadow-md transition-shadow group">
+                                    <div class="h-40 overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Soft Drinks">
+                                    </div>
+                                    <div class="p-md flex-1 flex flex-col text-center">
+                                        <h4 class="font-headline-md text-body-lg mb-2 flex-1">Soft Drinks</h4>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary">₹40</span>
+                                            <button onclick="addToCart('Soft Drinks', 40)" class="text-primary flex items-center hover:bg-primary/10 rounded-full p-1 transition-colors"><span class="material-symbols-outlined text-[20px]">add_shopping_cart</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!-- Reservation CTA -->
+        <section class="bg-primary py-xl">
+            <div class="max-w-7xl mx-auto px-gutter flex flex-col md:flex-row items-center justify-between gap-lg">
+                <div class="text-on-primary max-w-xl">
+                    <h2 class="text-headline-lg font-headline-lg mb-xs">Hosting a Celebration?</h2>
+                    <p class="text-body-lg opacity-90">Book a table for your family and friends. We offer special menu
+                        packages for birthday parties and family gatherings.</p>
+                </div>
+                <button onclick="openBookingModal()"
+                    class="bg-white text-primary px-xl py-4 rounded-full font-headline-md hover:bg-surface-container-low transition-all active:scale-95 whitespace-nowrap shadow-xl">Book
+                    a Table</button>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer
+        class="w-full py-xl px-margin flex flex-col md:flex-row justify-between items-start gap-lg bg-surface-container-highest">
+        <div class="max-w-xs">
+            <span class="text-headline-lg font-headline-lg font-bold text-primary">Galaxy Restaurant</span>
+            <p class="text-on-surface-variant font-body-md mt-md">Urmar Tanda's favorite destination for fine dining and
+                quick bites. Serving quality food since 2024.</p>
+            <div class="mt-md flex gap-sm">
+                <span
+                    class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform">social_leaderboard</span>
+                <span
+                    class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform">photo_camera</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-xl">
+            <div class="space-y-sm">
+                <h4 class="font-label-md text-on-surface uppercase tracking-wider">Navigation</h4>
+                <ul class="space-y-2">
+                    <li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline"
+                            href="index.html">Home</a></li>
+                    <li><a class="text-label-md text-primary font-bold transition-all hover:underline"
+                            href="menu.html">Menu</a></li>
+                    <li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline"
+                            href="about.html">About Us</a></li>
+                    <li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline"
+                            href="contact.html">Contact</a></li>
+                    <li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline flex items-center gap-1"
+                            href="admin.html"><span class="material-symbols-outlined text-[14px]">admin_panel_settings</span> Admin Portal</a></li>
+                </ul>
+            </div>
+            <div class="space-y-sm">
+                <h4 class="font-label-md text-on-surface uppercase tracking-wider">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline"
+                            href="#">Privacy Policy</a></li>
+                    <li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline"
+                            href="#">Terms of Service</a></li>
+                    <li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline"
+                            href="#">Refund Policy</a></li>
+                </ul>
+            </div>
+            <div class="space-y-sm col-span-2 sm:col-span-1">
+                <h4 class="font-label-md text-on-surface uppercase tracking-wider">Visit Us</h4>
+                <p class="text-label-md text-on-surface-variant">Near Police Station,<br />Local Market Way,<br />Urmar
+                    Tanda, Punjab 144204</p>
+                <a href="https://wa.me/918437227755" target="_blank" class="text-label-md text-primary font-bold mt-2 block hover:underline whitespace-nowrap">+91 84372 27755</a>
+            </div>
+        </div>
+        <div class="w-full border-t border-outline-variant pt-md mt-xl">
+            <p class="text-label-sm text-on-surface-variant text-center md:text-left">© 2024 Galaxy Restaurant Tanda.
+                All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="fixed inset-0 z-[100] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeBookingModal()"></div>
+        <div
+            class="relative bg-surface p-xl rounded-2xl shadow-2xl max-w-md w-full mx-gutter animate-in fade-in zoom-in duration-300">
+            <div class="flex justify-between items-center mb-md">
+                <h2 class="text-headline-lg font-bold text-primary">Book a Table</h2>
+                <button onclick="closeBookingModal()" class="text-on-surface-variant hover:text-primary">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="bookingForm" onsubmit="handleBooking(event)" class="space-y-md">
+                <div>
+                    <label class="block text-label-md text-on-surface mb-xs">Full Name</label>
+                    <input required type="text"
+                        class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary"
+                        placeholder="Enter your name">
+                </div>
+                <div class="grid grid-cols-2 gap-md">
+                    <div>
+                        <label class="block text-label-md text-on-surface mb-xs">Date</label>
+                        <input id="bookDate" required type="date"
+                            class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-label-md text-on-surface mb-xs">Time</label>
+                        <input id="bookTime" required type="time"
+                            class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-label-md text-on-surface mb-xs">Number of Guests</label>
+                    <select required
+                        class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                        <option value="2">2 People</option>
+                        <option value="4">4 People</option>
+                        <option value="6">6 People</option>
+                        <option value="8+">8+ People</option>
+                    </select>
+                </div>
+                <button type="submit"
+                    class="w-full bg-primary text-on-primary py-md rounded-full font-label-md text-lg shadow-soft hover:brightness-110 transition-all mt-md">Confirm
+                    Reservation</button>
+            </form>
+            <div class="mt-md pt-md border-t border-outline-variant text-center">
+                <p class="text-label-sm text-on-surface-variant mb-sm uppercase tracking-widest">Or Instant Chat</p>
+                <a href="https://wa.me/918437227755" target="_blank"
+                    class="flex items-center justify-center gap-xs text-[#25D366] font-bold hover:underline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.544.918 3.321 1.402 5.132 1.403 5.464 0 9.911-4.444 9.913-9.908.002-5.464-4.445-9.91-9.91-9.91-2.648 0-5.137 1.032-7.009 2.905-1.872 1.873-2.903 4.363-2.904 7.011 0 1.854.51 3.662 1.476 5.215l-.982 3.586 3.686-.967zm11.233-7.25c-.328-.164-1.942-.958-2.242-1.069-.3-.109-.519-.164-.738.164-.219.328-.848 1.069-1.04 1.288-.192.219-.383.245-.711.081-.328-.164-1.386-.511-2.641-1.63-1.001-.893-1.677-1.996-1.874-2.324-.197-.328-.021-.505.143-.668.148-.147.328-.383.492-.574.164-.191.219-.328.328-.547.11-.219.055-.41-.027-.574-.082-.164-.738-1.777-1.012-2.433-.267-.638-.539-.553-.738-.563-.191-.01-.41-.011-.628-.011-.219 0-.575.082-.875.41-.3.328-1.148 1.121-1.148 2.733 0 1.612 1.175 3.17 1.339 3.388.164.219 2.311 3.529 5.598 4.951.781.339 1.391.541 1.866.692.785.249 1.5.214 2.065.13.63-.094 1.942-.793 2.215-1.558.274-.765.274-1.422.192-1.558-.082-.137-.3-.219-.628-.383z" />
+                    </svg>
+                    Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('translate-x-full');
+        }
+
+        function openBookingModal() {
+            document.getElementById('bookingModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function handleBooking(e) {
+        e.preventDefault();
+        if (!requireLogin('booking')) return;
+        const btn = document.getElementById('bookSubmitBtn');
+        const msg = document.getElementById('bookingMsg');
+        btn.disabled = true;
+        btn.textContent = 'Booking...';
+        msg.classList.add('hidden');
+
+        const name = document.getElementById('bookName').value;
+        const phone = document.getElementById('bookPhone').value;
+        const date = document.getElementById('bookDate').value;
+        const time = document.getElementById('bookTime').value;
+        const guests = document.getElementById('bookGuests').value;
+
+        fetch('/api/reservations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, phone, date, time, guests, userId: typeof getUserId === "function" ? getUserId() : null })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
+                msg.className = 'text-center text-sm mt-2 text-green-600';
+                
+                let message = "Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + data.reservation.id;
+                message = encodeURIComponent(message);
+
+                setTimeout(() => {
+                    window.open("https://wa.me/918437227755?text=" + message, '_blank');
+                    document.getElementById('bookingForm').reset();
+                    closeBookingModal();
+                    btn.disabled = false;
+                    btn.textContent = 'Confirm Reservation';
+                }, 1500);
+            } else {
+                msg.textContent = '\u274c ' + (data.message || 'Failed. Please try again.');
+                msg.className = 'text-center text-sm mt-2 text-red-500';
+                btn.disabled = false;
+                btn.textContent = 'Confirm Reservation';
+            }
+        })
+        .catch(() => {
+            msg.textContent = '\u274c Connection error. Please try again.';
+            msg.className = 'text-center text-sm mt-2 text-red-500';
+            btn.disabled = false;
+            btn.textContent = 'Confirm Reservation';
+        });
+    }
+
+
+
+        function filterMenu(category) {
+            const sections = document.querySelectorAll('.menu-section');
+            const buttons = document.querySelectorAll('.category-btn');
+
+            buttons.forEach(btn => {
+                const btnText = btn.innerText.toLowerCase().replace('all items', 'all');
+                if (btnText === category || (category === 'all' && btnText === 'all')) {
+                    btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+                    btn.classList.add('bg-primary', 'text-on-primary');
+                } else {
+                    btn.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+                    btn.classList.remove('bg-primary', 'text-on-primary');
+                }
+            });
+
+            sections.forEach(section => {
+                const catDiv = section.querySelector('.menu-category');
+                if (category === 'all' || catDiv.dataset.category === category) {
+                    section.style.display = '';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        function filterMenuBySearch() {
+            const query = document.getElementById('menuSearch').value.toLowerCase();
+            const itemContainers = document.querySelectorAll('.menu-category h3, .menu-category h4, .menu-category .font-body-md');
+            const sections = document.querySelectorAll('.menu-section');
+
+            // Reset display
+            sections.forEach(s => s.style.display = '');
+            document.querySelectorAll('.menu-category > div > div').forEach(i => i.style.display = '');
+
+            if (query === '') return;
+
+            let foundAnyInCategory = {};
+
+            itemContainers.forEach(item => {
+                const card = item.closest('div.flex, div.bg-white, li');
+                if (!card) return;
+
+                const section = item.closest('.menu-section');
+                const categoryId = section.id;
+
+                if (item.innerText.toLowerCase().includes(query)) {
+                    card.style.display = '';
+                    foundAnyInCategory[categoryId] = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            sections.forEach(section => {
+                if (!foundAnyInCategory[section.id]) {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        // Reveal animations on scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal, .menu-section");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        window.addEventListener("load", reveal);
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            if (category) {
+                filterMenu(category);
+                setTimeout(() => {
+                    const section = document.getElementById(category) || document.querySelector('.menu-category');
+                    if (section) {
+                        const yOffset = -100;
+                        const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({top: y, behavior: 'smooth'});
+                    }
+                }, 100);
+            }
+        });
+    </script>
+    <script src="cart.js?v=1778415755002"></script>
+<script src="auth.js"></script>
+<script>
+    // ── Fly-to-Cart Animation ──
+    function flyToCart(buttonEl) {
+        const cartBtn = document.querySelector('button[onclick="toggleCartModal()"]');
+        if (!cartBtn) return;
+
+        // Find the food image in the parent card
+        const card = buttonEl.closest('[class*="rounded"]');
+        const foodImg = card ? card.querySelector('img') : null;
+
+        const btnRect = buttonEl.getBoundingClientRect();
+        const cartRect = cartBtn.getBoundingClientRect();
+
+        const startX = btnRect.left + btnRect.width / 2;
+        const startY = btnRect.top;
+        const endX = cartRect.left + cartRect.width / 2;
+        const endY = cartRect.top + cartRect.height / 2;
+
+        // Create flying element
+        const flyEl = document.createElement('div');
+        flyEl.style.cssText = `
+            position: fixed;
+            z-index: 10000;
+            left: ${startX - 25}px;
+            top: ${startY - 25}px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            pointer-events: none;
+            box-shadow: 0 5px 20px rgba(148, 66, 23, 0.5);
+            border: 3px solid var(--color-primary);
+            will-change: transform, opacity;
+        `;
+
+        if (foodImg) {
+            const clone = foodImg.cloneNode();
+            clone.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+            flyEl.appendChild(clone);
+        } else {
+            flyEl.style.background = 'var(--color-primary)';
+            flyEl.innerHTML = '<span class="material-symbols-outlined" style="color:white;font-size:24px;display:flex;align-items:center;justify-content:center;width:100%;height:100%;">add_shopping_cart</span>';
+        }
+
+        document.body.appendChild(flyEl);
+
+        // Calculate arc path
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
+        const arcHeight = Math.min(Math.abs(deltaY) * 0.4, 120);
+
+        // Animate with parabolic arc using keyframes
+        const animation = flyEl.animate([
+            {
+                transform: 'translate(0, 0) scale(1) rotate(0deg)',
+                opacity: 1
+            },
+            {
+                transform: `translate(${deltaX * 0.25}px, ${deltaY * 0.2 - arcHeight}px) scale(0.7) rotate(-90deg)`,
+                opacity: 0.95,
+                offset: 0.35
+            },
+            {
+                transform: `translate(${deltaX * 0.6}px, ${deltaY * 0.5 - arcHeight * 0.5}px) scale(0.5) rotate(-180deg)`,
+                opacity: 0.8,
+                offset: 0.6
+            },
+            {
+                transform: `translate(${deltaX}px, ${deltaY}px) scale(0.15) rotate(-360deg)`,
+                opacity: 0.2
+            }
+        ], {
+            duration: 750,
+            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            fill: 'forwards'
+        });
+
+        // Button feedback — show "Added!" for 1 second then revert
+        const label = buttonEl.querySelector('.atc-label');
+        const icon = buttonEl.querySelector('.material-symbols-outlined');
+        if (label) label.textContent = 'Added!';
+        if (icon) icon.textContent = 'check_circle';
+        buttonEl.style.backgroundColor = '#16a34a';
+        buttonEl.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+            if (label) label.textContent = 'Add to Cart';
+            if (icon) icon.textContent = 'add_shopping_cart';
+            buttonEl.style.backgroundColor = '';
+            buttonEl.style.pointerEvents = '';
+        }, 1000);
+
+        // Cart icon bounce on arrival
+        animation.onfinish = () => {
+            flyEl.remove();
+            // Pulse ring effect
+            const ring = document.createElement('div');
+            ring.style.cssText = `
+                position: fixed;
+                left: ${cartRect.left - 4}px;
+                top: ${cartRect.top - 4}px;
+                width: ${cartRect.width + 8}px;
+                height: ${cartRect.height + 8}px;
+                border-radius: 50%;
+                border: 2px solid var(--color-primary);
+                pointer-events: none;
+                z-index: 9999;
+            `;
+            document.body.appendChild(ring);
+            ring.animate([
+                { transform: 'scale(1)', opacity: 1 },
+                { transform: 'scale(1.8)', opacity: 0 }
+            ], { duration: 400, easing: 'ease-out' });
+            setTimeout(() => ring.remove(), 400);
+
+            // Bounce the cart button
+            cartBtn.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(1.35)' },
+                { transform: 'scale(0.9)' },
+                { transform: 'scale(1.1)' },
+                { transform: 'scale(1)' }
+            ], { duration: 500, easing: 'ease-out' });
+        };
+    }
+
+    // ── Transform icon buttons → styled "Add to Cart" buttons ──
+    document.querySelectorAll('button[onclick^="addToCart"]').forEach(btn => {
+        btn.className = 'flex items-center gap-1.5 px-4 py-2 bg-primary text-on-primary rounded-full font-label-md text-xs hover:brightness-110 hover:scale-[1.03] active:scale-[0.97] transition-all shadow-sm ml-auto';
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) {
+            icon.className = 'material-symbols-outlined text-[16px]';
+            icon.textContent = 'add_shopping_cart';
+        }
+        if (!btn.querySelector('.atc-label')) {
+            const label = document.createElement('span');
+            label.className = 'atc-label';
+            label.textContent = 'Add to Cart';
+            btn.appendChild(label);
+        }
+        // Attach fly animation on click
+        btn.addEventListener('click', function() {
+            flyToCart(this);
+        });
+    });
+</script>
+</body>
+
+</html>

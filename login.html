@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Login | Galaxy Restaurant</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand': '#944217',
+                        'brand-light': '#ffdbcc',
+                        'surface': '#fff8f6',
+                        'outline': '#e8d5ce'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fff8f6; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Simple Header -->
+    <header class="p-6">
+        <a href="index.html" class="flex items-center gap-2 text-brand font-bold text-xl hover:opacity-80 transition-opacity w-fit mx-auto sm:mx-0">
+            <span class="material-symbols-outlined text-3xl">restaurant</span>
+            Galaxy Restaurant
+        </a>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden border border-brand-light fade-in">
+            <!-- Tabs -->
+            <div class="flex">
+                <button id="tabLogin" onclick="switchTab('login')" class="flex-1 py-4 font-bold text-brand border-b-2 border-brand bg-brand/5 transition-all">Login</button>
+                <button id="tabRegister" onclick="switchTab('register')" class="flex-1 py-4 font-bold text-gray-500 border-b border-outline hover:bg-gray-50 transition-all">Register</button>
+            </div>
+            
+            <div class="p-8">
+                <h2 id="formTitle" class="text-2xl font-bold text-gray-800 mb-6 text-center">Welcome Back!</h2>
+                
+                <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
+                    <div id="nameField" class="hidden">
+                        <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Full Name</label>
+                        <input id="authName" type="text" placeholder="John Doe" class="w-full px-4 py-3 rounded-xl border border-outline focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Phone Number</label>
+                        <input id="authPhone" type="tel" required pattern="^[6-9]\d{9}$" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="10-digit number starting with 6-9" class="w-full px-4 py-3 rounded-xl border border-outline focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Password</label>
+                        <input id="authPassword" type="password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl border border-outline focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all">
+                    </div>
+                    
+                    <p id="authError" class="text-red-500 text-sm hidden text-center bg-red-50 p-2 rounded-lg border border-red-100"></p>
+                    
+                    <button id="submitBtn" type="submit" class="w-full bg-brand text-white py-3 mt-4 rounded-xl font-bold shadow-md hover:bg-[#7a3003] transition-all active:scale-[0.98]">
+                        Login Securely
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center text-sm text-gray-500">
+                    <p>Secure authentication required to place orders and book tables.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let isRegisterMode = false;
+        
+        // Check if user is already logged in
+        if (localStorage.getItem('galaxy_token')) {
+            window.location.href = 'index.html';
+        }
+
+        // Handle URL parameters for post-login redirection
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectAction = urlParams.get('redirect');
+
+        function switchTab(mode) {
+            isRegisterMode = mode === 'register';
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            const nameField = document.getElementById('nameField');
+            const btn = document.getElementById('submitBtn');
+            const title = document.getElementById('formTitle');
+            
+            if (isRegisterMode) {
+                tabRegister.className = "flex-1 py-4 font-bold text-brand border-b-2 border-brand bg-brand/5 transition-all";
+                tabLogin.className = "flex-1 py-4 font-bold text-gray-500 border-b border-outline hover:bg-gray-50 transition-all";
+                nameField.classList.remove('hidden');
+                document.getElementById('authName').required = true;
+                btn.textContent = "Create Account";
+                title.textContent = "Join Galaxy Restaurant";
+            } else {
+                tabLogin.className = "flex-1 py-4 font-bold text-brand border-b-2 border-brand bg-brand/5 transition-all";
+                tabRegister.className = "flex-1 py-4 font-bold text-gray-500 border-b border-outline hover:bg-gray-50 transition-all";
+                nameField.classList.add('hidden');
+                document.getElementById('authName').required = false;
+                btn.textContent = "Login Securely";
+                title.textContent = "Welcome Back!";
+            }
+            document.getElementById('authError').classList.add('hidden');
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const errorEl = document.getElementById('authError');
+            
+            const phone = document.getElementById('authPhone').value;
+            const password = document.getElementById('authPassword').value;
+            const name = document.getElementById('authName').value;
+            
+            const endpoint = isRegisterMode ? '/api/auth/register' : '/api/auth/login';
+            const body = isRegisterMode ? { name, phone, password } : { phone, password };
+
+            btn.disabled = true;
+            btn.textContent = "Please wait...";
+            errorEl.classList.add('hidden');
+
+            fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    localStorage.setItem('galaxy_token', data.token);
+                    
+                    // Redirect back to where they came from
+                    if (redirectAction === 'cart') {
+                        window.location.href = 'menu.html#cart'; // or wherever cart opens
+                    } else if (redirectAction === 'booking') {
+                        window.location.href = 'index.html#book';
+                    } else if (redirectAction === 'contact') {
+                        window.location.href = 'contact.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    errorEl.textContent = data.message || "Authentication failed.";
+                    errorEl.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.textContent = isRegisterMode ? "Create Account" : "Login Securely";
+                }
+            })
+            .catch(() => {
+                errorEl.textContent = "Connection error. Please try again.";
+                errorEl.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = isRegisterMode ? "Create Account" : "Login Securely";
+            });
+        }
+    </script>
+</body>
+</html>

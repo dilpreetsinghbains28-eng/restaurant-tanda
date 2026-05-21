@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact Us | Galaxy Restaurant</title>
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+    } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+    }
+
+    function toggleDarkMode() {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            localStorage.setItem('theme', 'light');
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'dark_mode');
+        } else {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+        } else {
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'dark_mode');
+        }
+    });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "var(--color-surface-dim)",
+                    "secondary-fixed-dim": "var(--color-secondary-fixed-dim)",
+                    "surface-tint": "var(--color-surface-tint)",
+                    "on-surface-variant": "var(--color-on-surface-variant)",
+                    "on-tertiary-fixed-variant": "var(--color-on-tertiary-fixed-variant)",
+                    "primary": "var(--color-primary)",
+                    "tertiary-fixed": "var(--color-tertiary-fixed)",
+                    "inverse-on-surface": "var(--color-inverse-on-surface)",
+                    "primary-fixed": "var(--color-primary-fixed)",
+                    "inverse-primary": "var(--color-inverse-primary)",
+                    "surface-container-highest": "var(--color-surface-container-highest)",
+                    "surface-variant": "var(--color-surface-variant)",
+                    "on-tertiary-container": "var(--color-on-tertiary-container)",
+                    "on-secondary": "var(--color-on-secondary)",
+                    "primary-container": "var(--color-primary-container)",
+                    "on-error": "var(--color-on-error)",
+                    "tertiary-container": "var(--color-tertiary-container)",
+                    "outline-variant": "var(--color-outline-variant)",
+                    "outline": "var(--color-outline)",
+                    "primary-fixed-dim": "var(--color-primary-fixed-dim)",
+                    "tertiary": "var(--color-tertiary)",
+                    "secondary": "var(--color-secondary)",
+                    "error": "var(--color-error)",
+                    "surface-container": "var(--color-surface-container)",
+                    "surface-bright": "var(--color-surface-bright)",
+                    "secondary-fixed": "var(--color-secondary-fixed)",
+                    "on-secondary-fixed": "var(--color-on-secondary-fixed)",
+                    "tertiary-fixed-dim": "var(--color-tertiary-fixed-dim)",
+                    "on-primary-fixed-variant": "var(--color-on-primary-fixed-variant)",
+                    "on-background": "var(--color-on-background)",
+                    "error-container": "var(--color-error-container)",
+                    "on-tertiary-fixed": "var(--color-on-tertiary-fixed)",
+                    "surface": "var(--color-surface)",
+                    "background": "var(--color-background)",
+                    "surface-container-high": "var(--color-surface-container-high)",
+                    "on-primary-fixed": "var(--color-on-primary-fixed)",
+                    "inverse-surface": "var(--color-inverse-surface)",
+                    "on-primary-container": "var(--color-on-primary-container)",
+                    "on-tertiary": "var(--color-on-tertiary)",
+                    "on-error-container": "var(--color-on-error-container)",
+                    "on-surface": "var(--color-on-surface)",
+                    "surface-container-low": "var(--color-surface-container-low)",
+                    "surface-container-lowest": "var(--color-surface-container-lowest)",
+                    "on-secondary-fixed-variant": "var(--color-on-secondary-fixed-variant)",
+                    "on-secondary-container": "var(--color-on-secondary-container)",
+                    "on-primary": "var(--color-on-primary)",
+                    "secondary-container": "var(--color-secondary-container)"
+          },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "lg": "48px",
+                    "gutter": "24px",
+                    "md": "24px",
+                    "base": "8px",
+                    "xl": "80px",
+                    "margin": "32px",
+                    "sm": "12px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-md": ["Be Vietnam Pro"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "body-lg": ["Be Vietnam Pro"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes floatAnimation {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .reveal { opacity: 0; transform: translateY(30px) scale(0.95); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+        .reveal-delay-100 { transition-delay: 100ms; }
+        .reveal-delay-200 { transition-delay: 200ms; }
+        .reveal-delay-300 { transition-delay: 300ms; }
+        .animate-float { animation: floatAnimation 4s ease-in-out infinite; }
+    </style>
+
+<style id="theme-vars">
+  :root {
+    --color-surface-dim: #ffcfc3;
+    --color-secondary-fixed-dim: #ffb691;
+    --color-surface-tint: #944217;
+    --color-on-surface-variant: #55433b;
+    --color-on-tertiary-fixed-variant: #663c2a;
+    --color-primary: #944217;
+    --color-tertiary-fixed: #ffdbcd;
+    --color-inverse-on-surface: #ffede8;
+    --color-primary-fixed: #ffdbcc;
+    --color-inverse-primary: #ffb695;
+    --color-surface-container-highest: #ffdbd1;
+    --color-surface-variant: #ffdbd1;
+    --color-on-tertiary-container: #fff8f7;
+    --color-on-secondary: #ffffff;
+    --color-primary-container: #b35a2d;
+    --color-on-error: #ffffff;
+    --color-tertiary-container: #996752;
+    --color-outline-variant: #dbc1b7;
+    --color-outline: #887269;
+    --color-primary-fixed-dim: #ffb695;
+    --color-tertiary: #7d4f3b;
+    --color-secondary: #944a20;
+    --color-error: #ba1a1a;
+    --color-surface-container: #ffe9e4;
+    --color-surface-bright: #fff8f6;
+    --color-secondary-fixed: #ffdbcb;
+    --color-on-secondary-fixed: #341100;
+    --color-tertiary-fixed-dim: #f6b9a0;
+    --color-on-primary-fixed-variant: #7a3003;
+    --color-on-background: #2e140d;
+    --color-error-container: #ffdad6;
+    --color-on-tertiary-fixed: #321204;
+    --color-surface: #fff8f6;
+    --color-background: #fff8f6;
+    --color-surface-container-high: #ffe2da;
+    --color-on-primary-fixed: #351000;
+    --color-inverse-surface: #472820;
+    --color-on-primary-container: #fff8f7;
+    --color-on-tertiary: #ffffff;
+    --color-on-error-container: #93000a;
+    --color-on-surface: #2e140d;
+    --color-surface-container-low: #fff1ed;
+    --color-surface-container-lowest: #ffffff;
+    --color-on-secondary-fixed-variant: #763309;
+    --color-on-secondary-container: #76340a;
+    --color-on-primary: #ffffff;
+    --color-secondary-container: #fd9f6d;
+  }
+  .dark {
+    --color-surface-dim: #0F0F13;
+    --color-secondary-fixed-dim: #ffb691;
+    --color-surface-tint: #ffb695;
+    --color-on-surface-variant: #A1A1AA;
+    --color-on-tertiary-fixed-variant: #663c2a;
+    --color-primary: #ffb695;
+    --color-tertiary-fixed: #ffdbcd;
+    --color-inverse-on-surface: #18181E;
+    --color-primary-fixed: #ffdbcc;
+    --color-inverse-primary: #944217;
+    --color-surface-container-highest: #27272A;
+    --color-surface-variant: #27272A;
+    --color-on-tertiary-container: #ffdbcd;
+    --color-on-secondary: #552000;
+    --color-primary-container: #763309;
+    --color-on-error: #690005;
+    --color-tertiary-container: #663c2a;
+    --color-outline-variant: #3F3F46;
+    --color-outline: #52525B;
+    --color-primary-fixed-dim: #ffb695;
+    --color-tertiary: #f6b9a0;
+    --color-secondary: #ffb691;
+    --color-error: #ffb4ab;
+    --color-surface-container: #18181E;
+    --color-surface-bright: #27272A;
+    --color-secondary-fixed: #ffdbcb;
+    --color-on-secondary-fixed: #341100;
+    --color-tertiary-fixed-dim: #f6b9a0;
+    --color-on-primary-fixed-variant: #7a3003;
+    --color-on-background: #F4F4F5;
+    --color-error-container: #93000a;
+    --color-on-tertiary-fixed: #321204;
+    --color-surface: #0F0F13;
+    --color-background: #0F0F13;
+    --color-surface-container-high: #27272A;
+    --color-on-primary-fixed: #351000;
+    --color-inverse-surface: #F4F4F5;
+    --color-on-primary-container: #ffdbcc;
+    --color-on-tertiary: #4a2312;
+    --color-on-error-container: #ffdad6;
+    --color-on-surface: #F4F4F5;
+    --color-surface-container-low: #18181E;
+    --color-surface-container-lowest: #09090B;
+    --color-on-secondary-fixed-variant: #763309;
+    --color-on-secondary-container: #ffdbcb;
+    --color-on-primary: #561f00;
+    --color-secondary-container: #76340a;
+  }
+</style>
+
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-[#0F0F13]/80 backdrop-blur-md shadow-sm h-20 px-gutter flex items-center justify-center transition-colors duration-300">
+    <div class="w-full max-w-7xl flex justify-between items-center h-full">
+        <a href="index.html" class="flex items-center gap-base">
+            <span class="text-headline-md font-headline-md font-bold text-primary">Galaxy Restaurant</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-lg">
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="index.html">Home</a>
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="menu.html">Menu</a>
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="about.html">About Us</a>
+            <a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="contact.html">Contact</a>
+        </nav>
+        <div class="flex items-center gap-sm">
+            <button onclick="toggleDarkMode()" class="p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
+                <span class="material-symbols-outlined dark-icon">dark_mode</span>
+            </button>
+            <button onclick="toggleCartModal()" class="relative p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span class="cart-count absolute -top-1 -right-1 bg-primary text-on-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+            </button>
+            <button onclick="openBookingModal()" class="hidden lg:block bg-surface-container-low text-primary border-2 border-primary px-6 py-2 rounded-full font-label-md hover:bg-primary hover:text-on-primary transition-all">Book Table</button>
+            <button onclick="toggleMobileMenu()" class="md:hidden flex items-center p-sm">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="fixed inset-0 z-[60] bg-surface translate-x-full transition-transform duration-300 md:hidden">
+    <div class="flex flex-col h-full">
+        <div class="flex justify-between items-center h-20 px-gutter border-b border-outline-variant">
+            <span class="text-headline-md font-bold text-primary">Galaxy Restaurant</span>
+            <button onclick="toggleMobileMenu()" class="p-sm">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="flex flex-col p-gutter gap-lg mt-lg">
+            <a href="index.html" class="text-headline-md text-on-surface-variant">Home</a>
+            <a href="menu.html" class="text-headline-md text-on-surface-variant">Menu</a>
+            <a href="about.html" class="text-headline-md text-on-surface-variant">About Us</a>
+            <a href="contact.html" class="text-headline-md text-primary font-bold">Contact</a>
+            <button onclick="openBookingModal(); toggleMobileMenu();" class="mt-xl px-md py-md rounded-lg bg-primary text-on-primary font-label-md shadow-soft">Book Table</button>
+        </div>
+    </div>
+</div>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative w-full h-[400px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover brightness-[0.4] blur-[2px]" data-alt="Contact Us Background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkSU9TFSj8CsUcRQILInWAGyEf2FKdbZwShPDU8msTJgyEgCYgzAoiA9pTzAcq1zICFrpV2PkmkaMA-eRpyUGf3xknN-XiGd6I0v8Y4h9nCePs3g480r7BoWK3feO9UWCXgKycWeVKaU2UslE3wjzWuNWHxYcPYNoYQL3griuHq82UL3EuQlxiTh3BILwsU6BzQJwjJM7mnSJjrtS9MGYvJK6Gl5gqgOFBwJWXGgGI3FdOxHsxqjdwJVOTNqrjwwPb__C529iCLGCr"/>
+</div>
+<div class="relative z-10 text-center px-gutter">
+<h1 class="font-headline-xl text-headline-xl text-on-primary-container mb-md">Get in Touch</h1>
+<p class="font-body-lg text-body-lg text-white/90 max-w-2xl mx-auto">We'd love to hear from you. Whether you have a question about our menu, reservations, or just want to say hello, we're here to help.</p>
+</div>
+</section>
+<!-- Contact & Map Section (Bento Style) -->
+<section class="max-w-7xl mx-auto px-gutter py-xl reveal">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Info Cards -->
+<div class="lg:col-span-5 flex flex-col gap-gutter">
+<!-- Address Card -->
+<a href="https://www.google.com/maps/search/?api=1&query=Galaxy+Restaurant+Urmar+Tanda+Punjab" target="_blank" class="bg-surface-container-low p-md rounded-xl shadow-sm border border-outline-variant/30 hover:shadow-md hover:border-primary/50 transition-all cursor-pointer block group">
+    <div class="flex items-start gap-md">
+        <div class="bg-primary-container/10 p-sm rounded-lg group-hover:bg-primary/20 transition-colors">
+            <span class="material-symbols-outlined text-primary text-[32px] filled-icon" style="font-variation-settings: 'FILL' 1;">location_on</span>
+        </div>
+        <div>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-xs group-hover:text-primary transition-colors">Visit Us</h3>
+            <p class="font-body-md text-on-surface-variant leading-relaxed">
+                Near Police Station, Local Market Way,<br/>
+                Urmar Tanda, Punjab 144204, India
+            </p>
+        </div>
+    </div>
+</a>
+<!-- Timing Card -->
+<div class="bg-surface-container-low p-md rounded-xl shadow-sm border border-outline-variant/30 hover:shadow-md transition-shadow">
+<div class="flex items-start gap-md">
+<div class="bg-primary-container/10 p-sm rounded-lg">
+<span class="material-symbols-outlined text-primary text-[32px] filled-icon" style="font-variation-settings: 'FILL' 1;">schedule</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Operating Hours</h3>
+<p class="font-body-md text-on-surface-variant">9:00 AM – 10:00 PM</p>
+<p class="font-label-sm text-primary uppercase mt-xs">Open Every Day</p>
+</div>
+</div>
+</div>
+<!-- WhatsApp Reservation Card -->
+<a href="https://wa.me/918437227755" target="_blank" class="bg-[#25D366] text-white p-md rounded-xl shadow-md hover:scale-[1.01] hover:bg-[#20ba5a] transition-all block group">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-md">
+            <div class="bg-white/20 p-2 rounded-lg group-hover:bg-white/30 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.544.918 3.321 1.402 5.132 1.403 5.464 0 9.911-4.444 9.913-9.908.002-5.464-4.445-9.91-9.91-9.91-2.648 0-5.137 1.032-7.009 2.905-1.872 1.873-2.903 4.363-2.904 7.011 0 1.854.51 3.662 1.476 5.215l-.982 3.586 3.686-.967zm11.233-7.25c-.328-.164-1.942-.958-2.242-1.069-.3-.109-.519-.164-.738.164-.219.328-.848 1.069-1.04 1.288-.192.219-.383.245-.711.081-.328-.164-1.386-.511-2.641-1.63-1.001-.893-1.677-1.996-1.874-2.324-.197-.328-.021-.505.143-.668.148-.147.328-.383.492-.574.164-.191.219-.328.328-.547.11-.219.055-.41-.027-.574-.082-.164-.738-1.777-1.012-2.433-.267-.638-.539-.553-.738-.563-.191-.01-.41-.011-.628-.011-.219 0-.575.082-.875.41-.3.328-1.148 1.121-1.148 2.733 0 1.612 1.175 3.17 1.339 3.388.164.219 2.311 3.529 5.598 4.951.781.339 1.391.541 1.866.692.785.249 1.5.214 2.065.13.63-.094 1.942-.793 2.215-1.558.274-.765.274-1.422.192-1.558-.082-.137-.3-.219-.628-.383z"/></svg>
+            </div>
+            <div>
+                <p class="font-label-md opacity-90">WhatsApp Reservations</p>
+                <p class="font-headline-md text-headline-md font-bold">+91 84372 27755</p>
+            </div>
+        </div>
+        <span class="material-symbols-outlined text-[32px]">arrow_forward</span>
+    </div>
+</a>
+</div>
+<!-- Interactive Map Section -->
+<div class="lg:col-span-7 h-[500px] lg:h-auto rounded-xl overflow-hidden shadow-sm border border-outline-variant/30 bg-surface-container">
+<!-- Placeholder for Map -->
+<a href="https://www.google.com/maps/search/?api=1&query=Galaxy+Restaurant+Urmar+Tanda+Punjab" target="_blank" class="block relative w-full h-full min-h-[400px] group overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Google Maps location of Galaxy Restaurant in Urmar Tanda" src="urmar_tanda_map.png"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex flex-col items-center justify-center">
+    <span class="material-symbols-outlined text-6xl text-white drop-shadow-md mb-md group-hover:scale-110 transition-transform filled-icon" style="font-variation-settings: 'FILL' 1;">location_on</span>
+    <div class="bg-surface/95 dark:bg-[#230f0a]/95 backdrop-blur-sm px-md py-sm rounded-full shadow-lg flex items-center gap-xs transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
+        <span class="material-symbols-outlined text-primary dark:text-inverse-primary text-[20px]">open_in_new</span>
+        <span class="font-label-md text-primary dark:text-inverse-primary">Open in Google Maps</span>
+    </div>
+</div>
+</a>
+</div>
+</div>
+</section>
+<!-- Inquiry Form Section -->
+<section class="bg-surface-container-low py-xl reveal">
+<div class="max-w-7xl mx-auto px-gutter grid grid-cols-1 md:grid-cols-2 gap-xl items-center">
+<div>
+<span class="font-label-sm text-primary uppercase tracking-widest mb-xs block">Connect</span>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-md">Send us a Message</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-lg leading-relaxed">
+                        Have a special request or a corporate inquiry? Fill out the form and our team will get back to you within 24 hours. We value your feedback and look forward to serving you.
+                    </p>
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">mail</span>
+<span class="font-body-md">info@galaxyrestaurant.com</span>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">chat</span>
+<span class="font-body-md">WhatsApp Support Available</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-container p-lg rounded-2xl shadow-xl border border-outline-variant/20">
+<form id="contactForm" onsubmit="handleContact(event)" class="flex flex-col gap-md">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-on-surface-variant ml-1">Full Name</label>
+<input id="contactName" required class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-surface" placeholder="John Doe" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-on-surface-variant ml-1">Email Address</label>
+<input id="contactEmail" required class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-surface" placeholder="john@example.com" type="email"/>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-on-surface-variant ml-1">Subject</label>
+<select id="contactSubject" class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-surface">
+<option>General Inquiry</option>
+<option>Table Reservation</option>
+<option>Catering Request</option>
+<option>Feedback</option>
+</select>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-on-surface-variant ml-1">Message</label>
+<textarea id="contactMessage" required class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-surface" placeholder="How can we help you?" rows="4"></textarea>
+</div>
+<button id="contactSubmitBtn" class="mt-md w-full py-4 bg-primary text-white dark:text-on-primary font-headline-md rounded-xl shadow-lg hover:bg-primary-container transition-all active:scale-[0.98]" type="submit">
+                            Send Message
+                        </button>
+<p id="contactMsg" class="text-center text-sm mt-2 hidden"></p>
+</form>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl px-margin flex flex-col md:flex-row justify-between items-start gap-lg bg-surface-container-highest">
+<div class="max-w-xs">
+<span class="text-headline-lg font-headline-lg font-bold text-primary">Galaxy Restaurant</span>
+<p class="text-on-surface-variant font-body-md mt-md">Urmar Tanda's favorite destination for fine dining and quick bites. Serving quality food since 2024.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-xl">
+<div class="space-y-sm">
+<h4 class="font-label-md text-on-surface uppercase tracking-wider">Navigation</h4>
+<ul class="space-y-2">
+<li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline" href="index.html">Home</a></li>
+<li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline" href="menu.html">Menu</a></li>
+<li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline" href="about.html">About Us</a></li>
+<li><a class="text-label-md text-primary font-bold transition-all hover:underline" href="contact.html">Contact</a></li>
+<li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline flex items-center gap-1" href="admin.html"><span class="material-symbols-outlined text-[14px]">admin_panel_settings</span> Admin Portal</a></li>
+</ul>
+</div>
+<div class="space-y-sm">
+<h4 class="font-label-md text-on-surface uppercase tracking-wider">Legal</h4>
+<ul class="space-y-2">
+<li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline" href="#">Privacy Policy</a></li>
+<li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline" href="#">Terms of Service</a></li>
+<li><a class="text-label-md text-on-surface-variant hover:text-primary transition-all hover:underline" href="#">Refund Policy</a></li>
+</ul>
+</div>
+<div class="space-y-sm col-span-2 sm:col-span-1">
+<h4 class="font-label-md text-on-surface uppercase tracking-wider">Visit Us</h4>
+<p class="text-label-md text-on-surface-variant">Near Police Station,<br/>Local Market Way,<br/>Urmar Tanda, Punjab 144204</p>
+                <a href="https://wa.me/918437227755" target="_blank" class="text-label-md text-primary font-bold mt-2 block hover:underline whitespace-nowrap">+91 84372 27755</a>
+</div>
+</div>
+<div class="w-full border-t border-outline-variant pt-md mt-xl">
+<p class="text-label-sm text-on-surface-variant text-center md:text-left">© 2024 Galaxy Restaurant Tanda. All rights reserved.</p>
+</div>
+</footer>
+
+<!-- Booking Modal -->
+<div id="bookingModal" class="fixed inset-0 z-[100] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeBookingModal()"></div>
+    <div class="relative bg-surface p-xl rounded-2xl shadow-2xl max-w-md w-full mx-gutter animate-in fade-in zoom-in duration-300">
+        <div class="flex justify-between items-center mb-md">
+            <h2 class="text-headline-lg font-bold text-primary">Book a Table</h2>
+            <button onclick="closeBookingModal()" class="text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="bookingForm" onsubmit="handleBooking(event)" class="space-y-md">
+            <div>
+                <label class="block text-label-md text-on-surface mb-xs">Full Name</label>
+                <input id="bookName" required type="text" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your name">
+            </div>
+            <div>
+                <label class="block text-label-md text-on-surface mb-xs">Phone Number</label>
+                <input id="bookPhone" required type="tel" pattern="^[6-9]\d{9}$" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary" placeholder="10-digit number (e.g. 9876543210)">
+            </div>
+            <div class="grid grid-cols-2 gap-md">
+                <div>
+                    <label class="block text-label-md text-on-surface mb-xs">Date</label>
+                    <input id="bookDate" required type="date" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-label-md text-on-surface mb-xs">Time</label>
+                    <input id="bookTime" required type="time" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                </div>
+            </div>
+            <div>
+                <label class="block text-label-md text-on-surface mb-xs">Number of Guests</label>
+                <select id="bookGuests" required class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                    <option value="2">2 People</option>
+                    <option value="4">4 People</option>
+                    <option value="6">6 People</option>
+                    <option value="8+">8+ People</option>
+                </select>
+            </div>
+            <button id="bookSubmitBtn" type="submit" class="w-full bg-primary text-on-primary py-md rounded-full font-label-md text-lg shadow-soft hover:brightness-110 transition-all mt-md">Confirm Reservation</button>
+            <p id="bookingMsg" class="text-center text-sm mt-2 hidden"></p>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('translate-x-full');
+    }
+
+    function openBookingModal() {
+        document.getElementById('bookingModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeBookingModal() {
+        document.getElementById('bookingModal').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    function handleBooking(e) {
+        e.preventDefault();
+        if (!requireLogin('booking')) return;
+        const btn = document.getElementById('bookSubmitBtn');
+        const msg = document.getElementById('bookingMsg');
+        btn.disabled = true;
+        btn.textContent = 'Booking...';
+        msg.classList.add('hidden');
+
+        const name = document.getElementById('bookName').value;
+        const phone = document.getElementById('bookPhone').value;
+        const date = document.getElementById('bookDate').value;
+        const time = document.getElementById('bookTime').value;
+        const guests = document.getElementById('bookGuests').value;
+
+        fetch('/api/reservations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, phone, date, time, guests, userId: typeof getUserId === "function" ? getUserId() : null })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
+                msg.className = 'text-center text-sm mt-2 text-green-600';
+                
+                let message = "Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + data.reservation.id;
+                message = encodeURIComponent(message);
+
+                setTimeout(() => {
+                    window.open("https://wa.me/918437227755?text=" + message, '_blank');
+                    document.getElementById('bookingForm').reset();
+                    closeBookingModal();
+                    btn.disabled = false;
+                    btn.textContent = 'Confirm Reservation';
+                }, 1500);
+            } else {
+                msg.textContent = '\u274c ' + (data.message || 'Failed. Please try again.');
+                msg.className = 'text-center text-sm mt-2 text-red-500';
+                btn.disabled = false;
+                btn.textContent = 'Confirm Reservation';
+            }
+        })
+        .catch(() => {
+            msg.textContent = '\u274c Connection error. Please try again.';
+            msg.className = 'text-center text-sm mt-2 text-red-500';
+            btn.disabled = false;
+            btn.textContent = 'Confirm Reservation';
+        });
+    }
+
+
+
+    function handleContact(e) {
+        e.preventDefault();
+
+        // Require login to send a message
+        if (!localStorage.getItem('galaxy_token')) {
+            if (confirm('You need to login to send a message.\n\nClick OK to go to the Login page.')) {
+                window.location.href = 'login.html';
+            }
+            return;
+        }
+
+        const btn = document.getElementById('contactSubmitBtn');
+        const msg = document.getElementById('contactMsg');
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        msg.classList.add('hidden');
+
+        fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: document.getElementById('contactName').value,
+                email: document.getElementById('contactEmail').value,
+                subject: document.getElementById('contactSubject').value,
+                message: document.getElementById('contactMessage').value,
+                userId: typeof getUserId === "function" ? getUserId() : null
+            })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                msg.textContent = '✅ Message sent successfully! We will get back to you soon.';
+                msg.className = 'text-center text-sm mt-2 text-green-600';
+                document.getElementById('contactForm').reset();
+            } else {
+                msg.textContent = '❌ ' + (data.message || 'Failed. Please try again.');
+                msg.className = 'text-center text-sm mt-2 text-red-500';
+            }
+            btn.disabled = false;
+            btn.textContent = 'Send Message';
+        })
+        .catch(() => {
+            msg.textContent = '❌ Connection error. Please try again.';
+            msg.className = 'text-center text-sm mt-2 text-red-500';
+            btn.disabled = false;
+            btn.textContent = 'Send Message';
+        });
+    }
+
+    // Reveal animations on scroll
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 150;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    window.addEventListener("load", reveal);
+</script>
+<script src="cart.js?v=1778415755021"></script>
+<script src="auth.js"></script>
+</body></html>

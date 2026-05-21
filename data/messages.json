@@ -1,0 +1,24 @@
+[
+  {
+    "id": "MSG-MP1B54YZ-3J23",
+    "userId": "USR-MOZSN6PI-TMTL",
+    "name": "Dilpreet",
+    "email": "dilpreetsinghbains28@gmail.com",
+    "subject": "General Inquiry",
+    "message": "fafeeeeeafee",
+    "status": "Read",
+    "createdAt": "2026-05-11T14:39:10.187Z",
+    "adminReply": "rqw33q3rrq3qr3",
+    "replyDate": "2026-05-11T14:39:25.235Z",
+    "replyRead": false
+  },
+  {
+    "id": "MSG-MOZR4052",
+    "name": "dilpreet",
+    "email": "dilpreetsinghbains28@gmail.com",
+    "subject": "General Inquiry",
+    "message": "afwe",
+    "status": "Unread",
+    "createdAt": "2026-05-10T12:30:38.774Z"
+  }
+]

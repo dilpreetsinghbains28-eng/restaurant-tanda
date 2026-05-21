@@ -1,0 +1,2 @@
+"const fs = require('fs');\n\nconst lightColors = {\n  \"surface-dim\": \"#ffcfc3\",\n  \"secondary-fixed-dim\": \"#ffb691\",\n  \"surface-tint\": \"#944217\", // modified from 99461b\n  \"on-surface-variant\": \"#55433b\",\n  \"on-tertiary-fixed-variant\"
+<truncated 4783 bytes>

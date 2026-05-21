@@ -1,0 +1,2 @@
+"const fs = require('fs');\n\nconst filesToUpdate = ['login.html', 'index.html', 'menu.html', 'about.html', 'contact.html', 'cart.js', 'update_booking.js'];\nconst basePath = \"c:/Users/Asus/Documents/Web Development/ok km/\";\n\nfor (const file of filesTo
+<truncated 539 bytes>

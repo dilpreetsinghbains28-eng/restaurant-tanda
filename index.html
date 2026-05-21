@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Galaxy Restaurant - Tanda | North Indian &amp; Chinese Fine Dining</title>
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+    } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+    }
+
+    function toggleDarkMode() {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            localStorage.setItem('theme', 'light');
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'dark_mode');
+        } else {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+        } else {
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'dark_mode');
+        }
+    });
+</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Be+Vietnam+Pro:wght@400;500&amp;family=Dancing+Script:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                    "surface-dim": "var(--color-surface-dim)",
+                    "secondary-fixed-dim": "var(--color-secondary-fixed-dim)",
+                    "surface-tint": "var(--color-surface-tint)",
+                    "on-surface-variant": "var(--color-on-surface-variant)",
+                    "on-tertiary-fixed-variant": "var(--color-on-tertiary-fixed-variant)",
+                    "primary": "var(--color-primary)",
+                    "tertiary-fixed": "var(--color-tertiary-fixed)",
+                    "inverse-on-surface": "var(--color-inverse-on-surface)",
+                    "primary-fixed": "var(--color-primary-fixed)",
+                    "inverse-primary": "var(--color-inverse-primary)",
+                    "surface-container-highest": "var(--color-surface-container-highest)",
+                    "surface-variant": "var(--color-surface-variant)",
+                    "on-tertiary-container": "var(--color-on-tertiary-container)",
+                    "on-secondary": "var(--color-on-secondary)",
+                    "primary-container": "var(--color-primary-container)",
+                    "on-error": "var(--color-on-error)",
+                    "tertiary-container": "var(--color-tertiary-container)",
+                    "outline-variant": "var(--color-outline-variant)",
+                    "outline": "var(--color-outline)",
+                    "primary-fixed-dim": "var(--color-primary-fixed-dim)",
+                    "tertiary": "var(--color-tertiary)",
+                    "secondary": "var(--color-secondary)",
+                    "error": "var(--color-error)",
+                    "surface-container": "var(--color-surface-container)",
+                    "surface-bright": "var(--color-surface-bright)",
+                    "secondary-fixed": "var(--color-secondary-fixed)",
+                    "on-secondary-fixed": "var(--color-on-secondary-fixed)",
+                    "tertiary-fixed-dim": "var(--color-tertiary-fixed-dim)",
+                    "on-primary-fixed-variant": "var(--color-on-primary-fixed-variant)",
+                    "on-background": "var(--color-on-background)",
+                    "error-container": "var(--color-error-container)",
+                    "on-tertiary-fixed": "var(--color-on-tertiary-fixed)",
+                    "surface": "var(--color-surface)",
+                    "background": "var(--color-background)",
+                    "surface-container-high": "var(--color-surface-container-high)",
+                    "on-primary-fixed": "var(--color-on-primary-fixed)",
+                    "inverse-surface": "var(--color-inverse-surface)",
+                    "on-primary-container": "var(--color-on-primary-container)",
+                    "on-tertiary": "var(--color-on-tertiary)",
+                    "on-error-container": "var(--color-on-error-container)",
+                    "on-surface": "var(--color-on-surface)",
+                    "surface-container-low": "var(--color-surface-container-low)",
+                    "surface-container-lowest": "var(--color-surface-container-lowest)",
+                    "on-secondary-fixed-variant": "var(--color-on-secondary-fixed-variant)",
+                    "on-secondary-container": "var(--color-on-secondary-container)",
+                    "on-primary": "var(--color-on-primary)",
+                    "secondary-container": "var(--color-secondary-container)"
+          },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "lg": "48px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "base": "8px",
+                        "xl": "80px",
+                        "margin": "32px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Be Vietnam Pro"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "body-lg": ["Be Vietnam Pro"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shadow-soft {
+            box-shadow: 0 20px 25px -5px rgba(78, 40, 23, 0.08), 0 10px 10px -5px rgba(78, 40, 23, 0.04);
+        }
+        .hero-gradient {
+            background: linear-gradient(rgba(46, 20, 13, 0.6), rgba(46, 20, 13, 0.6));
+        }
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes floatAnimation {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .reveal { opacity: 0; transform: translateY(30px) scale(0.95); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+        .reveal-delay-100 { transition-delay: 100ms; }
+        .reveal-delay-200 { transition-delay: 200ms; }
+        .reveal-delay-300 { transition-delay: 300ms; }
+        .animate-float { animation: floatAnimation 4s ease-in-out infinite; }
+    </style>
+
+<style id="theme-vars">
+  :root {
+    --color-surface-dim: #ffcfc3;
+    --color-secondary-fixed-dim: #ffb691;
+    --color-surface-tint: #944217;
+    --color-on-surface-variant: #55433b;
+    --color-on-tertiary-fixed-variant: #663c2a;
+    --color-primary: #944217;
+    --color-tertiary-fixed: #ffdbcd;
+    --color-inverse-on-surface: #ffede8;
+    --color-primary-fixed: #ffdbcc;
+    --color-inverse-primary: #ffb695;
+    --color-surface-container-highest: #ffdbd1;
+    --color-surface-variant: #ffdbd1;
+    --color-on-tertiary-container: #fff8f7;
+    --color-on-secondary: #ffffff;
+    --color-primary-container: #b35a2d;
+    --color-on-error: #ffffff;
+    --color-tertiary-container: #996752;
+    --color-outline-variant: #dbc1b7;
+    --color-outline: #887269;
+    --color-primary-fixed-dim: #ffb695;
+    --color-tertiary: #7d4f3b;
+    --color-secondary: #944a20;
+    --color-error: #ba1a1a;
+    --color-surface-container: #ffe9e4;
+    --color-surface-bright: #fff8f6;
+    --color-secondary-fixed: #ffdbcb;
+    --color-on-secondary-fixed: #341100;
+    --color-tertiary-fixed-dim: #f6b9a0;
+    --color-on-primary-fixed-variant: #7a3003;
+    --color-on-background: #2e140d;
+    --color-error-container: #ffdad6;
+    --color-on-tertiary-fixed: #321204;
+    --color-surface: #fff8f6;
+    --color-background: #fff8f6;
+    --color-surface-container-high: #ffe2da;
+    --color-on-primary-fixed: #351000;
+    --color-inverse-surface: #472820;
+    --color-on-primary-container: #fff8f7;
+    --color-on-tertiary: #ffffff;
+    --color-on-error-container: #93000a;
+    --color-on-surface: #2e140d;
+    --color-surface-container-low: #fff1ed;
+    --color-surface-container-lowest: #ffffff;
+    --color-on-secondary-fixed-variant: #763309;
+    --color-on-secondary-container: #76340a;
+    --color-on-primary: #ffffff;
+    --color-secondary-container: #fd9f6d;
+  }
+  .dark {
+    --color-surface-dim: #0F0F13;
+    --color-secondary-fixed-dim: #ffb691;
+    --color-surface-tint: #ffb695;
+    --color-on-surface-variant: #A1A1AA;
+    --color-on-tertiary-fixed-variant: #663c2a;
+    --color-primary: #ffb695;
+    --color-tertiary-fixed: #ffdbcd;
+    --color-inverse-on-surface: #18181E;
+    --color-primary-fixed: #ffdbcc;
+    --color-inverse-primary: #944217;
+    --color-surface-container-highest: #27272A;
+    --color-surface-variant: #27272A;
+    --color-on-tertiary-container: #ffdbcd;
+    --color-on-secondary: #552000;
+    --color-primary-container: #763309;
+    --color-on-error: #690005;
+    --color-tertiary-container: #663c2a;
+    --color-outline-variant: #3F3F46;
+    --color-outline: #52525B;
+    --color-primary-fixed-dim: #ffb695;
+    --color-tertiary: #f6b9a0;
+    --color-secondary: #ffb691;
+    --color-error: #ffb4ab;
+    --color-surface-container: #18181E;
+    --color-surface-bright: #27272A;
+    --color-secondary-fixed: #ffdbcb;
+    --color-on-secondary-fixed: #341100;
+    --color-tertiary-fixed-dim: #f6b9a0;
+    --color-on-primary-fixed-variant: #7a3003;
+    --color-on-background: #F4F4F5;
+    --color-error-container: #93000a;
+    --color-on-tertiary-fixed: #321204;
+    --color-surface: #0F0F13;
+    --color-background: #0F0F13;
+    --color-surface-container-high: #27272A;
+    --color-on-primary-fixed: #351000;
+    --color-inverse-surface: #F4F4F5;
+    --color-on-primary-container: #ffdbcc;
+    --color-on-tertiary: #4a2312;
+    --color-on-error-container: #ffdad6;
+    --color-on-surface: #F4F4F5;
+    --color-surface-container-low: #18181E;
+    --color-surface-container-lowest: #09090B;
+    --color-on-secondary-fixed-variant: #763309;
+    --color-on-secondary-container: #ffdbcb;
+    --color-on-primary: #561f00;
+    --color-secondary-container: #76340a;
+  }
+</style>
+
+</head>
+<body class="bg-background text-on-surface font-body-md">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-[#0F0F13]/80 backdrop-blur-md shadow-sm h-20 px-gutter flex items-center justify-center transition-colors duration-300">
+    <div class="w-full max-w-7xl flex justify-between items-center h-full">
+        <a href="index.html" class="text-headline-md font-headline-md font-bold text-primary">Galaxy Restaurant</a>
+        <div class="hidden md:flex gap-lg items-center">
+            <a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="index.html">Home</a>
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="menu.html">Menu</a>
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="about.html">About Us</a>
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="contact.html">Contact</a>
+        </div>
+        <div class="flex gap-sm items-center">
+            <button onclick="toggleDarkMode()" class="p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
+                <span class="material-symbols-outlined dark-icon">dark_mode</span>
+            </button>
+            <button onclick="toggleCartModal()" class="relative p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <span class="cart-count absolute -top-1 -right-1 bg-primary text-on-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+            </button>
+            <button onclick="openBookingModal()" class="hidden lg:block px-md py-sm rounded-lg border-2 border-primary text-primary font-label-md hover:bg-surface-container-low transition-all">Book Table</button>
+            <a href="menu.html" class="px-md py-sm rounded-lg bg-primary text-on-primary font-label-md shadow-soft active:scale-95 transition-transform duration-150">Order Now</a>
+            <button onclick="toggleMobileMenu()" class="md:hidden flex items-center p-sm">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="fixed inset-0 z-[60] bg-surface translate-x-full transition-transform duration-300 md:hidden">
+    <div class="flex flex-col h-full">
+        <div class="flex justify-between items-center h-20 px-gutter border-b border-outline-variant">
+            <span class="text-headline-md font-bold text-primary">Galaxy Restaurant</span>
+            <button onclick="toggleMobileMenu()" class="p-sm">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="flex flex-col p-gutter gap-lg mt-lg">
+            <a href="index.html" class="text-headline-md text-primary font-bold">Home</a>
+            <a href="menu.html" class="text-headline-md text-on-surface-variant">Menu</a>
+            <a href="about.html" class="text-headline-md text-on-surface-variant">About Us</a>
+            <a href="contact.html" class="text-headline-md text-on-surface-variant">Contact</a>
+            <button onclick="openBookingModal(); toggleMobileMenu();" class="mt-xl px-md py-md rounded-lg bg-primary text-on-primary font-label-md shadow-soft">Book Table</button>
+        </div>
+    </div>
+</div>
+<!-- Hero Section -->
+<header class="relative min-h-[92vh] flex items-center overflow-hidden mt-20" style="background: linear-gradient(135deg, #1a0e08 0%, #2a1510 50%, #1a0e08 100%);">
+    <!-- Mobile background image -->
+    <img src="images/menu_hero.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 lg:hidden" aria-hidden="true"/>
+
+    <!-- Desktop right-side image -->
+    <div class="hidden lg:block absolute right-0 top-0 w-[55%] h-full">
+        <img src="images/menu_hero.jpg" alt="Galaxy Restaurant Dishes" class="w-full h-full object-cover object-center"/>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#1a0e08] via-[#1a0e08]/50 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#1a0e08]/60 via-transparent to-[#1a0e08]/30"></div>
+    </div>
+
+    <!-- Text Content -->
+    <div class="relative z-10 w-full lg:w-[50%] px-6 sm:px-10 lg:px-16 py-20 lg:py-28 text-center lg:text-left">
+        <!-- Decorative subtitle -->
+        <div class="flex items-center gap-3 mb-8 justify-center lg:justify-start">
+            <div class="hidden sm:block w-10 h-[2px] bg-[#d4a574] rounded-full"></div>
+            <svg class="w-7 h-7 text-[#d4a574] opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3c-1.5 3-4.5 5.5-4.5 8.5a4.5 4.5 0 009 0C16.5 8.5 13.5 6 12 3z" fill="currentColor" opacity="0.3"/>
+                <path d="M8 17c-2 1-3.5 2.5-3.5 4h15c0-1.5-1.5-3-3.5-4"/>
+                <path d="M12 3c-1.5 3-4.5 5.5-4.5 8.5a4.5 4.5 0 009 0C16.5 8.5 13.5 6 12 3z"/>
+            </svg>
+            <span class="text-[#d4a574] text-[11px] sm:text-xs font-semibold uppercase tracking-[0.18em]">Authentic Flavors. Unforgettable Experiences.</span>
+        </div>
+
+        <!-- Main Title -->
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-white leading-[1.15] mb-6" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+            Exquisite North Indian &amp;<br class="hidden sm:block"/>Chinese Flavors<br/>
+            <span style="font-family: 'Dancing Script', cursive;" class="text-primary text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-normal block mt-2">in Urmar Tanda</span>
+        </h1>
+
+        <!-- Description -->
+        <p class="text-white/55 text-sm sm:text-base lg:text-lg max-w-lg mb-10 leading-relaxed mx-auto lg:mx-0">
+            A culinary journey where tradition meets taste. Join us for a memorable family dining experience with dishes crafted by expert chefs.
+        </p>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <button onclick="openBookingModal()" class="group flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-primary text-on-primary font-label-md text-base shadow-lg shadow-primary/20 hover:brightness-110 hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                <span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">calendar_month</span>
+                Book a Table
+            </button>
+            <a href="menu.html" class="group flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl border-2 border-white/20 text-white font-label-md text-base hover:bg-white/10 hover:border-white/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 backdrop-blur-sm">
+                <span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">restaurant_menu</span>
+                View Menu
+            </a>
+        </div>
+    </div>
+
+    <!-- Feature Strip -->
+    <div class="absolute bottom-0 left-0 w-full lg:w-[50%] border-t border-white/10" style="background: rgba(26, 14, 8, 0.85); backdrop-filter: blur(12px);">
+        <div class="grid grid-cols-4 px-4 sm:px-10 lg:px-16 py-5 lg:py-6">
+            <div class="flex flex-col items-center text-center gap-1.5">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#d4a574]/30 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[#d4a574] text-lg sm:text-xl">restaurant</span>
+                </div>
+                <span class="text-white/70 text-[10px] sm:text-xs font-medium leading-tight">Authentic<br/>Flavors</span>
+            </div>
+            <div class="flex flex-col items-center text-center gap-1.5">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#d4a574]/30 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[#d4a574] text-lg sm:text-xl">soup_kitchen</span>
+                </div>
+                <span class="text-white/70 text-[10px] sm:text-xs font-medium leading-tight">Expert<br/>Chefs</span>
+            </div>
+            <div class="flex flex-col items-center text-center gap-1.5">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#d4a574]/30 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[#d4a574] text-lg sm:text-xl">eco</span>
+                </div>
+                <span class="text-white/70 text-[10px] sm:text-xs font-medium leading-tight">Fresh<br/>Ingredients</span>
+            </div>
+            <div class="flex flex-col items-center text-center gap-1.5">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#d4a574]/30 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[#d4a574] text-lg sm:text-xl">family_restroom</span>
+                </div>
+                <span class="text-white/70 text-[10px] sm:text-xs font-medium leading-tight">Family<br/>Friendly</span>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+<!-- Specialized Grid: North Indian & Chinese -->
+<section class="py-xl px-margin max-w-7xl mx-auto reveal">
+<div class="text-center mb-xl">
+<span class="text-primary font-label-sm uppercase tracking-widest">Our Culinary Pillars</span>
+<h2 class="font-headline-lg text-headline-lg mt-base">Tanda's Favorite Specialties</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- North Indian Bento Card -->
+<a href="menu.html?category=main-course" class="block group relative overflow-hidden rounded-2xl h-[500px] shadow-soft cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
+<img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A detailed, appetizing shot of authentic North Indian cuisine featuring creamy Shahi Paneer and rich Dal Makhani served in traditional copper bowls. The table is garnished with fresh coriander and buttery garlic naan, set against a warm, rustic backdrop. The lighting is soft and focused, emphasizing the rich textures and deep reddish-brown tones of the gravy, evoking a sense of high-end traditional hospitality and culinary expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCN09S5eyHXNJ2QUxdEMmcFQsZ_LSdhazPy6kf-K_twfI4JO4eg5GLxfUvRSgg2eNQ-gFB6tqYrLEfY7wju6Ws1Vel0nj4SUoXx9tI9nsw_zTzRCMUFLuKLf8kaEWsFCEgJmJaMXRU8QSGBLKBouXG7OxRWPsyT1AxK3gv2U_UHUEcK2y_kbZVBoLJAl89KUPoBZ1PUptBFeLtkMWpHaYPh9acHp-5lKiaPH_3q8X-uOx9--mFXDiZcv3I0kI2ErprqJp5j1Mu6V4KI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-lg">
+<h3 class="font-headline-md text-headline-md text-white mb-sm">Royal North Indian</h3>
+<p class="text-white/80 font-body-md mb-md">Experience the authentic taste of Punjab with our signature Shahi Paneer, Dal Makhani, and Tandoori delights.</p>
+<div class="text-primary-fixed font-label-md flex items-center gap-xs">Explore Curries <span class="material-symbols-outlined">arrow_forward</span></div>
+</div>
+</a>
+<div class="grid grid-rows-2 gap-lg">
+<!-- Chinese Specialty Card -->
+<a href="menu.html?category=chinese" class="block group relative overflow-hidden rounded-2xl shadow-soft cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
+<img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A vibrant and dynamic close-up of Szechuan stir-fry with colorful peppers and glazed honey chili potatoes, capturing steam rising from the hot dish. The visual style is modern and clean, with a focus on the saturated oranges and reds of the sauce. The lighting is bright and high-key, highlighting the crispiness of the fried elements and the freshness of the vegetables, designed to appeal to fast-food and Chinese cuisine enthusiasts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcKSP3JFc8NXqwZ7En7qMKWoqQdGcpBy11-0PlPuIRPCfxXlQJpdOcF0daxdIY-Z9K28qiZiBuBJCGDH5tMgsA3ixp_E2qm4VzeEBi6_OumEEuvXwvTrd54vesfw--aUjqqJZ7ID87Q2FxNlttwmQQzmpZ2nOnKvgiQoomWST1GA3XaBqMOXPdEjCmejKGtLO0ywghwVPa58_1eokp97MbgOpocR_Q2rRIR-ouQwSKz04NdA6-7iIzcbPIz8tpbMQ137Hd8mSTRfkW"/>
+<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent flex flex-col justify-center p-lg">
+<h3 class="font-headline-md text-headline-md text-white mb-xs">Wok-Tossed Magic</h3>
+<p class="text-white/80 font-body-md max-w-xs">Fiery Honey Chilli Potato and authentic Veg Manchurian that hits the spot.</p>
+</div>
+</a>
+<!-- Snacks/Fast Food Card -->
+<a href="menu.html?category=fast-food" class="block group relative overflow-hidden rounded-2xl shadow-soft bg-secondary-container cursor-pointer hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
+<div class="flex h-full items-center p-lg">
+<div class="w-1/2 pr-md">
+<h3 class="font-headline-md text-headline-md text-on-secondary-container mb-xs">Quick Bites</h3>
+<p class="text-on-secondary-container/80 font-body-md">From Cheese Burgers to Italian Pasta, we serve the best snacks in Urmar Tanda.</p>
+</div>
+<div class="w-1/2">
+<img class="rounded-lg shadow-lg rotate-12 group-hover:rotate-0 transition-transform duration-500" data-alt="A mouth-watering gourmet cheese burger with melting cheddar, fresh lettuce, and tomatoes, presented in a clean and modern studio setting. The lighting is crisp and commercial, emphasizing the appetizing quality of the burger. The background is a soft cream tone, keeping the focus entirely on the warm, golden-brown bun and the textures of the fresh ingredients, embodying high-quality fast food branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7JqnIgmS96S7N-aDpyfyELqBTPJpv0WNwB2KmPbF8hnjfTRGHDy9TeuliVs42xm9EwPVoDZve03taqBQjVgxNK9830n0kErdZcPsAS-rQsdDhxIRlF6xf4F7qt8jftdRspdAZbfJDqthOwVsKhepfY_b025vxljOJANJGcYFw7EIKKZO-7r3xJ3ZSnM7fMqHb3N_nchG_qr0ANxBjzzmU5CiFUVEPEiSnGJbjy5Ez8m-b4xlPyY0rDJCoujbubYQeOBQifPwyd9dl"/>
+</div>
+</div>
+</a>
+</div>
+</div>
+</section>
+<!-- Family Dining Section -->
+<section class="bg-surface-container py-xl reveal">
+<div class="max-w-7xl mx-auto px-margin grid grid-cols-1 lg:grid-cols-2 gap-xl items-center">
+<div class="relative">
+<img class="rounded-xl shadow-soft" data-alt="A wide-angle photograph of a spacious and warmly lit restaurant dining room, showing happy families seated at large wooden tables. The interior design is modern yet welcoming, with elegant lighting fixtures and a clean, professional layout. The mood is cheerful and social, reflecting a perfect environment for family gatherings and celebrations. The color palette is grounded in warm neutrals, light creams, and terracotta accents, reinforcing the brand's hospitality-focused identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFtw_dX29amIB1oOBSyl8c5Eb8OKg8didwXydu1bhmF0Rl7XMXSvyV3zEd2Sr5Na0zaBTq3zAsITj0I4NAlOqyLoxEYuXukepcpoQ75zGC27U2DbI4OUhqnjia4cWu7L7RApMv5ZcDWQE6lj8U6L-x1NvOn4e-x_vp1fginBsqmiPdbe8Jauck_n1m2utukkmCpf1OLiBM_-fXppsqIaNZ5y0Zg_rRdPbcYsN4TkIWtOWUP4FQa0NMvh6WSsuALn3Kd4JWEs_R6yiq"/>
+<div class="absolute -bottom-base -right-base bg-primary p-md rounded-lg shadow-lg hidden md:block">
+<div class="text-on-primary font-headline-md">50+</div>
+<div class="text-on-primary/80 font-label-sm">Seating Capacity</div>
+</div>
+</div>
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-md">Perfect Venue for Family Celebrations</h2>
+<p class="font-body-lg text-body-lg mb-lg opacity-80">Our spacious dining hall in the heart of Urmar Tanda market is designed to host your special moments. Whether it's a birthday, anniversary, or a simple Sunday family dinner, we provide the perfect ambiance and professional service.</p>
+<ul class="space-y-sm mb-lg">
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-body-md">Spacious &amp; Comfortable Seating</span>
+</li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-body-md">Kid-Friendly Menu Options</span>
+</li>
+<li class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-body-md">Centrally Located in Local Market</span>
+</li>
+</ul>
+
+</div>
+</div>
+</section>
+<!-- Customer Favorites (Menu Chips & Cards) -->
+<section class="py-xl px-margin max-w-7xl mx-auto reveal">
+<div class="flex flex-col md:flex-row justify-between items-end mb-xl gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg">Customer Favorites</h2>
+<p class="text-on-surface-variant font-body-md">Most loved dishes in Tanda this week</p>
+</div>
+<div class="flex gap-xs overflow-x-auto pb-sm no-scrollbar">
+<button onclick="filterFavorites('all', this)" class="fav-btn px-md py-sm bg-primary text-on-primary rounded-full font-label-md transition-all">All</button>
+<button onclick="filterFavorites('starters', this)" class="fav-btn px-md py-sm bg-surface-container-high text-on-surface-variant rounded-full font-label-md hover:bg-surface-variant transition-all">Veg Starters</button>
+<button onclick="filterFavorites('main-course', this)" class="fav-btn px-md py-sm bg-surface-container-high text-on-surface-variant rounded-full font-label-md hover:bg-surface-variant transition-all">Main Course</button>
+<button onclick="filterFavorites('chinese', this)" class="fav-btn px-md py-sm bg-surface-container-high text-on-surface-variant rounded-full font-label-md hover:bg-surface-variant transition-all">Chinese</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Food Card 1 -->
+<div class="fav-card bg-surface-container-lowest rounded-xl overflow-hidden shadow-soft hover:-translate-y-1 transition-transform" data-category="main-course">
+<div class="h-48 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A stunning, close-up shot of rich Butter Chicken, with a creamy, orange-red gravy topped with a swirl of fresh cream and a sprig of coriander. The dish is presented in a modern white bowl, capturing the glossy texture of the sauce and the tender chicken pieces. The lighting is warm and directional, casting soft shadows that enhance the depth and appetizing nature of this classic Indian main course." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEfAFmoKBUrZHOeDYNZuI5QrZgKRNxem0ZIlwb6AjmeWrBpG3D0vK4naWpTvxlc_IsnlvzVNbb8jttg289_-VrPt-OsjWIs8JQxdew9JKvuY40wJXNJu9J0AXCAU191Q7sdKO5O2zNGMinTcU3vNXsKqxD8vWxaTG_eT2nKWHaCEA3Um8VOt6vdtB5yqrmN0sE14fdxapKsFJpNzWATTWMEMIBcL0-KhVzKaJ2kyXwCGnz2vBEDg8Wz-sevLAyUc04RF1oUabDPpsm"/>
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-headline-md text-headline-md text-lg">Butter Chicken</h4>
+<span class="text-primary font-bold">₹780</span>
+</div>
+<p class="text-on-surface-variant font-body-md text-sm mb-md line-clamp-2">Our signature recipe with rich cream and aromatic spices.</p>
+<div class="flex items-center justify-between">
+<span class="px-sm py-1 bg-secondary-container/20 text-on-secondary-container rounded-full text-[10px] font-bold uppercase tracking-wider">Must Try</span>
+<button onclick="addToCart('Butter Chicken', 780)" class="text-primary flex items-center"><span class="material-symbols-outlined">add_circle</span></button>
+</div>
+</div>
+</div>
+<!-- Food Card 2 -->
+<div class="fav-card bg-surface-container-lowest rounded-xl overflow-hidden shadow-soft hover:-translate-y-1 transition-transform" data-category="starters">
+<div class="h-48 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A vibrant plate of Paneer Tikka, featuring chunks of marinated cottage cheese, bell peppers, and onions charred to perfection in a tandoor. The vibrant yellow and orange spices are visible on the surface, garnished with lemon wedges and green chutney. The lighting is bright and clear, highlighting the smoky textures and fresh garnishes against a clean, modern background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmHeHRUVWJw6kAIB127Pa0-bFhFjzXMo0ZJZYHp3xMhSes-xeLs2DtDt8krxhCZ9wB7sTz8At792VqazbS9zPbbgnrWZSPC8fKURUF8l05GTk3F-_EpCVYPX3aHgVf1aHwEX89j175drpcZV4MQ7Q5f31TktcZMeQR01ywDzEqsIfiU9t5CT1-O8SnbDA1rxbQFWd6OOIE7vtxD9_b0kaF72lQrdO8u6ZN6TPiPfiEoHC72O5meClSaolf11oGQooutLslckx4z2ZM"/>
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-headline-md text-headline-md text-lg">Paneer Tikka</h4>
+<span class="text-primary font-bold">₹260</span>
+</div>
+<p class="text-on-surface-variant font-body-md text-sm mb-md line-clamp-2">Smoky, grilled cottage cheese marinated in house spices.</p>
+<div class="flex items-center justify-between">
+<span class="px-sm py-1 bg-secondary-container/20 text-on-secondary-container rounded-full text-[10px] font-bold uppercase tracking-wider">Vegetarian</span>
+<button onclick="addToCart('Paneer Tikka', 260)" class="text-primary flex items-center"><span class="material-symbols-outlined">add_circle</span></button>
+</div>
+</div>
+</div>
+<!-- Food Card 3 -->
+<div class="fav-card bg-surface-container-lowest rounded-xl overflow-hidden shadow-soft hover:-translate-y-1 transition-transform" data-category="chinese">
+<div class="h-48 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A steaming plate of authentic Veg Noodles, tossed with vibrant green and red peppers, spring onions, and carrots. The lighting is crisp, emphasizing the glossy texture of the noodles and the fresh, colorful vegetables. The presentation is professional and clean, capturing the essence of high-quality Indo-Chinese street food in an upscale setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7dy5PR3mziAVu_kTWEO_U2OmdE-a627EXsLzbW9LiA5uuEeU5CUszcD5czL88rUlkSeZ5qDYmOFo8TqkVIMzsCQhchG9hjl4IVQsaoopBmRTR3EBnSjc_xn7diyDfPoQtYrNMR0U87Ohp1wsDCIbGU8JhOqXo8MXRTIxp95WWVY1fc4C9P8F_Dnf8nKKE-muN1ApPDMBlZaixhvgBPJccWbcZfpOHYPaogOzysayDwxHAzbQBqoy4f0ysdXj86F0ByKmweCoKGgDc"/>
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-headline-md text-headline-md text-lg">Veg Noodles</h4>
+<span class="text-primary font-bold">₹140</span>
+</div>
+<p class="text-on-surface-variant font-body-md text-sm mb-md line-clamp-2">Classic street-style noodles tossed with fresh garden vegetables.</p>
+<div class="flex items-center justify-between">
+<span class="px-sm py-1 bg-secondary-container/20 text-on-secondary-container rounded-full text-[10px] font-bold uppercase tracking-wider">Top Seller</span>
+<button onclick="addToCart('Veg Noodles', 140)" class="text-primary flex items-center"><span class="material-symbols-outlined">add_circle</span></button>
+</div>
+</div>
+</div>
+<!-- Food Card 4 -->
+<div class="fav-card bg-surface-container-lowest rounded-xl overflow-hidden shadow-soft hover:-translate-y-1 transition-transform" data-category="chinese">
+<div class="h-48 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A plate of golden-brown Honey Chilli Potatoes, glazed with a sweet and spicy sauce, topped with sesame seeds and finely chopped spring onions. The lighting is high-key and bright, highlighting the crispy texture and the shimmering glaze of the potatoes. The background is a minimalist off-white, emphasizing the rich, warm colors of the food and the brand's modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVM4M2VYWgsYtXE6oYJN5CMpgvggtTAC9aMa2fhNbrX2HmbzNdSrEB_ebZeHpMuX0Pwv7qFW3ot-rDYx3bTz0TJ7C2Ppqjj-mrOlci6hhZFRcuhlB8Eq2-SSiWXDc5l8GRWIrD4AUIjN9_5LLaerh8D51HFu9h2Gg3tn9ERrS4Uh06O5stri34k4PwLJIg-uw-y3mpVVoV0lVcztQb-2NdKMP_RzAq-8aGK8FhihUqsvX1PgympS2YCWdwhYDOmgKyps7a9wKU_0Ym"/>
+</div>
+<div class="p-md">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-headline-md text-headline-md text-lg">Honey Chilli Potato</h4>
+<span class="text-primary font-bold">₹160</span>
+</div>
+<p class="text-on-surface-variant font-body-md text-sm mb-md line-clamp-2">Crispy potato fingers glazed in a sweet &amp; spicy honey sauce.</p>
+<div class="flex items-center justify-between">
+<span class="px-sm py-1 bg-secondary-container/20 text-on-secondary-container rounded-full text-[10px] font-bold uppercase tracking-wider">Chef's Special</span>
+<button class="text-primary flex items-center"><span class="material-symbols-outlined">add_circle</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Choose Us -->
+<section class="py-xl bg-inverse-surface text-inverse-on-surface">
+<div class="max-w-7xl mx-auto px-margin">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl">
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-on-primary text-3xl">restaurant</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-sm">Authentic Taste</h3>
+<p class="font-body-md opacity-80">Our recipes have been passed down through generations, ensuring every bite is rich with tradition.</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-on-primary text-3xl">clean_hands</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-sm">Hygiene First</h3>
+<p class="font-body-md opacity-80">We maintain the highest standards of cleanliness in our kitchen and dining areas for your safety.</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-on-primary text-3xl">family_restroom</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-sm">Family Environment</h3>
+<p class="font-body-md opacity-80">A welcoming atmosphere designed for families to relax and enjoy quality time together.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact & Location -->
+<section class="py-xl px-margin max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-md">Visit Us in Urmar Tanda</h2>
+<div class="space-y-md">
+<div class="flex gap-md group cursor-pointer">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">location_on</span>
+<div>
+<h4 class="font-label-md">Address</h4>
+<a href="https://www.google.com/maps/search/?api=1&query=Galaxy+Restaurant+Urmar+Tanda+Punjab" target="_blank" class="font-body-md opacity-80 hover:text-primary hover:opacity-100 transition-all">Near Police Station, Local Market Way,<br/>Urmar Tanda, Punjab 144204, India</a>
+</div>
+</div>
+<div class="flex gap-md group cursor-pointer">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">call</span>
+<div>
+<h4 class="font-label-md">Contact Number</h4>
+<a href="https://wa.me/918437227755" target="_blank" class="font-body-md text-[#25D366] font-bold hover:brightness-90 transition-all flex items-center gap-xs">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.544.918 3.321 1.402 5.132 1.403 5.464 0 9.911-4.444 9.913-9.908.002-5.464-4.445-9.91-9.91-9.91-2.648 0-5.137 1.032-7.009 2.905-1.872 1.873-2.903 4.363-2.904 7.011 0 1.854.51 3.662 1.476 5.215l-.982 3.586 3.686-.967zm11.233-7.25c-.328-.164-1.942-.958-2.242-1.069-.3-.109-.519-.164-.738.164-.219.328-.848 1.069-1.04 1.288-.192.219-.383.245-.711.081-.328-.164-1.386-.511-2.641-1.63-1.001-.893-1.677-1.996-1.874-2.324-.197-.328-.021-.505.143-.668.148-.147.328-.383.492-.574.164-.191.219-.328.328-.547.11-.219.055-.41-.027-.574-.082-.164-.738-1.777-1.012-2.433-.267-.638-.539-.553-.738-.563-.191-.01-.41-.011-.628-.011-.219 0-.575.082-.875.41-.3.328-1.148 1.121-1.148 2.733 0 1.612 1.175 3.17 1.339 3.388.164.219 2.311 3.529 5.598 4.951.781.339 1.391.541 1.866.692.785.249 1.5.214 2.065.13.63-.094 1.942-.793 2.215-1.558.274-.765.274-1.422.192-1.558-.082-.137-.3-.219-.628-.383z"/></svg>
+    +91 84372 27755
+</a>
+</div>
+</div>
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<div>
+<h4 class="font-label-md">Opening Hours</h4>
+<p class="font-body-md opacity-80">9:00 AM – 10:00 PM (All Days)</p>
+</div>
+</div>
+</div>
+</div>
+<a href="https://www.google.com/maps/search/?api=1&query=Galaxy+Restaurant+Urmar+Tanda+Punjab" target="_blank" class="block h-80 rounded-xl overflow-hidden shadow-soft relative group">
+    <img src="urmar_tanda_map.png" alt="Google Maps location of Galaxy Restaurant in Urmar Tanda" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex flex-col items-center justify-center">
+        <span class="material-symbols-outlined text-6xl text-white drop-shadow-md mb-md group-hover:scale-110 transition-transform filled-icon" style="font-variation-settings: 'FILL' 1;">location_on</span>
+        <div class="bg-surface/95 dark:bg-[#230f0a]/95 backdrop-blur-sm px-md py-sm rounded-full shadow-lg flex items-center gap-xs transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
+            <span class="material-symbols-outlined text-primary dark:text-inverse-primary text-[20px]">open_in_new</span>
+            <span class="font-label-md text-primary dark:text-inverse-primary">Open in Google Maps</span>
+        </div>
+    </div>
+</a>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl px-margin flex flex-col md:flex-row justify-between items-start gap-lg bg-surface-container-highest border-t border-outline-variant">
+<div class="max-w-xs">
+<div class="text-headline-lg font-headline-lg font-bold text-primary mb-sm">Galaxy Restaurant</div>
+<p class="font-body-md text-on-surface-variant">Serving premium North Indian and Chinese delicacies in Urmar Tanda since 2024.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-xl">
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-primary font-bold">Quick Links</h4>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="menu.html">Menu</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="about.html">About Us</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="contact.html">Contact</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-all flex items-center gap-1" href="admin.html">
+    <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span> Admin Portal
+</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-primary font-bold">Policy</h4>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Privacy Policy</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Terms of Service</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Refund Policy</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-md text-primary font-bold">Follow Us</h4>
+<div class="flex gap-sm">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all" href="#">
+<span class="material-symbols-outlined text-lg">camera</span>
+</a>
+</div>
+</div>
+</div>
+<div class="w-full border-t border-outline-variant mt-xl pt-md flex justify-center">
+<p class="font-label-md text-on-surface-variant">© 2024 Galaxy Restaurant Tanda. All rights reserved.</p>
+</div>
+</footer>
+<!-- Booking Modal -->
+<div id="bookingModal" class="fixed inset-0 z-[100] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeBookingModal()"></div>
+    <div class="relative bg-surface p-xl rounded-2xl shadow-2xl max-w-md w-full mx-gutter animate-in fade-in zoom-in duration-300">
+        <div class="flex justify-between items-center mb-md">
+            <h2 class="text-headline-lg font-bold text-primary">Book a Table</h2>
+            <button onclick="closeBookingModal()" class="text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="bookingForm" onsubmit="handleBooking(event)" class="space-y-md">
+            <div>
+                <label class="block text-label-md text-on-surface mb-xs">Full Name</label>
+                <input id="bookName" required type="text" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your name">
+            </div>
+            <div>
+                <label class="block text-label-md text-on-surface mb-xs">Phone Number</label>
+                <input id="bookPhone" required type="tel" pattern="^[6-9]\d{9}$" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary" placeholder="10-digit number (e.g. 9876543210)">
+            </div>
+            <div class="grid grid-cols-2 gap-md">
+                <div>
+                    <label class="block text-label-md text-on-surface mb-xs">Date</label>
+                    <input id="bookDate" required type="date" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-label-md text-on-surface mb-xs">Time</label>
+                    <input id="bookTime" required type="time" class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                </div>
+            </div>
+            <div>
+                <label class="block text-label-md text-on-surface mb-xs">Number of Guests</label>
+                <select id="bookGuests" required class="w-full bg-surface-container-low border-outline-variant rounded-lg p-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                    <option value="2">2 People</option>
+                    <option value="4">4 People</option>
+                    <option value="6">6 People</option>
+                    <option value="8+">8+ People</option>
+                </select>
+            </div>
+            <button id="bookSubmitBtn" type="submit" class="w-full bg-primary text-on-primary py-md rounded-full font-label-md text-lg shadow-soft hover:brightness-110 transition-all mt-md">Confirm Reservation</button>
+            <p id="bookingMsg" class="text-center text-sm mt-2 hidden"></p>
+        </form>
+        <div class="mt-md pt-md border-t border-outline-variant text-center">
+            <p class="text-label-sm text-on-surface-variant mb-sm uppercase tracking-widest">Or Instant Chat</p>
+            <a href="https://wa.me/918437227755" target="_blank" class="flex items-center justify-center gap-xs text-[#25D366] font-bold hover:underline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.544.918 3.321 1.402 5.132 1.403 5.464 0 9.911-4.444 9.913-9.908.002-5.464-4.445-9.91-9.91-9.91-2.648 0-5.137 1.032-7.009 2.905-1.872 1.873-2.903 4.363-2.904 7.011 0 1.854.51 3.662 1.476 5.215l-.982 3.586 3.686-.967zm11.233-7.25c-.328-.164-1.942-.958-2.242-1.069-.3-.109-.519-.164-.738.164-.219.328-.848 1.069-1.04 1.288-.192.219-.383.245-.711.081-.328-.164-1.386-.511-2.641-1.63-1.001-.893-1.677-1.996-1.874-2.324-.197-.328-.021-.505.143-.668.148-.147.328-.383.492-.574.164-.191.219-.328.328-.547.11-.219.055-.41-.027-.574-.082-.164-.738-1.777-1.012-2.433-.267-.638-.539-.553-.738-.563-.191-.01-.41-.011-.628-.011-.219 0-.575.082-.875.41-.3.328-1.148 1.121-1.148 2.733 0 1.612 1.175 3.17 1.339 3.388.164.219 2.311 3.529 5.598 4.951.781.339 1.391.541 1.866.692.785.249 1.5.214 2.065.13.63-.094 1.942-.793 2.215-1.558.274-.765.274-1.422.192-1.558-.082-.137-.3-.219-.628-.383z"/></svg>
+                Chat on WhatsApp
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('translate-x-full');
+    }
+
+    function openBookingModal() {
+        document.getElementById('bookingModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeBookingModal() {
+        document.getElementById('bookingModal').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    function handleBooking(e) {
+        e.preventDefault();
+        if (!requireLogin('booking')) return;
+        const btn = document.getElementById('bookSubmitBtn');
+        const msg = document.getElementById('bookingMsg');
+        btn.disabled = true;
+        btn.textContent = 'Booking...';
+        msg.classList.add('hidden');
+
+        const name = document.getElementById('bookName').value;
+        const phone = document.getElementById('bookPhone').value;
+        const date = document.getElementById('bookDate').value;
+        const time = document.getElementById('bookTime').value;
+        const guests = document.getElementById('bookGuests').value;
+
+        fetch('/api/reservations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, phone, date, time, guests, userId: typeof getUserId === "function" ? getUserId() : null })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
+                msg.className = 'text-center text-sm mt-2 text-green-600';
+                
+                let message = "Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + data.reservation.id;
+                message = encodeURIComponent(message);
+
+                setTimeout(() => {
+                    window.open("https://wa.me/918437227755?text=" + message, '_blank');
+                    document.getElementById('bookingForm').reset();
+                    closeBookingModal();
+                    btn.disabled = false;
+                    btn.textContent = 'Confirm Reservation';
+                }, 1500);
+            } else {
+                msg.textContent = '\u274c ' + (data.message || 'Failed. Please try again.');
+                msg.className = 'text-center text-sm mt-2 text-red-500';
+                btn.disabled = false;
+                btn.textContent = 'Confirm Reservation';
+            }
+        })
+        .catch(() => {
+            msg.textContent = '\u274c Connection error. Please try again.';
+            msg.className = 'text-center text-sm mt-2 text-red-500';
+            btn.disabled = false;
+            btn.textContent = 'Confirm Reservation';
+        });
+    }
+
+
+
+    function filterFavorites(category, btn) {
+        const cards = document.querySelectorAll('.fav-card');
+        const buttons = document.querySelectorAll('.fav-btn');
+
+        // Update button styles
+        buttons.forEach(b => {
+            b.classList.remove('bg-primary', 'text-on-primary');
+            b.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+        });
+        btn.classList.add('bg-primary', 'text-on-primary');
+        btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+
+        // Filter cards
+        cards.forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.style.display = '';
+                card.classList.add('animate-in', 'fade-in', 'zoom-in', 'duration-300');
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Reveal animations on scroll
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 150;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    window.addEventListener("load", reveal);
+</script>
+<script src="cart.js?v=1778415754997"></script>
+<script src="auth.js"></script>
+</body></html>
