@@ -236,8 +236,23 @@ function handleCheckout() {
     const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
 
     if (isStatic) {
-        // Static hosting (GitHub Pages) — go directly to WhatsApp
+        // Static hosting (GitHub Pages) — save to localStorage + WhatsApp
         const orderId = 'GR-' + Date.now().toString(36).toUpperCase();
+        
+        // Save order to localStorage for admin dashboard
+        const orders = JSON.parse(localStorage.getItem('galaxy_orders') || '[]');
+        orders.unshift({
+            id: orderId,
+            customerName: name,
+            customerPhone: phone,
+            items: cart.map(i => ({ name: i.name, price: i.price, quantity: i.quantity })),
+            total: total,
+            status: 'New',
+            createdAt: new Date().toISOString(),
+            userId: getLoggedInUser() ? 'registered' : null
+        });
+        localStorage.setItem('galaxy_orders', JSON.stringify(orders));
+
         let orderDetails = cart.map(item => `${item.quantity}x ${item.name}`).join('%0A');
         let message = `Hello Galaxy Restaurant! I'd like to place an order:%0A%0AName: ${name}%0APhone: ${phone}%0A%0A${orderDetails}%0A%0ATotal: ₹${total}%0AOrder ID: ${orderId}`;
 

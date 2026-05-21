@@ -583,6 +583,9 @@
 
         if (isStatic) {
             const resId = 'RES-' + Date.now().toString(36).toUpperCase();
+            const reservations = JSON.parse(localStorage.getItem('galaxy_reservations') || '[]');
+            reservations.unshift({ id: resId, name, phone, date, time, guests, status: 'Pending', createdAt: new Date().toISOString() });
+            localStorage.setItem('galaxy_reservations', JSON.stringify(reservations));
             msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
             msg.className = 'text-center text-sm mt-2 text-green-600';
             let message = encodeURIComponent("Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + resId);

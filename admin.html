@@ -171,32 +171,10 @@
 
     <script>
         const ADMIN_PASSWORD = 'galaxy2024';
+        const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
 
         // Check persistent login on load
         window.onload = () => {
-            const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-            
-            if (isStatic) {
-                // Show static hosting message
-                document.getElementById('authScreen').innerHTML = `
-                    <div class="bg-white p-10 rounded-2xl shadow-2xl max-w-md w-full mx-4 text-center">
-                        <span class="material-symbols-outlined text-orange-400 text-6xl mb-4">cloud_off</span>
-                        <h1 class="text-2xl font-bold text-gray-800 mb-2">Admin Dashboard Unavailable</h1>
-                        <p class="text-gray-500 mb-4">The admin dashboard requires the Node.js backend server to be running locally.</p>
-                        <div class="bg-gray-50 rounded-xl p-4 text-left mb-6 border border-gray-200">
-                            <p class="text-xs font-bold text-gray-500 uppercase mb-2">To access the admin panel:</p>
-                            <code class="text-sm text-[#944217] block mb-1">1. Open terminal in project folder</code>
-                            <code class="text-sm text-[#944217] block mb-1">2. Run: <strong>node server.js</strong></code>
-                            <code class="text-sm text-[#944217] block">3. Visit: <strong>http://localhost:8080/admin.html</strong></code>
-                        </div>
-                        <a href="index.html" class="inline-flex items-center gap-2 bg-[#944217] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#7a3003] transition-colors">
-                            <span class="material-symbols-outlined text-sm">home</span> Back to Website
-                        </a>
-                    </div>
-                `;
-                return;
-            }
-            
             if (localStorage.getItem('adminAuth') === 'true') {
                 document.getElementById('authScreen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
@@ -236,239 +214,221 @@
             await Promise.all([loadStats(), loadOrders(), loadReservations(), loadMessages()]);
         }
 
-        async function loadStats() {
-            try {
-                const res = await fetch('/api/stats');
-                const data = await res.json();
-                document.getElementById('statOrders').textContent = data.totalOrders;
-                document.getElementById('statNewOrders').textContent = data.newOrders;
-                document.getElementById('statRevenue').textContent = '₹' + data.totalRevenue.toLocaleString('en-IN');
-                document.getElementById('statReservations').textContent = data.totalReservations;
-                document.getElementById('statPending').textContent = data.pendingReservations;
-                document.getElementById('statMessages').textContent = data.totalMessages;
-                document.getElementById('statUnread').textContent = data.unreadMessages;
-            } catch (e) { console.error('Stats error:', e); }
+        // ====== localStorage helpers (for static hosting) ======
+        function lsGet(key) { return JSON.parse(localStorage.getItem(key) || '[]'); }
+        function lsSet(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+        function lsUpdateStatus(key, id, status) {
+            const arr = lsGet(key);
+            const item = arr.find(i => i.id === id);
+            if (item) { item.status = status; lsSet(key, arr); }
+        }
+        function lsDelete(key, id) {
+            const arr = lsGet(key).filter(i => i.id !== id);
+            lsSet(key, arr);
         }
 
-        function renderReplySection(type, item) {
-            if (!item.userId) {
-                return `
-                    <div class="mt-4 flex items-center gap-2 text-gray-400 bg-gray-50 p-2 rounded-lg border border-dashed border-gray-200">
-                        <span class="material-symbols-outlined text-sm">person_off</span>
-                        <p class="text-[11px] italic text-gray-500">Guest user: Direct replies via dashboard are only available for registered accounts.</p>
-                    </div>
-                `;
-            }
-            
-            if (item.adminReply) {
-                return `
-                    <div class="mt-4 bg-orange-50/50 border border-orange-100 p-4 rounded-xl relative overflow-hidden group">
-                        <div class="absolute top-0 left-0 w-1 h-full bg-[#944217] opacity-50"></div>
-                        <div class="flex justify-between items-start mb-2">
-                            <p class="text-[10px] font-bold text-[#944217] uppercase tracking-wider flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[12px]">reply</span> Your Official Reply
-                            </p>
-                            <span class="text-[9px] px-1.5 py-0.5 rounded-full ${item.replyRead ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'} font-bold uppercase">
-                                ${item.replyRead ? 'Read' : 'Delivered'}
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-700 leading-relaxed font-medium">${item.adminReply}</p>
-                        <p class="text-[10px] text-gray-400 mt-2 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-[12px]">schedule</span> Sent on ${new Date(item.replyDate).toLocaleString('en-IN')}
-                        </p>
-                    </div>
-                `;
+        // ====== STATS ======
+        async function loadStats() {
+            if (isStatic) {
+                const orders = lsGet('galaxy_orders');
+                const reservations = lsGet('galaxy_reservations');
+                const messages = lsGet('galaxy_messages');
+                const totalRevenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+                document.getElementById('statOrders').textContent = orders.length;
+                document.getElementById('statNewOrders').textContent = orders.filter(o => o.status === 'New').length;
+                document.getElementById('statRevenue').textContent = '₹' + totalRevenue.toLocaleString('en-IN');
+                document.getElementById('statReservations').textContent = reservations.length;
+                document.getElementById('statPending').textContent = reservations.filter(r => r.status === 'Pending').length;
+                document.getElementById('statMessages').textContent = messages.length;
+                document.getElementById('statUnread').textContent = messages.filter(m => m.status === 'Unread').length;
             } else {
-                return `
-                    <div class="mt-4 space-y-2">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="material-symbols-outlined text-[#944217] text-sm">chat_bubble</span>
-                            <p class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Quick Reply</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <div class="relative flex-1">
-                                <input id="reply-${item.id}" type="text" placeholder="Send a message to the customer's bell icon..." 
-                                    class="w-full text-sm border-2 border-gray-100 rounded-xl px-4 py-2 focus:border-[#944217] focus:ring-4 focus:ring-orange-50 outline-none transition-all pr-10">
-                                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 text-sm">edit</span>
+                try {
+                    const res = await fetch('/api/stats');
+                    const data = await res.json();
+                    document.getElementById('statOrders').textContent = data.totalOrders;
+                    document.getElementById('statNewOrders').textContent = data.newOrders;
+                    document.getElementById('statRevenue').textContent = '₹' + data.totalRevenue.toLocaleString('en-IN');
+                    document.getElementById('statReservations').textContent = data.totalReservations;
+                    document.getElementById('statPending').textContent = data.pendingReservations;
+                    document.getElementById('statMessages').textContent = data.totalMessages;
+                    document.getElementById('statUnread').textContent = data.unreadMessages;
+                } catch (e) { console.error('Stats error:', e); }
+            }
+        }
+
+        // ====== ORDERS ======
+        async function loadOrders() {
+            let orders;
+            if (isStatic) {
+                orders = lsGet('galaxy_orders');
+            } else {
+                try {
+                    const res = await fetch('/api/orders');
+                    orders = await res.json();
+                } catch (e) { console.error('Orders error:', e); return; }
+            }
+
+            const list = document.getElementById('ordersList');
+            const empty = document.getElementById('ordersEmpty');
+            if (orders.length === 0) { empty.classList.remove('hidden'); list.innerHTML = ''; return; }
+            empty.classList.add('hidden');
+
+            list.innerHTML = orders.map(order => `
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
+                    <div class="flex flex-col sm:flex-row justify-between gap-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2 flex-wrap">
+                                <span class="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded">${order.id}</span>
+                                <span class="status-${order.status.toLowerCase()} text-xs px-2 py-0.5 rounded-full font-semibold">${order.status}</span>
+                                ${order.userId ? '<span class="material-symbols-outlined text-green-500 text-sm" title="Registered User">verified_user</span>' : ''}
                             </div>
-                            <button onclick="sendReply('${type}', '${item.id}')" 
-                                class="bg-[#944217] text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-[#7a3003] active:scale-95 transition-all shadow-md shadow-orange-900/20 flex items-center gap-1">
-                                <span class="material-symbols-outlined text-sm">send</span> Send
+                            <h3 class="font-bold text-gray-800">${order.customerName}</h3>
+                            <p class="text-sm text-gray-500">${order.customerPhone}</p>
+                            <div class="mt-2 text-sm text-gray-600">
+                                ${order.items.map(i => `<span class="inline-block bg-orange-50 text-[#944217] px-2 py-0.5 rounded mr-1 mb-1 text-xs">${i.quantity}× ${i.name}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="text-right flex flex-col justify-between">
+                            <p class="text-2xl font-bold text-[#944217]">₹${order.total}</p>
+                            <p class="text-xs text-gray-400 mt-1">${new Date(order.createdAt).toLocaleString('en-IN')}</p>
+                            <select onchange="updateOrderStatus('${order.id}', this.value)" class="mt-2 text-xs border rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#944217]">
+                                <option value="New" ${order.status === 'New' ? 'selected' : ''}>New</option>
+                                <option value="Confirmed" ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                            <button onclick="deleteItem('orders', '${order.id}')" class="mt-2 text-red-400 hover:text-red-600 transition-colors p-1 flex items-center justify-end" title="Delete Order">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
                             </button>
                         </div>
                     </div>
-                `;
-            }
+                </div>
+            `).join('');
         }
 
-        async function sendReply(type, id) {
-            const input = document.getElementById(`reply-${id}`);
-            if (!input || !input.value.trim()) return;
-            
-            await fetch(`/api/${type}/${id}/reply`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reply: input.value.trim() })
-            });
-            refreshAll();
-        }
-
-        async function loadOrders() {
-            try {
-                const res = await fetch('/api/orders');
-                const orders = await res.json();
-                const list = document.getElementById('ordersList');
-                const empty = document.getElementById('ordersEmpty');
-
-                if (orders.length === 0) {
-                    empty.classList.remove('hidden');
-                    list.innerHTML = '';
-                    return;
-                }
-                empty.classList.add('hidden');
-
-                list.innerHTML = orders.map(order => `
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
-                        <div class="flex flex-col sm:flex-row justify-between gap-3">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded">${order.id}</span>
-                                    <span class="status-${order.status.toLowerCase()} text-xs px-2 py-0.5 rounded-full font-semibold">${order.status}</span>
-                                    ${order.userId ? '<span class="material-symbols-outlined text-green-500 text-sm" title="Registered User">verified_user</span>' : ''}
-                                </div>
-                                <h3 class="font-bold text-gray-800">${order.customerName}</h3>
-                                <p class="text-sm text-gray-500">${order.customerPhone}</p>
-                                <div class="mt-2 text-sm text-gray-600">
-                                    ${order.items.map(i => `<span class="inline-block bg-orange-50 text-[#944217] px-2 py-0.5 rounded mr-1 mb-1 text-xs">${i.quantity}× ${i.name}</span>`).join('')}
-                                </div>
-                                ${renderReplySection('orders', order)}
-                            </div>
-                            <div class="text-right flex flex-col justify-between">
-                                <p class="text-2xl font-bold text-[#944217]">₹${order.total}</p>
-                                <p class="text-xs text-gray-400 mt-1">${new Date(order.createdAt).toLocaleString('en-IN')}</p>
-                                <select onchange="updateOrderStatus('${order.id}', this.value)" class="mt-2 text-xs border rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#944217]">
-                                    <option value="New" ${order.status === 'New' ? 'selected' : ''}>New</option>
-                                    <option value="Confirmed" ${order.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                                    <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                    <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                                </select>
-                                <button onclick="deleteItem('orders', '${order.id}')" class="mt-2 text-red-400 hover:text-red-600 transition-colors p-1 flex items-center justify-end" title="Delete Order">
-                                    <span class="material-symbols-outlined text-[18px]">delete</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (e) { console.error('Orders error:', e); }
-        }
-
+        // ====== RESERVATIONS ======
         async function loadReservations() {
-            try {
-                const res = await fetch('/api/reservations');
-                const reservations = await res.json();
-                const list = document.getElementById('reservationsList');
-                const empty = document.getElementById('reservationsEmpty');
+            let reservations;
+            if (isStatic) {
+                reservations = lsGet('galaxy_reservations');
+            } else {
+                try {
+                    const res = await fetch('/api/reservations');
+                    reservations = await res.json();
+                } catch (e) { console.error('Reservations error:', e); return; }
+            }
 
-                if (reservations.length === 0) {
-                    empty.classList.remove('hidden');
-                    list.innerHTML = '';
-                    return;
-                }
-                empty.classList.add('hidden');
+            const list = document.getElementById('reservationsList');
+            const empty = document.getElementById('reservationsEmpty');
+            if (reservations.length === 0) { empty.classList.remove('hidden'); list.innerHTML = ''; return; }
+            empty.classList.add('hidden');
 
-                list.innerHTML = reservations.map(r => `
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
-                        <div class="flex flex-col sm:flex-row justify-between gap-3">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded">${r.id}</span>
-                                    <span class="status-${r.status.toLowerCase()} text-xs px-2 py-0.5 rounded-full font-semibold">${r.status}</span>
-                                    ${r.userId ? '<span class="material-symbols-outlined text-green-500 text-sm" title="Registered User">verified_user</span>' : ''}
-                                </div>
-                                <h3 class="font-bold text-gray-800">${r.name}</h3>
-                                ${r.phone ? `<p class="text-sm text-gray-500">${r.phone}</p>` : ''}
-                                ${renderReplySection('reservations', r)}
+            list.innerHTML = reservations.map(r => `
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
+                    <div class="flex flex-col sm:flex-row justify-between gap-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2 flex-wrap">
+                                <span class="text-xs font-mono bg-gray-100 px-2 py-0.5 rounded">${r.id}</span>
+                                <span class="status-${r.status.toLowerCase()} text-xs px-2 py-0.5 rounded-full font-semibold">${r.status}</span>
                             </div>
-                            <div class="flex items-center gap-4 text-sm text-gray-600">
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[#944217] text-lg">calendar_today</span>
-                                    ${new Date(r.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[#944217] text-lg">schedule</span>
-                                    ${r.time}
-                                </div>
-                                <select onchange="updateReservationStatus('${r.id}', this.value)" class="text-xs border rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#944217]">
-                                    <option value="Pending" ${r.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="Confirmed" ${r.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                                    <option value="Completed" ${r.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                    <option value="Cancelled" ${r.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                                </select>
-                                <button onclick="deleteItem('reservations', '${r.id}')" class="text-red-400 hover:text-red-600 transition-colors p-1" title="Delete Reservation">
-                                    <span class="material-symbols-outlined text-[18px]">delete</span>
-                                </button>
-                            </div>
+                            <h3 class="font-bold text-gray-800">${r.name}</h3>
+                            ${r.phone && r.phone !== 'N/A' ? `<p class="text-sm text-gray-500">${r.phone}</p>` : ''}
                         </div>
-                        <p class="text-xs text-gray-400 mt-2">Submitted: ${new Date(r.createdAt).toLocaleString('en-IN')}</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-600 flex-wrap">
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[#944217] text-lg">calendar_today</span>
+                                ${new Date(r.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[#944217] text-lg">schedule</span>
+                                ${r.time}
+                            </div>
+                            <select onchange="updateReservationStatus('${r.id}', this.value)" class="text-xs border rounded-lg px-2 py-1 focus:ring-1 focus:ring-[#944217]">
+                                <option value="Pending" ${r.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Confirmed" ${r.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                <option value="Completed" ${r.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                <option value="Cancelled" ${r.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                            <button onclick="deleteItem('reservations', '${r.id}')" class="text-red-400 hover:text-red-600 transition-colors p-1" title="Delete Reservation">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                        </div>
                     </div>
-                `).join('');
-            } catch (e) { console.error('Reservations error:', e); }
+                    <p class="text-xs text-gray-400 mt-2">Submitted: ${new Date(r.createdAt).toLocaleString('en-IN')}</p>
+                </div>
+            `).join('');
         }
 
+        // ====== MESSAGES ======
         async function loadMessages() {
-            try {
-                const res = await fetch('/api/contact');
-                const messages = await res.json();
-                const list = document.getElementById('messagesList');
-                const empty = document.getElementById('messagesEmpty');
+            let messages;
+            if (isStatic) {
+                messages = lsGet('galaxy_messages');
+            } else {
+                try {
+                    const res = await fetch('/api/contact');
+                    messages = await res.json();
+                } catch (e) { console.error('Messages error:', e); return; }
+            }
 
-                if (messages.length === 0) {
-                    empty.classList.remove('hidden');
-                    list.innerHTML = '';
-                    return;
-                }
-                empty.classList.add('hidden');
+            const list = document.getElementById('messagesList');
+            const empty = document.getElementById('messagesEmpty');
+            if (messages.length === 0) { empty.classList.remove('hidden'); list.innerHTML = ''; return; }
+            empty.classList.add('hidden');
 
-                list.innerHTML = messages.map(m => `
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
-                        <div class="flex flex-col sm:flex-row justify-between gap-3">
-                            <div class="flex-1">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="status-${m.status.toLowerCase()} text-xs px-2 py-0.5 rounded-full font-semibold">${m.status}</span>
-                                    <span class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">${m.subject}</span>
-                                    ${m.userId ? '<span class="material-symbols-outlined text-green-500 text-sm" title="Registered User">verified_user</span>' : ''}
-                                </div>
-                                <h3 class="font-bold text-gray-800">${m.name}</h3>
-                                <p class="text-sm text-gray-500">${m.email}</p>
-                                <p class="mt-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-lg">${m.message}</p>
-                                ${renderReplySection('contact', m)}
+            list.innerHTML = messages.map(m => `
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-orange-50 fade-in">
+                    <div class="flex flex-col sm:flex-row justify-between gap-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2 flex-wrap">
+                                <span class="status-${m.status.toLowerCase()} text-xs px-2 py-0.5 rounded-full font-semibold">${m.status}</span>
+                                <span class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">${m.subject}</span>
                             </div>
-                            <div class="text-right flex flex-col justify-between min-w-[140px]">
-                                <p class="text-xs text-gray-400">${new Date(m.createdAt).toLocaleString('en-IN')}</p>
-                                <button onclick="deleteItem('contact', '${m.id}')" class="mt-2 text-red-400 hover:text-red-600 transition-colors p-1 flex items-center justify-end" title="Delete Message">
-                                    <span class="material-symbols-outlined text-[18px]">delete</span>
-                                </button>
-                            </div>
+                            <h3 class="font-bold text-gray-800">${m.name}</h3>
+                            <p class="text-sm text-gray-500">${m.email}</p>
+                            <p class="mt-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-lg">${m.message}</p>
+                        </div>
+                        <div class="text-right flex flex-col justify-between min-w-[140px]">
+                            <p class="text-xs text-gray-400">${new Date(m.createdAt).toLocaleString('en-IN')}</p>
+                            <button onclick="deleteItem('contact', '${m.id}')" class="mt-2 text-red-400 hover:text-red-600 transition-colors p-1 flex items-center justify-end" title="Delete Message">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
                         </div>
                     </div>
-                `).join('');
-            } catch (e) { console.error('Messages error:', e); }
+                </div>
+            `).join('');
         }
 
+        // ====== STATUS UPDATE ======
         async function updateOrderStatus(id, status) {
-            await fetch(`/api/orders/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+            if (isStatic) {
+                lsUpdateStatus('galaxy_orders', id, status);
+            } else {
+                await fetch(`/api/orders/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+            }
             refreshAll();
         }
 
         async function updateReservationStatus(id, status) {
-            await fetch(`/api/reservations/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+            if (isStatic) {
+                lsUpdateStatus('galaxy_reservations', id, status);
+            } else {
+                await fetch(`/api/reservations/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+            }
             refreshAll();
         }
 
+        // ====== DELETE ======
         async function deleteItem(type, id) {
             if (!confirm('Are you sure you want to delete this item? This cannot be undone.')) return;
-            const res = await fetch(`/api/${type}/${id}`, { method: 'DELETE' });
-            if (res.ok) refreshAll();
+            if (isStatic) {
+                const keyMap = { orders: 'galaxy_orders', reservations: 'galaxy_reservations', contact: 'galaxy_messages' };
+                lsDelete(keyMap[type], id);
+            } else {
+                const res = await fetch(`/api/${type}/${id}`, { method: 'DELETE' });
+                if (!res.ok) return;
+            }
+            refreshAll();
         }
     </script>
 </body>

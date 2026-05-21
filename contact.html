@@ -555,6 +555,9 @@
 
         if (isStatic) {
             const resId = 'RES-' + Date.now().toString(36).toUpperCase();
+            const reservations = JSON.parse(localStorage.getItem('galaxy_reservations') || '[]');
+            reservations.unshift({ id: resId, name, phone, date, time, guests, status: 'Pending', createdAt: new Date().toISOString() });
+            localStorage.setItem('galaxy_reservations', JSON.stringify(reservations));
             msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
             msg.className = 'text-center text-sm mt-2 text-green-600';
             let message = encodeURIComponent("Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + resId);
@@ -627,7 +630,12 @@
         const contactMessage = document.getElementById('contactMessage').value;
 
         if (isStatic) {
-            // Static hosting — send via WhatsApp
+            // Static hosting — save to localStorage + WhatsApp
+            const msgId = 'MSG-' + Date.now().toString(36).toUpperCase();
+            const messages = JSON.parse(localStorage.getItem('galaxy_messages') || '[]');
+            messages.unshift({ id: msgId, name: contactName, email: contactEmail, subject: contactSubject, message: contactMessage, status: 'Unread', createdAt: new Date().toISOString() });
+            localStorage.setItem('galaxy_messages', JSON.stringify(messages));
+
             let waMsg = encodeURIComponent("Hello Galaxy Restaurant!\n\nName: " + contactName + "\nEmail: " + contactEmail + "\nSubject: " + contactSubject + "\nMessage: " + contactMessage);
             msg.textContent = '✅ Redirecting to WhatsApp...';
             msg.className = 'text-center text-sm mt-2 text-green-600';
