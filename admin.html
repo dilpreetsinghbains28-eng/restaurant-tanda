@@ -363,6 +363,15 @@
                             </button>
                         </div>
                     </div>
+                    <div class="mt-3 border-t border-gray-100 pt-3 flex gap-2">
+                        <input id="reply-${r.id}" type="text" placeholder="Send message to ${r.name}..." 
+                            class="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:border-[#944217] focus:ring-1 focus:ring-[#944217]/20 outline-none"
+                            onkeydown="if(event.key==='Enter')sendAdminReply('reservations','${r.id}')">
+                        <button onclick="sendAdminReply('reservations','${r.id}')" 
+                            class="bg-[#944217] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#7a3003] transition-all flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">send</span>
+                        </button>
+                    </div>
                     <p class="text-xs text-gray-400 mt-2">Submitted: ${new Date(r.createdAt).toLocaleString('en-IN')}</p>
                 </div>
             `).join('');
@@ -396,6 +405,20 @@
                             <h3 class="font-bold text-gray-800">${m.name}</h3>
                             <p class="text-sm text-gray-500">${m.email}</p>
                             <p class="mt-2 text-sm text-gray-700 bg-gray-50 p-3 rounded-lg">${m.message}</p>
+                            <div class="mt-3 border-t border-gray-100 pt-3">
+                                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px] text-[#944217]">reply</span> Reply to ${m.name}
+                                </p>
+                                <div class="flex gap-2">
+                                    <input id="reply-${m.id}" type="text" placeholder="Type your reply..." 
+                                        class="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 focus:border-[#944217] focus:ring-1 focus:ring-[#944217]/20 outline-none"
+                                        onkeydown="if(event.key==='Enter')sendAdminReply('contact','${m.id}')">
+                                    <button onclick="sendAdminReply('contact','${m.id}')" 
+                                        class="bg-[#944217] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#7a3003] transition-all flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-sm">send</span> Send
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div class="text-right flex flex-col justify-between min-w-[140px]">
                             <p class="text-xs text-gray-400">${new Date(m.createdAt).toLocaleString('en-IN')}</p>
