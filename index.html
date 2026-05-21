@@ -272,10 +272,10 @@
             <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="contact.html">Contact</a>
         </div>
         <div class="flex gap-sm items-center">
-            <a href="login.html" class="p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest" title="Login / Register">
+            <a href="login.html" class="hidden md:flex p-sm text-on-surface-variant hover:text-primary transition-colors items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest" title="Login / Register">
                 <span class="material-symbols-outlined">person</span>
             </a>
-            <button onclick="toggleDarkMode()" class="p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
+            <button onclick="toggleDarkMode()" class="hidden sm:flex p-sm text-on-surface-variant hover:text-primary transition-colors items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
                 <span class="material-symbols-outlined dark-icon">dark_mode</span>
             </button>
             <button onclick="toggleCartModal()" class="relative p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
@@ -283,7 +283,7 @@
                 <span class="cart-count absolute -top-1 -right-1 bg-primary text-on-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
             </button>
             <button onclick="openBookingModal()" class="hidden lg:block px-md py-sm rounded-lg border-2 border-primary text-primary font-label-md hover:bg-surface-container-low transition-all">Book Table</button>
-            <a href="menu.html" class="px-md py-sm rounded-lg bg-primary text-on-primary font-label-md shadow-soft active:scale-95 transition-transform duration-150">Order Now</a>
+            <a href="menu.html" class="hidden sm:block px-md py-sm rounded-lg bg-primary text-on-primary font-label-md shadow-soft active:scale-95 transition-transform duration-150">Order Now</a>
             <button onclick="toggleMobileMenu()" class="md:hidden flex items-center p-sm">
                 <span class="material-symbols-outlined">menu</span>
             </button>
@@ -305,6 +305,9 @@
             <a href="menu.html" class="text-headline-md text-on-surface-variant">Menu</a>
             <a href="about.html" class="text-headline-md text-on-surface-variant">About Us</a>
             <a href="contact.html" class="text-headline-md text-on-surface-variant">Contact</a>
+            <a href="login.html" class="text-headline-md text-on-surface-variant flex items-center gap-2">
+                <span class="material-symbols-outlined">person</span> Login / Register
+            </a>
             <button onclick="openBookingModal(); toggleMobileMenu();" class="mt-xl px-md py-md rounded-lg bg-primary text-on-primary font-label-md shadow-soft">Book Table</button>
         </div>
     </div>
