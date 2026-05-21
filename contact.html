@@ -532,7 +532,9 @@
 
     function handleBooking(e) {
         e.preventDefault();
-        if (!requireLogin('booking')) return;
+        const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        if (!isStatic && !requireLogin('booking')) return;
+
         const btn = document.getElementById('bookSubmitBtn');
         const msg = document.getElementById('bookingMsg');
         btn.disabled = true;
@@ -545,53 +547,66 @@
         const time = document.getElementById('bookTime').value;
         const guests = document.getElementById('bookGuests').value;
 
-        fetch('/api/reservations', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, phone, date, time, guests, userId: typeof getUserId === "function" ? getUserId() : null })
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
-                msg.className = 'text-center text-sm mt-2 text-green-600';
-                
-                let message = "Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + data.reservation.id;
-                message = encodeURIComponent(message);
-
-                setTimeout(() => {
-                    window.open("https://wa.me/918437227755?text=" + message, '_blank');
-                    document.getElementById('bookingForm').reset();
-                    closeBookingModal();
+        if (isStatic) {
+            const resId = 'RES-' + Date.now().toString(36).toUpperCase();
+            msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
+            msg.className = 'text-center text-sm mt-2 text-green-600';
+            let message = encodeURIComponent("Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + resId);
+            setTimeout(() => {
+                window.open("https://wa.me/918437227755?text=" + message, '_blank');
+                document.getElementById('bookingForm').reset();
+                closeBookingModal();
+                btn.disabled = false;
+                btn.textContent = 'Confirm Reservation';
+            }, 1000);
+        } else {
+            fetch('/api/reservations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, phone, date, time, guests, userId: typeof getUserId === "function" ? getUserId() : null })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
+                    msg.className = 'text-center text-sm mt-2 text-green-600';
+                    let message = encodeURIComponent("Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + data.reservation.id);
+                    setTimeout(() => {
+                        window.open("https://wa.me/918437227755?text=" + message, '_blank');
+                        document.getElementById('bookingForm').reset();
+                        closeBookingModal();
+                        btn.disabled = false;
+                        btn.textContent = 'Confirm Reservation';
+                    }, 1500);
+                } else {
+                    msg.textContent = '\u274c ' + (data.message || 'Failed. Please try again.');
+                    msg.className = 'text-center text-sm mt-2 text-red-500';
                     btn.disabled = false;
                     btn.textContent = 'Confirm Reservation';
-                }, 1500);
-            } else {
-                msg.textContent = '\u274c ' + (data.message || 'Failed. Please try again.');
+                }
+            })
+            .catch(() => {
+                msg.textContent = '\u274c Connection error. Please try again.';
                 msg.className = 'text-center text-sm mt-2 text-red-500';
                 btn.disabled = false;
                 btn.textContent = 'Confirm Reservation';
-            }
-        })
-        .catch(() => {
-            msg.textContent = '\u274c Connection error. Please try again.';
-            msg.className = 'text-center text-sm mt-2 text-red-500';
-            btn.disabled = false;
-            btn.textContent = 'Confirm Reservation';
-        });
+            });
+        }
     }
 
 
 
     function handleContact(e) {
         e.preventDefault();
+        const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
 
-        // Require login to send a message
-        if (!localStorage.getItem('galaxy_token')) {
-            if (confirm('You need to login to send a message.\n\nClick OK to go to the Login page.')) {
-                window.location.href = 'login.html';
+        if (!isStatic) {
+            if (!localStorage.getItem('galaxy_token')) {
+                if (confirm('You need to login to send a message.\n\nClick OK to go to the Login page.')) {
+                    window.location.href = 'login.html';
+                }
+                return;
             }
-            return;
         }
 
         const btn = document.getElementById('contactSubmitBtn');
@@ -600,36 +615,54 @@
         btn.textContent = 'Sending...';
         msg.classList.add('hidden');
 
-        fetch('/api/contact', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: document.getElementById('contactName').value,
-                email: document.getElementById('contactEmail').value,
-                subject: document.getElementById('contactSubject').value,
-                message: document.getElementById('contactMessage').value,
-                userId: typeof getUserId === "function" ? getUserId() : null
-            })
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                msg.textContent = '✅ Message sent successfully! We will get back to you soon.';
-                msg.className = 'text-center text-sm mt-2 text-green-600';
+        const contactName = document.getElementById('contactName').value;
+        const contactEmail = document.getElementById('contactEmail').value;
+        const contactSubject = document.getElementById('contactSubject').value;
+        const contactMessage = document.getElementById('contactMessage').value;
+
+        if (isStatic) {
+            // Static hosting — send via WhatsApp
+            let waMsg = encodeURIComponent("Hello Galaxy Restaurant!\n\nName: " + contactName + "\nEmail: " + contactEmail + "\nSubject: " + contactSubject + "\nMessage: " + contactMessage);
+            msg.textContent = '✅ Redirecting to WhatsApp...';
+            msg.className = 'text-center text-sm mt-2 text-green-600';
+            setTimeout(() => {
+                window.open("https://wa.me/918437227755?text=" + waMsg, '_blank');
                 document.getElementById('contactForm').reset();
-            } else {
-                msg.textContent = '❌ ' + (data.message || 'Failed. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Send Message';
+            }, 500);
+        } else {
+            fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: contactName,
+                    email: contactEmail,
+                    subject: contactSubject,
+                    message: contactMessage,
+                    userId: typeof getUserId === "function" ? getUserId() : null
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    msg.textContent = '✅ Message sent successfully! We will get back to you soon.';
+                    msg.className = 'text-center text-sm mt-2 text-green-600';
+                    document.getElementById('contactForm').reset();
+                } else {
+                    msg.textContent = '❌ ' + (data.message || 'Failed. Please try again.');
+                    msg.className = 'text-center text-sm mt-2 text-red-500';
+                }
+                btn.disabled = false;
+                btn.textContent = 'Send Message';
+            })
+            .catch(() => {
+                msg.textContent = '❌ Connection error. Please try again.';
                 msg.className = 'text-center text-sm mt-2 text-red-500';
-            }
-            btn.disabled = false;
-            btn.textContent = 'Send Message';
-        })
-        .catch(() => {
-            msg.textContent = '❌ Connection error. Please try again.';
-            msg.className = 'text-center text-sm mt-2 text-red-500';
-            btn.disabled = false;
-            btn.textContent = 'Send Message';
-        });
+                btn.disabled = false;
+                btn.textContent = 'Send Message';
+            });
+        }
     }
 
     // Reveal animations on scroll

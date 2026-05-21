@@ -1,13 +1,6 @@
 let cart = JSON.parse(localStorage.getItem('galaxy_cart')) || [];
 
 function addToCart(name, price) {
-    // Require login to add items to cart
-    if (!localStorage.getItem('galaxy_token')) {
-        if (confirm('You need to login to add items to your cart.\n\nClick OK to go to the Login page.')) {
-            window.location.href = 'login.html';
-        }
-        return;
-    }
 
     const item = cart.find(i => i.name === name);
     if (item) {
@@ -171,10 +164,15 @@ function handleCheckout() {
 
     // Require login to checkout
     if (!localStorage.getItem('galaxy_token')) {
-        if (confirm('You need to login to place an order.\n\nClick OK to go to the Login page.')) {
-            window.location.href = 'login.html';
+        // On static hosting (GitHub Pages), skip login requirement
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            // Allow checkout without login on static sites
+        } else {
+            if (confirm('You need to login to place an order.\n\nClick OK to go to the Login page.')) {
+                window.location.href = 'login.html';
+            }
+            return;
         }
-        return;
     }
 
     if (checkoutForm.classList.contains('hidden')) {
@@ -214,53 +212,73 @@ function handleCheckout() {
     checkoutBtn.disabled = true;
     checkoutBtn.textContent = 'Placing order...';
 
-    // POST to backend
-    fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            customerName: name,
-            customerPhone: phone,
-            items: cart.map(i => ({ name: i.name, price: i.price, quantity: i.quantity })),
-            total: total,
-            userId: typeof getUserId === "function" ? getUserId() : null
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            successEl.textContent = `Order ${data.order.id} placed! Redirecting to WhatsApp...`;
-            successEl.classList.remove('hidden');
+    // Check if backend is available (localhost) or static hosting
+    const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
 
-            // WhatsApp redirect
-            let orderDetails = cart.map(item => `${item.quantity}x ${item.name}`).join('%0A');
-            let message = `Hello Galaxy Restaurant! I'd like to place an order:%0A%0AName: ${name}%0APhone: ${phone}%0A%0A${orderDetails}%0A%0ATotal: ₹${total}%0AOrder ID: ${data.order.id}`;
-            
-            setTimeout(() => {
-                window.open(`https://wa.me/918437227755?text=${message}`, '_blank');
-                // Clear cart
-                cart = [];
-                saveCart();
-                updateCartUI();
+    if (isStatic) {
+        // Static hosting (GitHub Pages) — go directly to WhatsApp
+        const orderId = 'GR-' + Date.now().toString(36).toUpperCase();
+        let orderDetails = cart.map(item => `${item.quantity}x ${item.name}`).join('%0A');
+        let message = `Hello Galaxy Restaurant! I'd like to place an order:%0A%0AName: ${name}%0APhone: ${phone}%0A%0A${orderDetails}%0A%0ATotal: ₹${total}%0AOrder ID: ${orderId}`;
+
+        setTimeout(() => {
+            window.open(`https://wa.me/918437227755?text=${message}`, '_blank');
+            cart = [];
+            saveCart();
+            updateCartUI();
+            checkoutBtn.disabled = false;
+            checkoutBtn.textContent = 'Proceed to Checkout';
+            document.getElementById('checkoutName').value = '';
+            document.getElementById('checkoutPhone').value = '';
+            checkoutForm.classList.add('hidden');
+            successEl.textContent = `Order ${orderId} sent to WhatsApp!`;
+            successEl.classList.remove('hidden');
+        }, 500);
+    } else {
+        // Backend available — POST to API
+        fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                customerName: name,
+                customerPhone: phone,
+                items: cart.map(i => ({ name: i.name, price: i.price, quantity: i.quantity })),
+                total: total,
+                userId: typeof getUserId === "function" ? getUserId() : null
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                successEl.textContent = `Order ${data.order.id} placed! Redirecting to WhatsApp...`;
+                successEl.classList.remove('hidden');
+                let orderDetails = cart.map(item => `${item.quantity}x ${item.name}`).join('%0A');
+                let message = `Hello Galaxy Restaurant! I'd like to place an order:%0A%0AName: ${name}%0APhone: ${phone}%0A%0A${orderDetails}%0A%0ATotal: ₹${total}%0AOrder ID: ${data.order.id}`;
+                setTimeout(() => {
+                    window.open(`https://wa.me/918437227755?text=${message}`, '_blank');
+                    cart = [];
+                    saveCart();
+                    updateCartUI();
+                    checkoutBtn.disabled = false;
+                    checkoutBtn.textContent = 'Proceed to Checkout';
+                    document.getElementById('checkoutName').value = '';
+                    document.getElementById('checkoutPhone').value = '';
+                    checkoutForm.classList.add('hidden');
+                }, 1500);
+            } else {
+                errorEl.textContent = data.message || 'Order failed. Please try again.';
+                errorEl.classList.remove('hidden');
                 checkoutBtn.disabled = false;
-                checkoutBtn.textContent = 'Proceed to Checkout';
-                document.getElementById('checkoutName').value = '';
-                document.getElementById('checkoutPhone').value = '';
-                checkoutForm.classList.add('hidden');
-            }, 1500);
-        } else {
-            errorEl.textContent = data.message || 'Order failed. Please try again.';
+                checkoutBtn.textContent = 'Place Order & Chat on WhatsApp';
+            }
+        })
+        .catch(err => {
+            errorEl.textContent = 'Connection error. Please try again.';
             errorEl.classList.remove('hidden');
             checkoutBtn.disabled = false;
             checkoutBtn.textContent = 'Place Order & Chat on WhatsApp';
-        }
-    })
-    .catch(err => {
-        errorEl.textContent = 'Connection error. Please try again.';
-        errorEl.classList.remove('hidden');
-        checkoutBtn.disabled = false;
-        checkoutBtn.textContent = 'Place Order & Chat on WhatsApp';
-    });
+        });
+    }
 }
 
 // Initialize UI on load

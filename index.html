@@ -309,11 +309,11 @@
 <!-- Hero Section -->
 <header class="relative min-h-[92vh] flex items-center overflow-hidden mt-20" style="background: linear-gradient(135deg, #1a0e08 0%, #2a1510 50%, #1a0e08 100%);">
     <!-- Mobile background image -->
-    <img src="images/menu_hero.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 lg:hidden" aria-hidden="true"/>
+    <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1920&q=80" alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 lg:hidden" aria-hidden="true"/>
 
     <!-- Desktop right-side image -->
     <div class="hidden lg:block absolute right-0 top-0 w-[55%] h-full">
-        <img src="images/menu_hero.jpg" alt="Galaxy Restaurant Dishes" class="w-full h-full object-cover object-center"/>
+        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1920&q=80" alt="Galaxy Restaurant Dishes" class="w-full h-full object-cover object-center"/>
         <div class="absolute inset-0 bg-gradient-to-r from-[#1a0e08] via-[#1a0e08]/50 to-transparent"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-[#1a0e08]/60 via-transparent to-[#1a0e08]/30"></div>
     </div>
@@ -720,7 +720,9 @@
 
     function handleBooking(e) {
         e.preventDefault();
-        if (!requireLogin('booking')) return;
+        const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        if (!isStatic && !requireLogin('booking')) return;
+
         const btn = document.getElementById('bookSubmitBtn');
         const msg = document.getElementById('bookingMsg');
         btn.disabled = true;
@@ -733,40 +735,55 @@
         const time = document.getElementById('bookTime').value;
         const guests = document.getElementById('bookGuests').value;
 
-        fetch('/api/reservations', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, phone, date, time, guests, userId: typeof getUserId === "function" ? getUserId() : null })
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
-                msg.className = 'text-center text-sm mt-2 text-green-600';
-                
-                let message = "Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + data.reservation.id;
-                message = encodeURIComponent(message);
-
-                setTimeout(() => {
-                    window.open("https://wa.me/918437227755?text=" + message, '_blank');
-                    document.getElementById('bookingForm').reset();
-                    closeBookingModal();
+        if (isStatic) {
+            // Static hosting — go directly to WhatsApp
+            const resId = 'RES-' + Date.now().toString(36).toUpperCase();
+            msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
+            msg.className = 'text-center text-sm mt-2 text-green-600';
+            let message = "Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + resId;
+            message = encodeURIComponent(message);
+            setTimeout(() => {
+                window.open("https://wa.me/918437227755?text=" + message, '_blank');
+                document.getElementById('bookingForm').reset();
+                closeBookingModal();
+                btn.disabled = false;
+                btn.textContent = 'Confirm Reservation';
+            }, 1000);
+        } else {
+            // Backend available
+            fetch('/api/reservations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, phone, date, time, guests, userId: typeof getUserId === "function" ? getUserId() : null })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    msg.textContent = '\u2705 Reservation confirmed! Redirecting to WhatsApp...';
+                    msg.className = 'text-center text-sm mt-2 text-green-600';
+                    let message = "Hello Galaxy Restaurant! I'd like to book a table:\n\nName: " + name + "\nPhone: " + phone + "\nDate: " + date + "\nTime: " + time + "\nGuests: " + guests + "\nReservation ID: " + data.reservation.id;
+                    message = encodeURIComponent(message);
+                    setTimeout(() => {
+                        window.open("https://wa.me/918437227755?text=" + message, '_blank');
+                        document.getElementById('bookingForm').reset();
+                        closeBookingModal();
+                        btn.disabled = false;
+                        btn.textContent = 'Confirm Reservation';
+                    }, 1500);
+                } else {
+                    msg.textContent = '\u274c ' + (data.message || 'Failed. Please try again.');
+                    msg.className = 'text-center text-sm mt-2 text-red-500';
                     btn.disabled = false;
                     btn.textContent = 'Confirm Reservation';
-                }, 1500);
-            } else {
-                msg.textContent = '\u274c ' + (data.message || 'Failed. Please try again.');
+                }
+            })
+            .catch(() => {
+                msg.textContent = '\u274c Connection error. Please try again.';
                 msg.className = 'text-center text-sm mt-2 text-red-500';
                 btn.disabled = false;
                 btn.textContent = 'Confirm Reservation';
-            }
-        })
-        .catch(() => {
-            msg.textContent = '\u274c Connection error. Please try again.';
-            msg.className = 'text-center text-sm mt-2 text-red-500';
-            btn.disabled = false;
-            btn.textContent = 'Confirm Reservation';
-        });
+            });
+        }
     }
 
 

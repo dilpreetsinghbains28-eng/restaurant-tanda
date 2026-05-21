@@ -140,6 +140,10 @@ function checkUserStatus() {
     const token = localStorage.getItem('galaxy_token');
     if (!token) return;
 
+    // Skip API calls on static hosting (GitHub Pages)
+    const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    if (isStatic) return;
+
     fetch('/api/user/me', {
         headers: { 'Authorization': token }
     })
@@ -203,7 +207,7 @@ function checkUserStatus() {
             updateAuthUI();
         }
     })
-    .catch(console.error);
+    .catch(() => { /* Silently ignore on network errors */ });
 }
 
 // Global function to get current user ID for API calls
