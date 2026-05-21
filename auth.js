@@ -47,6 +47,11 @@ function toggleNotifModal() {
     const modal = document.getElementById('notifModal');
     modal.classList.toggle('hidden');
     document.body.style.overflow = modal.classList.contains('hidden') ? '' : 'hidden';
+    // Always refresh notifications when opening
+    if (!modal.classList.contains('hidden')) {
+        const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        if (isStatic) loadLocalNotifications();
+    }
 }
 
 function markAllNotificationsRead() {
@@ -92,10 +97,10 @@ function loadLocalNotifications() {
     if (!list) return;
 
     if (notifications.length === 0) {
-        list.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-center text-gray-400 mt-10">
-            <span class="material-symbols-outlined text-6xl mb-4 opacity-50">notifications_off</span>
-            <p>No notifications yet</p>
-            <p class="text-xs mt-2 text-gray-300">Order updates and admin messages will appear here</p>
+        list.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#999;padding-top:80px;">
+            <span class="material-symbols-outlined" style="font-size:64px;margin-bottom:16px;opacity:0.5;">notifications_off</span>
+            <p style="font-size:16px;font-weight:600;color:#666;">No notifications yet</p>
+            <p style="font-size:12px;margin-top:8px;color:#aaa;">Order updates and admin messages will appear here</p>
         </div>`;
     } else {
         list.innerHTML = notifications.map(n => {
@@ -110,32 +115,34 @@ function loadLocalNotifications() {
             };
             const icon = iconMap[n.notifType] || 'notifications';
             const colorMap = {
-                'reply': 'text-blue-600 bg-blue-50',
-                'order_confirmed': 'text-green-600 bg-green-50',
-                'order_completed': 'text-emerald-600 bg-emerald-50',
-                'order_cancelled': 'text-red-600 bg-red-50',
-                'reservation_confirmed': 'text-green-600 bg-green-50',
-                'reservation_completed': 'text-emerald-600 bg-emerald-50',
-                'status_update': 'text-orange-600 bg-orange-50'
+                'reply': { bg: '#eff6ff', color: '#2563eb' },
+                'order_confirmed': { bg: '#f0fdf4', color: '#16a34a' },
+                'order_completed': { bg: '#ecfdf5', color: '#059669' },
+                'order_cancelled': { bg: '#fef2f2', color: '#dc2626' },
+                'reservation_confirmed': { bg: '#f0fdf4', color: '#16a34a' },
+                'reservation_completed': { bg: '#ecfdf5', color: '#059669' },
+                'status_update': { bg: '#fff7ed', color: '#ea580c' }
             };
-            const colorClass = colorMap[n.notifType] || 'text-orange-600 bg-orange-50';
+            const colors = colorMap[n.notifType] || { bg: '#fff7ed', color: '#ea580c' };
+            const borderColor = n.isRead ? '#e5e7eb' : '#944217';
+            const cardOpacity = n.isRead ? '0.65' : '1';
 
             return `
-            <div class="bg-surface p-4 rounded-xl border ${n.isRead ? 'border-outline-variant/30 opacity-60' : 'border-primary/30 shadow-md'} relative overflow-hidden transition-all">
-                ${!n.isRead ? '<div class="absolute top-0 left-0 w-1.5 h-full bg-primary"></div>' : ''}
-                <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 rounded-full ${colorClass} flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <span class="material-symbols-outlined text-lg">${icon}</span>
+            <div style="background:#fff;padding:16px;border-radius:12px;border:1.5px solid ${borderColor};position:relative;overflow:hidden;opacity:${cardOpacity};margin-bottom:12px;">
+                ${!n.isRead ? '<div style="position:absolute;top:0;left:0;width:4px;height:100%;background:#944217;"></div>' : ''}
+                <div style="display:flex;align-items:flex-start;gap:12px;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:${colors.bg};color:${colors.color};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <span class="material-symbols-outlined" style="font-size:20px;">${icon}</span>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between mb-1">
-                            <p class="text-sm font-bold text-on-surface">${n.title || 'Notification'}</p>
-                            ${!n.isRead ? '<span class="w-2.5 h-2.5 bg-primary rounded-full flex-shrink-0"></span>' : ''}
+                    <div style="flex:1;min-width:0;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                            <p style="font-size:14px;font-weight:700;color:#1f2937;">${n.title || 'Notification'}</p>
+                            ${!n.isRead ? '<span style="width:10px;height:10px;background:#944217;border-radius:50%;flex-shrink:0;"></span>' : ''}
                         </div>
-                        <p class="text-sm text-on-surface-variant leading-relaxed">${n.text}</p>
-                        ${n.orderId ? `<span class="inline-block text-[10px] font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-500 mt-2">${n.orderId}</span>` : ''}
-                        <p class="text-[10px] text-on-surface-variant/50 mt-2 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-[12px]">schedule</span> ${new Date(n.date).toLocaleString('en-IN')}
+                        <p style="font-size:13px;color:#4b5563;line-height:1.5;">${n.text}</p>
+                        ${n.orderId ? `<span style="display:inline-block;font-size:10px;font-family:monospace;background:#f3f4f6;padding:2px 6px;border-radius:4px;color:#6b7280;margin-top:8px;">${n.orderId}</span>` : ''}
+                        <p style="font-size:10px;color:#9ca3af;margin-top:8px;display:flex;align-items:center;gap:4px;">
+                            <span class="material-symbols-outlined" style="font-size:12px;">schedule</span> ${new Date(n.date).toLocaleString('en-IN')}
                         </p>
                     </div>
                 </div>
