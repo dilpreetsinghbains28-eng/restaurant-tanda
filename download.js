@@ -1,2 +1,0 @@
-"const https = require('https');\nconst fs = require('fs');\n\nconst url = \"https://upload.wikimedia.org/wikipedia/commons/4/46/Gulab_jamun.jpg\";\nconst options = {\n  headers: {\n    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5
-<truncated 400 bytes>

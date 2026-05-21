@@ -1,1 +1,0 @@
-"const fs = require('fs');\nlet content = fs.readFileSync('auth.js', 'utf8');\ncontent = content.replace(/\\\\`/g, '`');\nfs.writeFileSync('auth.js', content, 'utf8');\nconsole.log(\"Fixed syntax error\");"

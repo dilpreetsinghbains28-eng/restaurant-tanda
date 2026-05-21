@@ -1,2 +1,0 @@
-"const fs = require('fs');\nconst files = ['index.html', 'menu.html', 'about.html', 'contact.html'];\n\nconst mapping = {\n  'bg-background': 'dark:bg-[#1a0b07]',\n  'text-on-surface': 'dark:text-[#ffede8]',\n  'bg-surface': 'dark:bg-[#230f0a]',\n  'bg-sur
-<truncated 1111 bytes>

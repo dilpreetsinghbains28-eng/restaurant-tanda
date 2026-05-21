@@ -1,2 +1,0 @@
-"const fs = require('fs');\n\nconst filesToUpdate = ['index.html', 'menu.html', 'about.html', 'contact.html', 'cart.js', 'update_booking.js'];\nconst basePath = \"c:/Users/Asus/Documents/Web Development/ok km/\";\n\nconst bookPhoneOld = `<input id=\"bookPh
-<truncated 2044 bytes>

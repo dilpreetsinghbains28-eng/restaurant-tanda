@@ -345,9 +345,27 @@ function requireLogin(redirectTarget) {
     return true;
 }
 
+// Auto-cleanup old localStorage data (keep only last 30 days)
+function cleanupOldData() {
+    const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+    ['galaxy_orders', 'galaxy_reservations', 'galaxy_messages', 'galaxy_notifications'].forEach(key => {
+        try {
+            const items = JSON.parse(localStorage.getItem(key) || '[]');
+            const filtered = items.filter(item => {
+                const itemDate = new Date(item.createdAt || item.date || 0).getTime();
+                return itemDate > thirtyDaysAgo;
+            });
+            if (filtered.length !== items.length) {
+                localStorage.setItem(key, JSON.stringify(filtered));
+            }
+        } catch(e) { /* ignore */ }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initAuthUI();
     checkUserStatus();
+    cleanupOldData();
     // Poll every 30 seconds
     setInterval(checkUserStatus, 30000);
 });
