@@ -264,15 +264,13 @@
 <nav class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-[#0F0F13]/80 backdrop-blur-md shadow-sm h-20 px-gutter flex items-center justify-center transition-colors duration-300">
     <div class="w-full max-w-7xl flex justify-between items-center h-full">
         <a href="index.html" class="text-headline-md font-headline-md font-bold text-primary">Galaxy Restaurant</a>
-        <div class="hidden md:flex gap-lg items-center">
+        <nav class="hidden md:flex items-center gap-lg">
             <a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="index.html">Home</a>
-            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="about.html">About Us</a>
             <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="menu.html">Menu</a>
             <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="contact.html">Contact</a>
-        </div>
-        <div class="flex gap-sm items-center">
-
-
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="about.html">About Us</a>
+        </nav>
+        <div class="flex items-center gap-sm">
             <button onclick="toggleDarkMode()" class="hidden sm:flex p-sm text-on-surface-variant hover:text-primary transition-colors items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
                 <span class="material-symbols-outlined dark-icon">dark_mode</span>
             </button>
@@ -280,8 +278,7 @@
                 <span class="material-symbols-outlined">shopping_cart</span>
                 <span class="cart-count absolute -top-1 -right-1 bg-primary text-on-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
             </button>
-            <button onclick="openBookingModal()" class="hidden lg:block px-md py-sm rounded-lg border-2 border-primary text-primary font-label-md hover:bg-surface-container-low transition-all">Book Table</button>
-            <!-- <a href="menu.html" class="hidden sm:block px-md py-sm rounded-lg bg-primary text-on-primary font-label-md shadow-soft active:scale-95 transition-transform duration-150">Order Now</a> -->
+            <button onclick="openBookingModal()" class="hidden lg:block bg-surface-container-low text-primary border-2 border-primary px-6 py-2 rounded-full font-label-md hover:bg-primary hover:text-on-primary transition-all">Book Table</button>
             <button onclick="toggleMobileMenu()" class="md:hidden flex items-center p-sm">
                 <span class="material-symbols-outlined">menu</span>
             </button>
@@ -301,8 +298,8 @@
         <div class="flex flex-col p-gutter gap-lg mt-lg">
             <a href="index.html" class="text-headline-md text-primary font-bold">Home</a>
             <a href="menu.html" class="text-headline-md text-on-surface-variant">Menu</a>
-            <a href="about.html" class="text-headline-md text-on-surface-variant">About Us</a>
             <a href="contact.html" class="text-headline-md text-on-surface-variant">Contact</a>
+            <a href="about.html" class="text-headline-md text-on-surface-variant">About Us</a>
             <a href="login.html" class="text-headline-md text-on-surface-variant flex items-center gap-2">
                 <span class="material-symbols-outlined">person</span> Login / Register
             </a>
