@@ -261,12 +261,7 @@
 <!-- TopNavBar -->
 <header class="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-[#0F0F13]/80 backdrop-blur-md shadow-sm h-20 px-gutter flex items-center justify-center transition-colors duration-300">
     <div class="w-full max-w-7xl flex justify-between items-center h-full">
-        <a href="index.html" class="flex items-center gap-2 text-headline-md font-headline-md font-bold text-primary">
-            <span class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-fixed">
-                <span class="material-symbols-outlined text-primary">person</span>
-            </span>
-            Galaxy Restaurant
-        </a>
+        <a href="index.html" class="text-headline-md font-headline-md font-bold text-primary">Galaxy Restaurant</a>
         <nav class="hidden md:flex items-center gap-lg">
             <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="index.html">Home</a>
             <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="menu.html">Menu</a>
@@ -274,6 +269,9 @@
             <a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="contact.html">Contact</a>
         </nav>
         <div class="flex items-center gap-sm">
+            <a href="login.html" class="hidden md:flex p-sm text-on-surface-variant hover:text-primary transition-colors items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest" title="Login / Register">
+                <span class="material-symbols-outlined">person</span>
+            </a>
 
             <button onclick="toggleDarkMode()" class="hidden sm:flex p-sm text-on-surface-variant hover:text-primary transition-colors items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
                 <span class="material-symbols-outlined dark-icon">dark_mode</span>
@@ -294,12 +292,7 @@
 <div id="mobileMenu" class="fixed inset-0 z-[60] bg-surface translate-x-full transition-transform duration-300 md:hidden">
     <div class="flex flex-col h-full">
         <div class="flex justify-between items-center h-20 px-gutter border-b border-outline-variant">
-            <span class="flex items-center gap-2 text-headline-md font-bold text-primary">
-                <span class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-fixed">
-                    <span class="material-symbols-outlined text-primary">person</span>
-                </span>
-                Galaxy Restaurant
-            </span>
+            <span class="text-headline-md font-bold text-primary">Galaxy Restaurant</span>
             <button onclick="toggleMobileMenu()" class="p-sm">
                 <span class="material-symbols-outlined">close</span>
             </button>
