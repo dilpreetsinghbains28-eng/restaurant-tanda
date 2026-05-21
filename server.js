@@ -12,8 +12,8 @@ const JWT_SECRET = 'galaxy_super_secret_key_2026'; // In production, use process
 
 // --- PREVENT CRASHES & ENSURE RESTART ---
 function handleCriticalError(type, err) {
-    console.error(`\n🔥 CRITICAL ERROR (${type}):`, err);
-    console.error('⚠️ Exiting to allow watchdog restart...\n');
+    console.error(`\n CRITICAL ERROR (${type}):`, err);
+    console.error(' Exiting to allow watchdog restart...\n');
     setTimeout(() => process.exit(1), 500);
 }
 

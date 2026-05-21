@@ -266,8 +266,8 @@
         <a href="index.html" class="text-headline-md font-headline-md font-bold text-primary">Galaxy Restaurant</a>
         <div class="hidden md:flex gap-lg items-center">
             <a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="index.html">Home</a>
-            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="menu.html">Menu</a>
             <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="about.html">About Us</a>
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="menu.html">Menu</a>
             <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="contact.html">Contact</a>
         </div>
         <div class="flex gap-sm items-center">
@@ -282,7 +282,7 @@
                 <span class="cart-count absolute -top-1 -right-1 bg-primary text-on-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
             </button>
             <button onclick="openBookingModal()" class="hidden lg:block px-md py-sm rounded-lg border-2 border-primary text-primary font-label-md hover:bg-surface-container-low transition-all">Book Table</button>
-            <a href="menu.html" class="hidden sm:block px-md py-sm rounded-lg bg-primary text-on-primary font-label-md shadow-soft active:scale-95 transition-transform duration-150">Order Now</a>
+            <!-- <a href="menu.html" class="hidden sm:block px-md py-sm rounded-lg bg-primary text-on-primary font-label-md shadow-soft active:scale-95 transition-transform duration-150">Order Now</a> -->
             <button onclick="toggleMobileMenu()" class="md:hidden flex items-center p-sm">
                 <span class="material-symbols-outlined">menu</span>
             </button>
@@ -619,42 +619,189 @@
 </section>
 </main>
 <!-- Footer -->
-<footer class="w-full py-xl px-margin flex flex-col md:flex-row justify-between items-start gap-lg bg-surface-container-highest border-t border-outline-variant">
-<div class="max-w-xs">
-<div class="text-headline-lg font-headline-lg font-bold text-primary mb-sm">Galaxy Restaurant</div>
-<p class="font-body-md text-on-surface-variant">Serving premium North Indian and Chinese delicacies in Urmar Tanda since 2024.</p>
-</div>
-<div class="grid grid-cols-2 sm:grid-cols-3 gap-xl">
-<div class="flex flex-col gap-sm">
-<h4 class="font-label-md text-primary font-bold">Quick Links</h4>
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="menu.html">Menu</a>
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="about.html">About Us</a>
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="contact.html">Contact</a>
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-all flex items-center gap-1" href="admin.html">
-    <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span> Admin Portal
-</a>
-</div>
-<div class="flex flex-col gap-sm">
-<h4 class="font-label-md text-primary font-bold">Policy</h4>
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="javascript:void(0)">Privacy Policy</a>
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="javascript:void(0)">Terms of Service</a>
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-all" href="javascript:void(0)">Refund Policy</a>
-</div>
-<div class="flex flex-col gap-sm">
-<h4 class="font-label-md text-primary font-bold">Follow Us</h4>
-<div class="flex gap-sm">
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all" href="javascript:void(0)">
-<span class="material-symbols-outlined text-lg">public</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all" href="javascript:void(0)">
-<span class="material-symbols-outlined text-lg">camera</span>
-</a>
-</div>
-</div>
-</div>
-<div class="w-full border-t border-outline-variant mt-xl pt-md flex justify-center">
-<p class="font-label-md text-on-surface-variant">© 2025 Galaxy Restaurant Tanda. All rights reserved.</p>
-</div>
+<footer class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 py-16">
+    
+    <!-- Top Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      
+      <!-- Brand -->
+      <div>
+        <h2 class="text-3xl font-bold text-amber-400 tracking-wide mb-4">
+          Galaxy Restaurant
+        </h2>
+
+        <p class="text-slate-300 leading-relaxed text-sm">
+          Serving premium North Indian and Chinese delicacies in 
+          Urmar Tanda since 2024.
+        </p>
+
+        <!-- Contact -->
+        <div class="mt-6 space-y-3 text-sm text-slate-400">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-amber-400">
+              location_on
+            </span>
+            <span>Urmar Tanda, Punjab</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-amber-400">
+              call
+            </span>
+            <span>+91 98765 43210</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-amber-400">
+              mail
+            </span>
+            <span>galaxyrestaurant@gmail.com</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-lg font-semibold text-amber-400 mb-5">
+          Quick Links
+        </h3>
+
+        <ul class="space-y-3">
+          <li>
+            <a href="menu.html"
+              class="text-slate-300 hover:text-amber-400 transition duration-300">
+              Menu
+            </a>
+          </li>
+
+          <li>
+            <a href="about.html"
+              class="text-slate-300 hover:text-amber-400 transition duration-300">
+              About Us
+            </a>
+          </li>
+
+          <li>
+            <a href="contact.html"
+              class="text-slate-300 hover:text-amber-400 transition duration-300">
+              Contact
+            </a>
+          </li>
+
+          <li>
+            <a href="admin.html"
+              class="flex items-center gap-2 text-slate-300 hover:text-amber-400 transition duration-300">
+              <span class="material-symbols-outlined text-[18px]">
+                admin_panel_settings
+              </span>
+              Admin Portal
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Policies -->
+      <div>
+        <h3 class="text-lg font-semibold text-amber-400 mb-5">
+          Policies
+        </h3>
+
+        <ul class="space-y-3">
+          <li>
+            <a href="#"
+              class="text-slate-300 hover:text-amber-400 transition duration-300">
+              Privacy Policy
+            </a>
+          </li>
+
+          <li>
+            <a href="#"
+              class="text-slate-300 hover:text-amber-400 transition duration-300">
+              Terms of Service
+            </a>
+          </li>
+
+          <li>
+            <a href="#"
+              class="text-slate-300 hover:text-amber-400 transition duration-300">
+              Refund Policy
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Social + Timing -->
+      <div>
+        <h3 class="text-lg font-semibold text-amber-400 mb-5">
+          Follow Us
+        </h3>
+
+        <div class="flex gap-4 mb-6">
+          <a href="#"
+            class="w-11 h-11 rounded-full bg-white/10 hover:bg-amber-400 hover:text-black transition-all duration-300 flex items-center justify-center">
+            <span class="material-symbols-outlined">public</span>
+          </a>
+
+          <a href="#"
+            class="w-11 h-11 rounded-full bg-white/10 hover:bg-amber-400 hover:text-black transition-all duration-300 flex items-center justify-center">
+            <span class="material-symbols-outlined">camera_alt</span>
+          </a>
+
+          <a href="#"
+            class="w-11 h-11 rounded-full bg-white/10 hover:bg-amber-400 hover:text-black transition-all duration-300 flex items-center justify-center">
+            <span class="material-symbols-outlined">smart_display</span>
+          </a>
+        </div>
+
+        <!-- Opening Hours -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+          <h4 class="font-semibold text-white mb-3">
+            Opening Hours
+          </h4>
+
+          <div class="space-y-2 text-sm text-slate-300">
+            <div class="flex justify-between">
+              <span>Mon - Fri</span>
+              <span>10 AM - 11 PM</span>
+            </div>
+
+            <div class="flex justify-between">
+              <span>Saturday</span>
+              <span>11 AM - 12 PM</span>
+            </div>
+
+            <div class="flex justify-between">
+              <span>Sunday</span>
+              <span>Closed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="border-t border-white/10 mt-14 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <p class="text-sm text-slate-400 text-center md:text-left">
+        © 2025 Galaxy Restaurant Tanda. All rights reserved.
+      </p>
+
+      <div class="flex items-center gap-6 text-sm">
+        <a href="#" class="text-slate-400 hover:text-amber-400 transition">
+          Privacy
+        </a>
+
+        <a href="#" class="text-slate-400 hover:text-amber-400 transition">
+          Terms
+        </a>
+
+        <a href="#" class="text-slate-400 hover:text-amber-400 transition">
+          Support
+        </a>
+      </div>
+    </div>
+  </div>
 </footer>
 <!-- Booking Modal -->
 <div id="bookingModal" class="fixed inset-0 z-[100] flex items-center justify-center hidden">
