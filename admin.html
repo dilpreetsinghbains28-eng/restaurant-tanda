@@ -170,8 +170,17 @@
     </div>
 
     <script>
-        const ADMIN_PASSWORD = 'galaxy2024';
+        const ADMIN_HASH = '4c1aa4e16b0e7c92c42f054ec85bdb9f649eb97b7857cac7f04cce4960c65421';
         const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+
+        // SHA-256 hash function using Web Crypto API
+        async function sha256(text) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
         // Check persistent login on load
         window.onload = () => {
@@ -182,9 +191,10 @@
             }
         };
 
-        function authenticate() {
+        async function authenticate() {
             const input = document.getElementById('adminPassword').value;
-            if (input === ADMIN_PASSWORD) {
+            const inputHash = await sha256(input);
+            if (inputHash === ADMIN_HASH) {
                 localStorage.setItem('adminAuth', 'true');
                 document.getElementById('authScreen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
