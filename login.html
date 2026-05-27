@@ -4,9 +4,37 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Login | Galaxy Restaurant</title>
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+    } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+    }
+    function toggleDarkMode() {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            localStorage.setItem('theme', 'light');
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'dark_mode');
+        } else {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+        }
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+        }
+    });
+</script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="mobile.css" rel="stylesheet"/>
     <script>
         tailwind.config = {
             theme: {
@@ -25,15 +53,20 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fff8f6; }
         .fade-in { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .dark body, .dark .login-page-body { background-color: #0F0F13 !important; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col login-page-body">
     <!-- Simple Header -->
-    <header class="p-6">
+    <header class="p-6 flex items-center justify-between">
         <a href="index.html" class="flex items-center gap-2 text-brand font-bold text-xl hover:opacity-80 transition-opacity w-fit mx-auto sm:mx-0">
             <span class="material-symbols-outlined text-3xl">restaurant</span>
             Galaxy Restaurant
         </a>
+        <button onclick="toggleDarkMode()" class="p-2 text-gray-500 hover:text-brand transition-colors rounded-full hover:bg-gray-100">
+            <span class="material-symbols-outlined dark-icon">dark_mode</span>
+        </button>
     </header>
 
     <!-- Main Content -->

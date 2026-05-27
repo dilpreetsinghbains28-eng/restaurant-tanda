@@ -11,13 +11,28 @@ function addToCart(name, price) {
     saveCart();
     updateCartUI();
     
-    // Visual feedback
+    // Visual feedback on button
     if (typeof event !== 'undefined' && event && event.currentTarget) {
         const btn = event.currentTarget;
         const originalHtml = btn.innerHTML;
         btn.innerHTML = `<span class="material-symbols-outlined text-green-500">check_circle</span>`;
         setTimeout(() => { btn.innerHTML = originalHtml; }, 1000);
     }
+
+    // Toast notification for mobile
+    showToast('✓ ' + name + ' added to cart');
+
+    // Haptic feedback on supported devices
+    if (navigator.vibrate) navigator.vibrate(50);
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toastNotif');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
 function removeFromCart(name) {

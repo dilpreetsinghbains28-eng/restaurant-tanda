@@ -1,0 +1,500 @@
+/* ═══════════════════════════════════════════════════════
+   Galaxy Restaurant — Mobile Enhancement Stylesheet
+   Premium mobile-first responsive design upgrades
+   ═══════════════════════════════════════════════════════ */
+
+/* ═══ Smooth Scroll & Touch ═══ */
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ═══ Body scroll lock when modal/menu open ═══ */
+body.menu-open,
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* ═══ Mobile Bottom Navigation Bar ═══ */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  background: rgba(255, 248, 246, 0.92);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border-top: 1px solid rgba(148, 66, 23, 0.1);
+  padding: 6px 0 max(6px, env(safe-area-inset-bottom));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark .mobile-bottom-nav {
+  background: rgba(15, 15, 19, 0.92);
+  border-top: 1px solid rgba(255, 182, 149, 0.1);
+}
+
+.mobile-bottom-nav .nav-items {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.mobile-bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: var(--color-on-surface-variant, #55433b);
+  position: relative;
+}
+
+.mobile-bottom-nav .nav-item.active {
+  color: var(--color-primary, #944217);
+}
+
+.mobile-bottom-nav .nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 28px;
+  background: var(--color-primary-fixed, #ffdbcc);
+  border-radius: 14px;
+  z-index: -1;
+}
+
+.dark .mobile-bottom-nav .nav-item.active::before {
+  background: rgba(255, 182, 149, 0.15);
+}
+
+.mobile-bottom-nav .nav-item .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.mobile-bottom-nav .nav-item span:last-child {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ═══ Enhanced Mobile Menu Overlay ═══ */
+#mobileMenu {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 59;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.mobile-menu-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ═══ Floating WhatsApp CTA Button ═══ */
+.whatsapp-fab {
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  z-index: 80;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4), 0 2px 6px rgba(0,0,0,0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: whatsapp-pulse 2s infinite;
+  text-decoration: none;
+}
+
+.whatsapp-fab:hover,
+.whatsapp-fab:active {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-fab svg {
+  width: 28px;
+  height: 28px;
+}
+
+@keyframes whatsapp-pulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4), 0 2px 6px rgba(0,0,0,0.15); }
+  50% { box-shadow: 0 4px 24px rgba(37, 211, 102, 0.6), 0 2px 6px rgba(0,0,0,0.15); }
+}
+
+/* ═══ Toast Notification (for cart add feedback) ═══ */
+.toast-notification {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--color-inverse-surface, #472820);
+  color: var(--color-inverse-on-surface, #ffede8);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 200;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.toast-notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ═══ No Scrollbar Utility ═══ */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ═══════════════════════════════════════════
+   MOBILE-SPECIFIC STYLES (max-width: 768px)
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  
+  /* Show bottom nav on mobile */
+  .mobile-bottom-nav {
+    display: block;
+  }
+  
+  /* Hide top nav burger on mobile since we have bottom nav */
+  /* Keep it as secondary nav option */
+
+  /* Add bottom padding to body for bottom nav */
+  body {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* ═══ Top Navbar — Compact for mobile ═══ */
+  nav.fixed, header.fixed {
+    height: 56px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Reduce logo size on mobile */
+  nav .text-headline-md,
+  header .text-headline-md {
+    font-size: 18px !important;
+  }
+
+  /* Hero Section — mobile optimized */
+  header.relative {
+    min-height: 85vh !important;
+  }
+
+  /* Reduce oversized headline-xl on mobile */
+  .text-headline-xl {
+    font-size: 32px !important;
+    line-height: 1.15 !important;
+  }
+
+  .text-headline-lg {
+    font-size: 24px !important;
+    line-height: 1.25 !important;
+  }
+
+  .text-headline-md {
+    font-size: 18px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* ═══ Spacing reductions ═══ */
+  .py-xl { padding-top: 48px !important; padding-bottom: 48px !important; }
+  .px-margin { padding-left: 16px !important; padding-right: 16px !important; }
+  .gap-xl { gap: 32px !important; }
+  .mb-xl { margin-bottom: 32px !important; }
+  .mt-xl { margin-top: 32px !important; }
+
+  /* ═══ Hero feature strip — tighter on mobile ═══ */
+  .absolute.bottom-0 .grid-cols-4 {
+    padding: 12px 12px !important;
+  }
+
+  /* ═══ Cuisine Bento Grid — stack on mobile ═══ */
+  .grid.grid-cols-1.md\:grid-cols-2 > a:first-child {
+    height: 280px !important;
+  }
+
+  /* ═══ Food Cards — better mobile layout ═══ */
+  .fav-card .h-48 {
+    height: 160px;
+  }
+
+  /* ═══ Menu Items — improved touch targets ═══ */
+  .flex.gap-md.bg-white,
+  .flex.gap-md.dark\:bg-surface-container-low {
+    padding: 8px !important;
+  }
+
+  /* ═══ Category filter pills — better scroll ═══ */
+  .category-btn, .fav-btn {
+    padding: 8px 16px !important;
+    font-size: 12px !important;
+  }
+
+  /* ═══ Booking Modal — full screen on mobile ═══ */
+  #bookingModal > div:last-child {
+    border-radius: 20px 20px 0 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  /* ═══ Footer — compact on mobile ═══ */
+  footer .grid {
+    gap: 32px !important;
+  }
+
+  footer .text-3xl {
+    font-size: 22px !important;
+  }
+
+  /* ═══ Map section ═══ */
+  .h-80 {
+    height: 200px !important;
+  }
+
+  /* ═══ Why Choose Us — vertical on mobile ═══ */
+  .w-16.h-16 {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  /* ═══ Mobile Menu — improved style ═══ */
+  #mobileMenu .flex.flex-col.p-gutter {
+    padding: 20px !important;
+    gap: 0 !important;
+  }
+
+  #mobileMenu .flex.flex-col.p-gutter > a,
+  #mobileMenu .flex.flex-col.p-gutter > button {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-outline-variant, #dbc1b7);
+    font-size: 18px !important;
+  }
+
+  #mobileMenu .flex.flex-col.p-gutter > button {
+    margin-top: 16px;
+    border-bottom: none;
+    padding: 16px !important;
+    text-align: center;
+    border-radius: 12px;
+  }
+
+  /* ═══ Sticky category bar — adjusted for mobile nav height ═══ */
+  .sticky.top-20 {
+    top: 56px !important;
+  }
+
+  /* Menu pt adjustment */
+  main.pt-20 {
+    padding-top: 56px !important;
+  }
+
+  /* ═══ Menu hero — shorter on mobile ═══ */
+  section.relative.h-\[300px\] {
+    height: 200px !important;
+  }
+
+  /* ═══ Contact Info Cards — stack nicely ═══ */
+  .flex.gap-md.group {
+    padding: 12px;
+    background: var(--color-surface-container-low, #fff1ed);
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+
+  .dark .flex.gap-md.group {
+    background: var(--color-surface-container, #18181E);
+  }
+
+  /* ═══ Input fields — larger touch targets ═══ */
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    min-height: 44px;
+  }
+
+  /* ═══ Buttons — larger touch targets ═══ */
+  button, a[role="button"], .rounded-full[onclick] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SMALL MOBILE (max-width: 380px)
+   ═══════════════════════════════════════════ */
+@media (max-width: 380px) {
+  .text-headline-xl {
+    font-size: 26px !important;
+  }
+
+  .text-headline-lg {
+    font-size: 20px !important;
+  }
+
+  nav .text-headline-md,
+  header .text-headline-md {
+    font-size: 16px !important;
+  }
+
+  .category-btn, .fav-btn {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+  }
+
+  /* Feature strip icons smaller */
+  .absolute.bottom-0 .w-10 {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .absolute.bottom-0 span.text-\[10px\] {
+    font-size: 9px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   DARK MODE for Login & Admin pages
+   ═══════════════════════════════════════════ */
+.dark .login-page-body {
+  background-color: #0F0F13 !important;
+}
+
+.dark .login-page-body .bg-white {
+  background-color: #18181E !important;
+}
+
+.dark .login-page-body .text-gray-800,
+.dark .login-page-body .text-gray-500 {
+  color: #A1A1AA !important;
+}
+
+.dark .login-page-body .border-outline {
+  border-color: #3F3F46 !important;
+}
+
+.dark .login-page-body input {
+  background-color: #09090B !important;
+  color: #F4F4F5 !important;
+  border-color: #3F3F46 !important;
+}
+
+.dark .login-page-body .bg-brand {
+  background-color: #ffb695 !important;
+  color: #561f00 !important;
+}
+
+.dark .login-page-body .text-brand {
+  color: #ffb695 !important;
+}
+
+.dark .login-page-body .border-brand-light {
+  border-color: #3F3F46 !important;
+}
+
+.dark .login-page-body .shadow-xl {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important;
+}
+
+.dark .login-page-body .bg-brand\/5 {
+  background-color: rgba(255, 182, 149, 0.08) !important;
+}
+
+/* ═══ Smooth page transition ═══ */
+@keyframes pageLoad {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body {
+  animation: pageLoad 0.4s ease-out;
+}
+
+/* ═══ Improved focus styles for accessibility ═══ */
+:focus-visible {
+  outline: 2px solid var(--color-primary, #944217);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ═══ Safe area insets for notched phones ═══ */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .mobile-bottom-nav {
+    padding-bottom: calc(6px + env(safe-area-inset-bottom));
+  }
+}
+
+/* ═══ Active states for touch feedback ═══ */
+@media (hover: none) {
+  .hover\:shadow-2xl:active {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .hover\:scale-\[1\.02\]:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease;
+  }
+
+  .hover\:-translate-y-1:active {
+    transform: translateY(1px) !important;
+  }
+}
+
+/* ═══ Print styles — hide nav and non-essential ═══ */
+@media print {
+  .mobile-bottom-nav,
+  .whatsapp-fab,
+  nav.fixed,
+  header.fixed,
+  #mobileMenu,
+  .toast-notification {
+    display: none !important;
+  }
+}

@@ -39,6 +39,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="mobile.css" rel="stylesheet"/>
 <!-- Tailwind Configuration -->
 <script id="tailwind-config">
       tailwind.config = {
@@ -272,7 +273,7 @@
         <div class="flex items-center gap-sm">
 
 
-            <button onclick="toggleDarkMode()" class="hidden sm:flex p-sm text-on-surface-variant hover:text-primary transition-colors items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
+            <button onclick="toggleDarkMode()" class="flex p-sm text-on-surface-variant hover:text-primary transition-colors items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
                 <span class="material-symbols-outlined dark-icon">dark_mode</span>
             </button>
             <button onclick="toggleCartModal()" class="relative p-sm text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-container-highest">
@@ -794,4 +795,34 @@
 </script>
 <script src="cart.js?v=1778415755003"></script>
 <script src="auth.js"></script>
+<!-- Mobile Bottom Navigation -->
+<nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+    <div class="nav-items">
+        <a href="index.html" class="nav-item">
+            <span class="material-symbols-outlined">home</span>
+            <span>Home</span>
+        </a>
+        <a href="menu.html" class="nav-item">
+            <span class="material-symbols-outlined">restaurant_menu</span>
+            <span>Menu</span>
+        </a>
+        <a href="javascript:void(0)" onclick="openBookingModal()" class="nav-item">
+            <span class="material-symbols-outlined">calendar_month</span>
+            <span>Book</span>
+        </a>
+        <a href="contact.html" class="nav-item">
+            <span class="material-symbols-outlined">call</span>
+            <span>Contact</span>
+        </a>
+        <a href="about.html" class="nav-item active">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">info</span>
+            <span>About</span>
+        </a>
+    </div>
+</nav>
+<!-- WhatsApp FAB -->
+<a href="https://wa.me/918437227755" target="_blank" class="whatsapp-fab" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.544.918 3.321 1.402 5.132 1.403 5.464 0 9.911-4.444 9.913-9.908.002-5.464-4.445-9.91-9.91-9.91-2.648 0-5.137 1.032-7.009 2.905-1.872 1.873-2.903 4.363-2.904 7.011 0 1.854.51 3.662 1.476 5.215l-.982 3.586 3.686-.967z"/></svg>
+</a>
+<div class="toast-notification" id="toastNotif"></div>
 </body></html>
