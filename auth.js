@@ -1,5 +1,21 @@
 window.currentUser = null;
-let currentUser = null; // Keep local ref for internal use if needed, or just use window.currentUser
+
+function sanitizeHTML(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// // let window.currentUser = null;
+
+function sanitizeHTML(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
 
 
 // Ensure UI components exist in DOM
@@ -63,7 +79,7 @@ function markAllNotificationsRead() {
         loadLocalNotifications();
         return;
     }
-    if (!currentUser) return;
+    if (!window.currentUser) return;
     fetch('/api/notifications/mark-read', {
         method: 'POST',
         headers: { 'Authorization': localStorage.getItem('galaxy_token') }
@@ -136,10 +152,10 @@ function loadLocalNotifications() {
                     </div>
                     <div style="flex:1;min-width:0;">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-                            <p style="font-size:14px;font-weight:700;color:#1f2937;">${n.title || 'Notification'}</p>
+                            <p style="font-size:14px;font-weight:700;color:#1f2937;">${sanitizeHTML(n.title || 'Notification')}</p>
                             ${!n.isRead ? '<span style="width:10px;height:10px;background:#944217;border-radius:50%;flex-shrink:0;"></span>' : ''}
                         </div>
-                        <p style="font-size:13px;color:#4b5563;line-height:1.5;">${n.text}</p>
+                        <p style="font-size:13px;color:#4b5563;line-height:1.5;">${sanitizeHTML(n.text)}</p>
                         ${n.orderId ? `<span style="display:inline-block;font-size:10px;font-family:monospace;background:#f3f4f6;padding:2px 6px;border-radius:4px;color:#6b7280;margin-top:8px;">${n.orderId}</span>` : ''}
                         <p style="font-size:10px;color:#9ca3af;margin-top:8px;display:flex;align-items:center;gap:4px;">
                             <span class="material-symbols-outlined" style="font-size:12px;">schedule</span> ${new Date(n.date).toLocaleString('en-IN')}
@@ -167,7 +183,7 @@ window.logoutUser = function() {
 function updateAuthUI() {
     const notifBtn = document.getElementById('navNotifBtn');
     
-    if (currentUser) {
+    if (window.currentUser) {
         if (notifBtn) notifBtn.classList.remove('hidden');
 
         // Add top-left user badge to the LEFT of brand logo
@@ -186,8 +202,8 @@ function updateAuthUI() {
                     
                     <div id="profileDropdownMenu" class="absolute top-full left-0 mt-2 w-56 bg-surface rounded-xl shadow-lg border border-outline-variant hidden flex-col overflow-hidden z-50">
                         <div class="p-4 border-b border-outline-variant/50 bg-surface-container-lowest">
-                            <p class="font-bold text-on-surface text-sm truncate">${currentUser.name}</p>
-                            <p class="text-xs text-on-surface-variant mt-1">${currentUser.phone}</p>
+                            <p class="font-bold text-on-surface text-sm truncate">${window.currentUser.name}</p>
+                            <p class="text-xs text-on-surface-variant mt-1">${window.currentUser.phone}</p>
                         </div>
                         <button onclick="logoutUser()" class="w-full text-left px-4 py-3 text-error hover:bg-error/10 transition-colors flex items-center gap-2 text-sm font-semibold">
                             <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
@@ -208,11 +224,11 @@ function updateAuthUI() {
         
         // Auto-fill forms if they exist (non-dynamic ones)
         if (document.getElementById('bookName')) {
-            document.getElementById('bookName').value = currentUser.name;
-            document.getElementById('bookPhone').value = currentUser.phone;
+            document.getElementById('bookName').value = window.currentUser.name;
+            document.getElementById('bookPhone').value = window.currentUser.phone;
         }
         if (document.getElementById('contactName')) {
-            document.getElementById('contactName').value = currentUser.name;
+            document.getElementById('contactName').value = window.currentUser.name;
         }
     } else {
         if (notifBtn) notifBtn.classList.add('hidden');
@@ -241,8 +257,8 @@ function checkUserStatus() {
         try {
             const userData = JSON.parse(atob(token));
             if (userData && userData.name) {
-                currentUser = { name: userData.name, phone: userData.phone || '' };
-                window.currentUser = currentUser;
+                window.currentUser = { name: userData.name, phone: userData.phone || '' };
+                window.currentUser = window.currentUser;
                 updateAuthUI();
                 loadLocalNotifications();
             }
@@ -256,7 +272,7 @@ function checkUserStatus() {
     .then(r => r.json())
     .then(data => {
         if (data.success) {
-            currentUser = data.user;
+            window.currentUser = data.user;
             window.currentUser = data.user;
             updateAuthUI();
 
@@ -298,7 +314,7 @@ function checkUserStatus() {
                                 ${!n.isRead ? '<span class="w-2 h-2 bg-primary rounded-full"></span>' : ''}
                             </div>
                             <p class="text-sm font-bold text-on-surface mb-1">${n.notifType === 'reply' ? 'Admin Message' : 'Order Update'}</p>
-                            <p class="text-sm text-on-surface-variant bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30 leading-relaxed">${n.text}</p>
+                            <p class="text-sm text-on-surface-variant bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30 leading-relaxed">${sanitizeHTML(n.text)}</p>
                             <p class="text-[10px] text-on-surface-variant/60 mt-2 flex items-center gap-1">
                                 <span class="material-symbols-outlined text-[12px]">schedule</span> ${new Date(n.date).toLocaleString('en-IN')}
                             </p>
@@ -309,7 +325,15 @@ function checkUserStatus() {
         } else {
             // Invalid token
             localStorage.removeItem('galaxy_token');
-            currentUser = null;
+            window.currentUser = null;
+
+function sanitizeHTML(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
             updateAuthUI();
         }
     })
@@ -367,5 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkUserStatus();
     cleanupOldData();
     // Poll every 30 seconds
-    setInterval(checkUserStatus, 30000);
+    setInterval(() => {
+    if (!document.hidden) checkUserStatus();
+}, 30000);
 });

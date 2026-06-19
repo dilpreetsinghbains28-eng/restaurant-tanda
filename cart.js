@@ -1,5 +1,13 @@
 let cart = JSON.parse(localStorage.getItem('galaxy_cart')) || [];
 
+function sanitizeHTML(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+
 function addToCart(name, price) {
 
     const item = cart.find(i => i.name === name);
@@ -151,13 +159,13 @@ function renderCartModal() {
         return `
             <div class="flex items-center justify-between bg-surface-container-low p-sm rounded-lg border border-outline-variant/30">
                 <div class="flex-1">
-                    <h4 class="font-label-md text-on-surface">${item.name}</h4>
+                    <h4 class="font-label-md text-on-surface">${sanitizeHTML(item.name)}</h4>
                     <p class="text-primary font-bold text-sm">₹${item.price}</p>
                 </div>
                 <div class="flex items-center gap-3 bg-surface rounded-full px-2 py-1 border border-outline-variant/30">
-                    <button onclick="updateQuantity('${item.name}', -1)" class="text-on-surface-variant hover:text-primary material-symbols-outlined text-sm">remove</button>
+                    <button onclick="updateQuantity('${item.name.replace(/'/g, "\\'")}', -1)" class="text-on-surface-variant hover:text-primary material-symbols-outlined text-sm">remove</button>
                     <span class="font-label-md w-4 text-center">${item.quantity}</span>
-                    <button onclick="updateQuantity('${item.name}', 1)" class="text-on-surface-variant hover:text-primary material-symbols-outlined text-sm">add</button>
+                    <button onclick="updateQuantity('${item.name.replace(/'/g, "\\'")}', 1)" class="text-on-surface-variant hover:text-primary material-symbols-outlined text-sm">add</button>
                 </div>
             </div>`;
     }).join('');

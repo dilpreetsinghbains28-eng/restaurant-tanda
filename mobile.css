@@ -498,3 +498,154 @@ body {
     display: none !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   PREMIUM MOBILE ENHANCEMENTS
+   Scroll reveals, animations, micro-interactions
+   ═══════════════════════════════════════════════════════ */
+
+/* ═══ Scroll-triggered reveal animations ═══ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ Staggered card entrance animations ═══ */
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-animate {
+  animation: cardEntrance 0.5s ease forwards;
+  opacity: 0;
+}
+.card-animate:nth-child(1) { animation-delay: 0.05s; }
+.card-animate:nth-child(2) { animation-delay: 0.1s; }
+.card-animate:nth-child(3) { animation-delay: 0.15s; }
+.card-animate:nth-child(4) { animation-delay: 0.2s; }
+.card-animate:nth-child(5) { animation-delay: 0.25s; }
+.card-animate:nth-child(6) { animation-delay: 0.3s; }
+
+/* ═══ Enhanced mobile micro-interactions ═══ */
+@media (max-width: 768px) {
+  /* Bouncy button press */
+  .btn-bounce:active {
+    transform: scale(0.92) !important;
+    transition: transform 0.1s ease !important;
+  }
+  
+  /* Glowing CTA buttons */
+  .bg-primary {
+    position: relative;
+    overflow: hidden;
+  }
+  .bg-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  
+  /* Smooth image hover/press on food cards */
+  .food-card img {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  .food-card:active img {
+    transform: scale(1.05) !important;
+  }
+  
+  /* Floating labels for inputs */
+  input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 0 3px rgba(148, 66, 23, 0.15) !important;
+    border-color: #944217 !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  /* Better cart modal on mobile */
+  #cartModal > div:last-child {
+    border-radius: 20px 20px 0 0 !important;
+    animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Enhanced hero text for mobile */
+  .text-headline-xl {
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  
+  /* Smooth skeleton loading placeholder */
+  .skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .dark .skeleton {
+    background: linear-gradient(90deg, #1a1a2e 25%, #16213e 50%, #1a1a2e 75%);
+    background-size: 200% 100%;
+  }
+  
+  /* Improved scrollbar for menu categories */
+  .category-scroll::-webkit-scrollbar {
+    height: 3px;
+  }
+  .category-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .category-scroll::-webkit-scrollbar-thumb {
+    background: rgba(148, 66, 23, 0.3);
+    border-radius: 10px;
+  }
+  
+  /* Bottom nav elevation with gradient border */
+  .mobile-bottom-nav {
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08) !important;
+  }
+  .mobile-bottom-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(148, 66, 23, 0.2), transparent);
+  }
+  
+  /* Parallax-style hero on mobile */
+  header.relative {
+    background-attachment: fixed !important;
+  }
+  
+  /* Improved WhatsApp FAB with ripple */
+  .whatsapp-fab::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: rgba(37, 211, 102, 0.2);
+    animation: whatsapp-ripple 2s ease-out infinite;
+  }
+  @keyframes whatsapp-ripple {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+}
+
+/* ═══ Dark mode enhancements for mobile ═══ */
+@media (max-width: 768px) {
+  .dark .mobile-bottom-nav {
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.3) !important;
+  }
+  .dark .mobile-bottom-nav::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 182, 149, 0.15), transparent);
+  }
+}

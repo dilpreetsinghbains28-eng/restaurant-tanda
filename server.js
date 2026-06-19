@@ -8,7 +8,17 @@ const { getDB, initDB } = require('./db');
 const app = express();
 app.use(cors());
 const PORT = 8080;
-const JWT_SECRET = 'galaxy_super_secret_key_2026'; // In production, use process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET || 'galaxy_super_secret_key_2026';
+
+const ADMIN_HASH = '4c1aa4e16b0e7c92c42f054ec85bdb9f649eb97b7857cac7f04cce4960c65421';
+const authenticateAdmin = (req, res, next) => {
+    const adminKey = req.headers['x-admin-key'];
+    if (!adminKey || adminKey !== ADMIN_HASH) {
+        return res.status(403).json({ success: false, message: 'Admin access required' });
+    }
+    next();
+};
+ // In production, use process.env.JWT_SECRET
 
 // --- PREVENT CRASHES & ENSURE RESTART ---
 function handleCriticalError(type, err) {
@@ -157,13 +167,13 @@ app.post('/api/contact', catchAsync(async (req, res) => {
     res.json({ success: true, message: newMsg });
 }));
 
-app.get('/api/contact', catchAsync(async (req, res) => {
+app.get('/api/contact', authenticateAdmin, catchAsync(async (req, res) => {
     const db = await getDB();
     const messages = await db.all(`SELECT * FROM messages ORDER BY createdAt DESC`);
     res.json(messages);
 }));
 
-app.delete('/api/contact/:id', catchAsync(async (req, res) => {
+app.delete('/api/contact/:id', authenticateAdmin, catchAsync(async (req, res) => {
     const db = await getDB();
     await db.run(`DELETE FROM messages WHERE id = ?`, [req.params.id]);
     res.json({ success: true });
@@ -184,14 +194,14 @@ app.post('/api/orders', catchAsync(async (req, res) => {
     res.json({ success: true, order: newOrder });
 }));
 
-app.get('/api/orders', catchAsync(async (req, res) => {
+app.get('/api/orders', authenticateAdmin, catchAsync(async (req, res) => {
     const db = await getDB();
     const orders = await db.all(`SELECT * FROM orders ORDER BY createdAt DESC`);
     orders.forEach(o => o.items = JSON.parse(o.items));
     res.json(orders);
 }));
 
-app.patch('/api/orders/:id', catchAsync(async (req, res) => {
+app.patch('/api/orders/:id', authenticateAdmin, catchAsync(async (req, res) => {
     const db = await getDB();
     if (req.body.status) {
         const updateDate = new Date().toISOString();
@@ -202,7 +212,7 @@ app.patch('/api/orders/:id', catchAsync(async (req, res) => {
     res.json({ success: true, order });
 }));
 
-app.delete('/api/orders/:id', catchAsync(async (req, res) => {
+app.delete('/api/orders/:id', authenticateAdmin, catchAsync(async (req, res) => {
     const db = await getDB();
     await db.run(`DELETE FROM orders WHERE id = ?`, [req.params.id]);
     res.json({ success: true });
@@ -222,13 +232,13 @@ app.post('/api/reservations', catchAsync(async (req, res) => {
     res.json({ success: true, reservation: newRes });
 }));
 
-app.get('/api/reservations', catchAsync(async (req, res) => {
+app.get('/api/reservations', authenticateAdmin, catchAsync(async (req, res) => {
     const db = await getDB();
     const resv = await db.all(`SELECT * FROM reservations ORDER BY createdAt DESC`);
     res.json(resv);
 }));
 
-app.patch('/api/reservations/:id', catchAsync(async (req, res) => {
+app.patch('/api/reservations/:id', authenticateAdmin, catchAsync(async (req, res) => {
     const db = await getDB();
     if (req.body.status) {
         const updateDate = new Date().toISOString();
@@ -238,14 +248,14 @@ app.patch('/api/reservations/:id', catchAsync(async (req, res) => {
     res.json({ success: true, reservation: resv });
 }));
 
-app.delete('/api/reservations/:id', catchAsync(async (req, res) => {
+app.delete('/api/reservations/:id', authenticateAdmin, catchAsync(async (req, res) => {
     const db = await getDB();
     await db.run(`DELETE FROM reservations WHERE id = ?`, [req.params.id]);
     res.json({ success: true });
 }));
 
 // --- ADMIN REPLIES ---
-app.patch('/api/:type/:id/reply', catchAsync(async (req, res) => {
+app.patch('/api/:type/:id/reply', authenticateAdmin, catchAsync(async (req, res) => {
     const { type, id } = req.params;
     const { reply } = req.body;
     const db = await getDB();
@@ -265,7 +275,7 @@ app.patch('/api/:type/:id/reply', catchAsync(async (req, res) => {
 }));
 
 // --- ADMIN STATS ---
-app.get('/api/stats', catchAsync(async (req, res) => {
+app.get('/api/stats', authenticateAdmin, catchAsync(async (req, res) => {
     const db = await getDB();
     const orders = await db.all(`SELECT * FROM orders`);
     const resv = await db.all(`SELECT * FROM reservations`);
@@ -315,7 +325,19 @@ app.patch('/api/notifications/:type/:id/read', authenticateToken, catchAsync(asy
 
 // --- HEALTH CHECK ---
 app.get('/ping', (req, res) => res.json({ success: true, status: 'alive', time: new Date().toISOString() }));
-app.use(express.static(__dirname));
+const publicDir = path.join(__dirname);
+app.use(express.static(publicDir, {
+    index: 'index.html',
+    extensions: ['html', 'css', 'js', 'png', 'jpg', 'gif', 'svg', 'ico', 'woff2'],
+    setHeaders: (res, filePath) => {
+        // Block access to sensitive files
+        if (filePath.endsWith('server.js') || filePath.endsWith('db.js') || 
+            filePath.endsWith('package.json') || filePath.endsWith('.sqlite') ||
+            filePath.endsWith('.env') || filePath.endsWith('.bat')) {
+            res.status(403).end('Forbidden');
+        }
+    }
+}));
 
 // --- ERROR HANDLING ---
 app.use((err, req, res, next) => {

@@ -4,11 +4,41 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Admin Dashboard | Galaxy Restaurant</title>
+    
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+        }
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                localStorage.setItem('theme', 'light');
+                document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'dark_mode');
+            } else {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
+                document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+            }
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.querySelectorAll('.dark-icon').forEach(icon => icon.textContent = 'light_mode');
+            }
+        });
+    </script>
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Be+Vietnam+Pro:wght@400;500&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -36,6 +66,7 @@
         .fade-in { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
+    <link href="mobile.css" rel="stylesheet"/>
 </head>
 <body class="min-h-screen">
     <div id="authScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#944217] to-[#561f00]">
@@ -172,6 +203,7 @@
     <script>
         const ADMIN_HASH = '4c1aa4e16b0e7c92c42f054ec85bdb9f649eb97b7857cac7f04cce4960c65421';
         const isStatic = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        const adminHeaders = { 'x-admin-key': ADMIN_HASH };
 
         // SHA-256 hash function using Web Crypto API
         async function sha256(text) {
@@ -183,11 +215,17 @@
         }
 
         // Check persistent login on load
-        window.onload = () => {
-            if (localStorage.getItem('adminAuth') === 'true') {
+        window.onload = async () => {
+            const authToken = localStorage.getItem('adminAuth');
+            const authTime = parseInt(localStorage.getItem('adminAuthTime') || '0');
+            const isExpired = (Date.now() - authTime) > 24 * 60 * 60 * 1000; // 24 hour expiry
+            if (authToken && authToken.length > 10 && !isExpired) {
                 document.getElementById('authScreen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 refreshAll();
+            } else {
+                localStorage.removeItem('adminAuth');
+                localStorage.removeItem('adminAuthTime');
             }
         };
 
@@ -195,7 +233,9 @@
             const input = document.getElementById('adminPassword').value;
             const inputHash = await sha256(input);
             if (inputHash === ADMIN_HASH) {
-                localStorage.setItem('adminAuth', 'true');
+                const sessionToken = await sha256(ADMIN_HASH + Date.now());
+                localStorage.setItem('adminAuth', sessionToken);
+                localStorage.setItem('adminAuthTime', Date.now().toString());
                 document.getElementById('authScreen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 refreshAll();
@@ -208,6 +248,7 @@
 
         function logout() {
             localStorage.removeItem('adminAuth');
+            localStorage.removeItem('adminAuthTime');
             location.reload();
         }
 
@@ -253,7 +294,7 @@
                 document.getElementById('statUnread').textContent = messages.filter(m => m.status === 'Unread').length;
             } else {
                 try {
-                    const res = await fetch('/api/stats');
+                    const res = await fetch('/api/stats', { headers: adminHeaders });
                     const data = await res.json();
                     document.getElementById('statOrders').textContent = data.totalOrders;
                     document.getElementById('statNewOrders').textContent = data.newOrders;
@@ -273,7 +314,7 @@
                 orders = lsGet('galaxy_orders');
             } else {
                 try {
-                    const res = await fetch('/api/orders');
+                    const res = await fetch('/api/orders', { headers: adminHeaders });
                     orders = await res.json();
                 } catch (e) { console.error('Orders error:', e); return; }
             }
@@ -332,7 +373,7 @@
                 reservations = lsGet('galaxy_reservations');
             } else {
                 try {
-                    const res = await fetch('/api/reservations');
+                    const res = await fetch('/api/reservations', { headers: adminHeaders });
                     reservations = await res.json();
                 } catch (e) { console.error('Reservations error:', e); return; }
             }
@@ -394,7 +435,7 @@
                 messages = lsGet('galaxy_messages');
             } else {
                 try {
-                    const res = await fetch('/api/contact');
+                    const res = await fetch('/api/contact', { headers: adminHeaders });
                     messages = await res.json();
                 } catch (e) { console.error('Messages error:', e); return; }
             }
@@ -481,7 +522,7 @@
                     );
                 }
             } else {
-                await fetch(`/api/orders/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+                await fetch(`/api/orders/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', ...adminHeaders }, body: JSON.stringify({ status }) });
             }
             refreshAll();
         }
@@ -503,7 +544,7 @@
                     );
                 }
             } else {
-                await fetch(`/api/reservations/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+                await fetch(`/api/reservations/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', ...adminHeaders }, body: JSON.stringify({ status }) });
             }
             refreshAll();
         }
@@ -532,7 +573,7 @@
             } else {
                 fetch(`/api/${type}/${id}/reply`, {
                     method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', ...adminHeaders },
                     body: JSON.stringify({ reply: replyText })
                 }).then(() => refreshAll());
             }
@@ -545,7 +586,7 @@
                 const keyMap = { orders: 'galaxy_orders', reservations: 'galaxy_reservations', contact: 'galaxy_messages' };
                 lsDelete(keyMap[type], id);
             } else {
-                const res = await fetch(`/api/${type}/${id}`, { method: 'DELETE' });
+                const res = await fetch(`/api/${type}/${id}`, { method: 'DELETE', headers: adminHeaders });
                 if (!res.ok) return;
             }
             refreshAll();

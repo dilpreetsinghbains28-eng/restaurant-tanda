@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="description" content="Login or Register at Galaxy Restaurant to place orders and book tables."/>
+<link rel="icon" href="https://fonts.gstatic.com/s/e/notoemoji/latest/2b50/512.gif" type="image/gif"/>
     <title>Login | Galaxy Restaurant</title>
 <script>
     if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -150,7 +152,16 @@
             document.getElementById('authSuccess').classList.add('hidden');
         }
 
-        function handleAuth(e) {
+        
+        async function sha256(text) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async async function handleAuth(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const errorEl = document.getElementById('authError');
@@ -178,7 +189,8 @@
                             btn.textContent = "Create Account";
                             return;
                         }
-                        users.push({ name, phone, password });
+                        const hashedPw = await sha256(password);
+                        users.push({ name, phone, password: hashedPw });
                         localStorage.setItem('galaxy_users', JSON.stringify(users));
                         
                         // Create token
@@ -190,7 +202,8 @@
                     } else {
                         // Login — check localStorage
                         const users = JSON.parse(localStorage.getItem('galaxy_users') || '[]');
-                        const user = users.find(u => u.phone === phone && u.password === password);
+                        const hashedPw = await sha256(password);
+                        const user = users.find(u => u.phone === phone && u.password === hashedPw);
                         
                         if (user) {
                             const token = btoa(JSON.stringify({ name: user.name, phone: user.phone, id: 'user_' + Date.now() }));
