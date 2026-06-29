@@ -649,3 +649,71 @@ body {
     background: linear-gradient(90deg, transparent, rgba(255, 182, 149, 0.15), transparent);
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   PREMIUM MOBILE DESIGN & COLOR PALETTE ENHANCEMENTS
+   ═══════════════════════════════════════════════════════ */
+.mobile-glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 66, 23, 0.1);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.dark .mobile-glass-card {
+  background: rgba(24, 24, 30, 0.7);
+  border: 1px solid rgba(255, 182, 149, 0.08);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #944217 0%, #d45d22 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .text-gradient {
+  background: linear-gradient(135deg, #ffb695 0%, #ffe0cc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Ambient gradient background for mobile section headers */
+.mobile-ambient-bg {
+  background: linear-gradient(180deg, rgba(255, 241, 237, 0.6) 0%, rgba(255, 248, 246, 0) 100%);
+}
+
+.dark .mobile-ambient-bg {
+  background: linear-gradient(180deg, rgba(24, 24, 30, 0.6) 0%, rgba(15, 15, 19, 0) 100%);
+}
+
+/* Interactive card hover/tap animations */
+.interactive-card {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+}
+
+.interactive-card:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 12px rgba(148, 66, 23, 0.05);
+}
+
+.dark .interactive-card:active {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Category filter pills active states */
+.fav-btn.active, .category-btn.active {
+  background: var(--color-primary, #944217) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(148, 66, 23, 0.25);
+  transform: translateY(-1px);
+}
+
+.dark .fav-btn.active, .dark .category-btn.active {
+  background: var(--color-primary, #ffb695) !important;
+  color: #561f00 !important;
+  box-shadow: 0 4px 12px rgba(255, 182, 149, 0.25);
+}
